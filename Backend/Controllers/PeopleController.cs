@@ -1,39 +1,56 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Web;
 using System.Web.Http;
+using System.Runtime.Serialization;
+using System.IO;
+using System;
 using Backend.Models;
+using Newtonsoft.Json;
+using WhosThat.Recognition;
 
-namespace Backend.Controllers
+namespace bigbackend
 {
-    public class PeopleController : ApiController
+    public class ValuesController : ApiController
     {
-		private Person[] people = new Person[]
-		{
-			new Person{id = 0, firstName = "Some", lastName = "One"},
-			new Person{id = 1, firstName = "Some", lastName = "Two"},
-			new Person{id = 2, firstName = "Some", lastName = "Three"},
-			new Person{id = 3, firstName = "Some", lastName = "Four"},
-			new Person{id = 4, firstName = "Some", lastName = "Five"}
-		};
+        [Route("api/values/{id}")]
+        [HttpGet]
+        public HttpResponseMessage Get(int id)
+        {
+            Person found = Storage.FindPersonByID(id);
+            if (found != null)
+                return Request.CreateResponse<Person>(HttpStatusCode.OK, found);
+            else return Request.CreateResponse<string>(HttpStatusCode.BadRequest, "This person has not been found.");
+        }
 
-	    public List<Person> GetPeople()
-	    {
-		    return people.ToList();
-	    }
+        [Route("api/values/post")]
+        [HttpPost]
+        public HttpResponseMessage Post(Person newPerson)
+        {
+            if (ModelState.IsValid && newPerson != null)
+            {
+                //var id = Guid.NewGuid();
+                //newPerson.id = id;
+                //Person newPerson = JsonConvert.DeserializeObject<Person>(personjson);
+                Storage.People.Add(newPerson);
 
-	    public IHttpActionResult GetPerson(int id)
-	    {
-		    Person person = people.FirstOrDefault(pers => pers.id == id);
-		    if (person == null)
-		    {
-			    return NotFound();
-		    }
+                foreach(Person p in Storage.People)
+                {
+                    Console.WriteLine(p.Name + "  " + p.Bio + " " + p.Id.ToString());
+                }
 
-		    return Ok(person);
-	    }
+                var response = new HttpResponseMessage(HttpStatusCode.Created)
+                {
+                    Content = new StringContent(newPerson.Name + " " + newPerson.Bio + " has been added to the server.")
+                };
+                response.Headers.Location =
+                    new Uri(Url.Link("DefaultApi", new { action = "status" }));
+                return response;
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
     }
 }
