@@ -236,8 +236,18 @@ namespace LiveCam.Droid
         public override void OnNewItem(int id, Java.Lang.Object item)
         {
             mFaceGraphic.SetId(id);
-            if (mCameraSource != null && !isProcessing)
-                mCameraSource.TakePicture(null, this);
+            try
+            {
+                if (mCameraSource != null && !isProcessing)
+                    mCameraSource.TakePicture(null, this);
+            }
+            catch (System.Exception e)
+            {
+                Console.WriteLine("==================================================");
+                Console.WriteLine(e);
+                
+            }
+            
         }
 
         public override void OnUpdate(Detector.Detections detections, Java.Lang.Object item)
@@ -262,7 +272,7 @@ namespace LiveCam.Droid
 
         public void OnPictureTaken(byte[] data)
         {
-            /*Task.Run(async () =>
+            Task.Run(async () =>
             {
                 try
                 {
@@ -282,7 +292,7 @@ namespace LiveCam.Droid
 
                 }
 
-            });*/
+            });
         }
     }
 
