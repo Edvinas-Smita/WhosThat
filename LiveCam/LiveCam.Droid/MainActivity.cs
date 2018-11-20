@@ -18,7 +18,9 @@ using Android.Content.PM;
 using Android.Gms.Common;
 using LiveCam.Shared;
 using System.Threading.Tasks;
+using Android.Graphics;
 using ServiceHelpers;
+using Exception = Java.Lang.Exception;
 
 namespace LiveCam.Droid
 {
@@ -31,13 +33,9 @@ namespace LiveCam.Droid
 
         private CameraSourcePreview _mPreview;
         private GraphicOverlay _mGraphicOverlay;
+        private ImageButton _imgBtn;
 
-
-        public static string GreetingsText
-        {
-            get;
-            set;
-        }
+        public static string GreetingsText{ get; set; }
 
         private static readonly int RC_HANDLE_GMS = 9001;
         // permission request codes need to be < 256
@@ -52,6 +50,7 @@ namespace LiveCam.Droid
 
             _mPreview = FindViewById<CameraSourcePreview>(Resource.Id.preview);
             _mGraphicOverlay = FindViewById<GraphicOverlay>(Resource.Id.faceOverlay);
+            _imgBtn = FindViewById<ImageButton>(Resource.Id.imageButton1);
             //greetingsText = FindViewById<TextView>(Resource.Id.greetingsTextView);
 
 
@@ -71,9 +70,6 @@ namespace LiveCam.Droid
         {
             base.OnResume();
             StartCameraSource();
-            
-
-
         }
 
         protected override void OnPause()
@@ -143,7 +139,7 @@ namespace LiveCam.Droid
             _mCameraSource = new CameraSource.Builder(context, detector)
                     .SetRequestedPreviewSize(640, 480)
                                             .SetFacing(CameraFacing.Back)
-                    .SetRequestedFps(30.0f)
+                    .SetRequestedFps(60.0f)
                     .Build();
 
             
@@ -183,7 +179,7 @@ namespace LiveCam.Droid
         }
         public Tracker Create(Java.Lang.Object item)
         {
-            return new GraphicFaceTracker(_mGraphicOverlay, _mCameraSource);
+            return new GraphicFaceTracker(_mGraphicOverlay, _imgBtn, _mCameraSource);
         }
 
 
@@ -225,12 +221,14 @@ namespace LiveCam.Droid
         private FaceGraphic mFaceGraphic;
         private CameraSource mCameraSource = null;
         private bool isProcessing = false;
+        private ImageButton _img;
 
-        public GraphicFaceTracker(GraphicOverlay overlay, CameraSource cameraSource =null)
+        public GraphicFaceTracker(GraphicOverlay overlay, ImageButton img, CameraSource cameraSource =null)
         {
             mOverlay = overlay;
             mFaceGraphic = new FaceGraphic(overlay);
             mCameraSource = cameraSource;
+            _img = img;
         }
 
         public override void OnNewItem(int id, Java.Lang.Object item)
@@ -256,6 +254,7 @@ namespace LiveCam.Droid
             mOverlay.Add(mFaceGraphic);
             mFaceGraphic.UpdateFace(face);
             
+            
         }
 
         public override void OnMissing(Detector.Detections detections)
@@ -280,11 +279,17 @@ namespace LiveCam.Droid
 
                     Console.WriteLine("face detected: ");
 
+                    _img.SetImageBitmap(BitmapFactory.DecodeByteArray(data, 0, data.Length));
+
                     var imageAnalyzer = new ImageAnalyzer(data);
                     await LiveCamHelper.ProcessCameraCapture(imageAnalyzer);
 
                 }
-
+                catch (Exception ex)
+                {
+                    Console.WriteLine("======================================");
+                    Console.WriteLine(ex);
+                }
                 finally
                 {
                     isProcessing = false;

@@ -56,18 +56,12 @@ namespace LiveCam.Droid
     public class GraphicOverlay : View
     {
         private Object mLock = new Object();
-        private int mPreviewWidth;
-        private float mWidthScaleFactor = 1.0f;
-        private int mPreviewHeight;
-        private float mHeightScaleFactor = 1.0f;
-        private CameraFacing mFacing = CameraFacing.Front;
         private HashSet<Graphic> mGraphics = new HashSet<Graphic>();
-
-        public int PreviewWidth { get => mPreviewWidth; set => mPreviewWidth = value; }
-        public float WidthScaleFactor { get => mWidthScaleFactor; set => mWidthScaleFactor = value; }
-        public int PreviewHeight { get => mPreviewHeight; set => mPreviewHeight = value; }
-        public float HeightScaleFactor { get => mHeightScaleFactor; set => mHeightScaleFactor = value; }
-        public CameraFacing CameraFacing { get => mFacing; set => mFacing = value; }
+        public int PreviewWidth { get; set; }
+        public float WidthScaleFactor { get; set; } = 1.0f;
+        public int PreviewHeight { get; set; }
+        public float HeightScaleFactor { get; set; } = 1.0f;
+        public CameraFacing CameraFacing { get; set; } = CameraFacing.Front;
 
         public GraphicOverlay(Context context, IAttributeSet attrs) : base(context, attrs)
         {
