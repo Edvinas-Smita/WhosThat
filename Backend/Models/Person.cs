@@ -48,7 +48,7 @@ namespace Backend.Models
                 PropertyChanged(this, new PropertyChangedEventArgs("Likes"));
             }
         }
-        public ObservableCollection<Bitmap> Images = new ObservableCollection<Bitmap>();
+        public ObservableCollection<byte[]> Images = new ObservableCollection<byte[]>();
 
         public Person(string name, string bio, string likes)
         {
@@ -56,7 +56,7 @@ namespace Backend.Models
             Bio = bio;
             Likes = likes;
 
-            Id = IdFactory.GetCurrentId();
+            Id = IdFactory.GetNextId();
         }
 
 	    public static Person PersonWithValidID(Person person)

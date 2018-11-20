@@ -5,6 +5,7 @@ using System.Web.Http;
 using System.Runtime.Serialization;
 using System.IO;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using Backend.Models;
 using Newtonsoft.Json;

@@ -18,15 +18,18 @@ namespace Backend
 
         public static int GetCurrentId()
         {
-            _nextId++;
             //Properties.Settings.Default["lastId"] = _nextId;
             return _nextId;
         }
+
+	    public static int GetNextId()
+	    {
+		    return ++_nextId;
+	    }
 
         static IdFactory()
         {
             //_nextId = (int)Properties.Settings.Default["lastId"];
         }
-
     }
 }
