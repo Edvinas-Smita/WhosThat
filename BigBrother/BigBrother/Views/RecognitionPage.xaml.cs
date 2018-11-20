@@ -25,13 +25,13 @@ namespace BigBrother.Views
 		{
 			InitializeComponent ();
 			
-			mainImage.BindingContext = viewModel;
+			BindingContext = viewModel;
 			
 			
 			try
 			{
 				capture = new VideoCapture(CaptureType.Any);
-				
+				capture.
 				/*if (File.Exists(@"DeltaHeavy_WhiteFlag.mp4"))   //Video capture from file (only works for UWPx86)
 				{
 					capture = new VideoCapture(@"DeltaHeavy_WhiteFlag.mp4");
@@ -42,7 +42,7 @@ namespace BigBrother.Views
 
 				if (capture != null)
 				{
-					Debug.WriteLine(capture.IsOpened);
+					Debug.WriteLine("======================================"+capture.IsOpened);
 					Timer timer = new Timer(1000 / 0.25);
 					timer.Elapsed += DoStuff;
 					timer.AutoReset = true;
@@ -64,7 +64,8 @@ namespace BigBrother.Views
 
 		private void DoStuff(object sender, EventArgs args)
 		{
-			var mat = capture.QueryFrame();
+		    Mat mat = new Mat();
+		    capture.Retrieve(mat);
 			viewModel.SetSourceFromMat(mat);    //updating image from mat
 			if (mat != null)
 			{
@@ -86,6 +87,7 @@ namespace BigBrother.Views
 
 		private void DebugCaptureFrame(object sender, EventArgs e)
 		{
+		    Console.WriteLine("Debug capture frame");
 			if (debug)
 			{
 				var mat = new Mat();

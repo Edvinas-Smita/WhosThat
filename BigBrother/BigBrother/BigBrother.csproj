@@ -25,6 +25,9 @@
     <Reference Include="Emgu.CV.UI.GL">
       <HintPath>..\..\..\emgu full\bin\Emgu.CV.UI.GL.dll</HintPath>
     </Reference>
+    <Reference Include="Emgu.CV.World.Android">
+      <HintPath>..\..\Lib\Emgu.CV.World.Android.dll</HintPath>
+    </Reference>
     <Reference Include="Emgu.CV.World.NetStandard1_4">
       <HintPath>..\..\..\emgu full\bin\Emgu.CV.World.NetStandard1_4.dll</HintPath>
     </Reference>
