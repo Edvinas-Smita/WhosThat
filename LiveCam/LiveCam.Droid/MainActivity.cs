@@ -58,7 +58,7 @@ namespace LiveCam.Droid
 
             if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
             {
-                CreateCameraSource(CameraFacing.Back);
+                CreateCameraSource(CameraFacing.Front);
                 //LiveCamHelper.Init();
                 //LiveCamHelper.GreetingsCallback = (s) => { RunOnUiThread(()=> GreetingsText = s ); };
                 //await LiveCamHelper.RegisterFaces();
@@ -140,7 +140,7 @@ namespace LiveCam.Droid
 
             _mCameraSource = new CameraSource.Builder(context, detector)
                     .SetRequestedPreviewSize(640, 480)
-                                            .SetFacing(CameraFacing.Back)
+                                            .SetFacing(CameraFacing.Front)
                     .SetRequestedFps(60.0f)
                     .Build();
 
@@ -199,7 +199,7 @@ namespace LiveCam.Droid
             {
                 Log.Debug(TAG, "Camera permission granted - initialize the camera source");
                 // we have permission, so create the camerasource
-                CreateCameraSource(CameraFacing.Back);
+                CreateCameraSource(CameraFacing.Front);
                 return;
             }
 
@@ -224,6 +224,7 @@ namespace LiveCam.Droid
         private CameraSource mCameraSource = null;
         private bool isProcessing = false;
         private ImageButton _img;
+        private Face _face;
 
         public GraphicFaceTracker(GraphicOverlay overlay, ImageButton img, CameraSource cameraSource =null)
         {
@@ -241,18 +242,14 @@ namespace LiveCam.Droid
                 if (mCameraSource != null && !isProcessing)
                     mCameraSource.TakePicture(null, this);
 
-                var face = item as Face;
-
-                float x = face.Position.X + face.Width / 2;
-                float y = face.Position.Y + face.Height / 2;
-
-
-
+                _face = item as Face;
+                Console.WriteLine($"position x: {_face.Position.X} position y: {_face.Position.Y} width: {_face.Width} height: {_face.Height}");
             }
             catch (System.Exception e)
             {
                 Console.WriteLine("==================================================");
                 Console.WriteLine(e);
+                
                 
             }
             
@@ -289,8 +286,18 @@ namespace LiveCam.Droid
                     isProcessing = true;
 
                     Console.WriteLine("face detected: ");
+                    var bitmap = BitmapFactory.DecodeByteArray(data, 0, data.Length);
+                    
+                    if (_face != null)
+                    {
+                        Console.WriteLine($"position x: {_face.Position.X} position y: {_face. Position.Y} width: {_face.Width} height: {_face.Height} bitmapWidth: {bitmap.Width} bitmapHeight: {bitmap.Height}");
 
-                    _img.SetImageBitmap(BitmapFactory.DecodeByteArray(data, 0, data.Length));
+                        //var bitmapScalled = Bitmap.CreateScaledBitmap(bitmap, 128, 128, true);
+                        //bitmap = Bitmap.CreateBitmap(bitmap, (int)_face.Position.X, (int)_face.Position.Y, (int)_face.Width, (int)_face.Height);
+                        bitmap = Bitmap.CreateBitmap(bitmap, (int)_face.Position.X/2, (int)_face.Position.Y/2, (int)_face.Width/2, (int)_face.Height/2);
+                        _img.SetImageBitmap(bitmap);
+                    }
+                    
 
                     var imageAnalyzer = new ImageAnalyzer(data);
                     await LiveCamHelper.ProcessCameraCapture(imageAnalyzer);
@@ -300,6 +307,7 @@ namespace LiveCam.Droid
                 {
                     Console.WriteLine("======================================");
                     Console.WriteLine(ex);
+                    throw;
                 }
                 finally
                 {
