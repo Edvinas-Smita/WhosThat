@@ -5,6 +5,7 @@ using System.Web.Http;
 using System.Runtime.Serialization;
 using System.IO;
 using System;
+using System.Linq;
 using Backend.Models;
 using Newtonsoft.Json;
 using WhosThat.Recognition;
@@ -12,45 +13,93 @@ using WhosThat.Recognition;
 namespace bigbackend
 {
     public class ValuesController : ApiController
-    {
-        [Route("api/values/{id}")]
+	{
+		[Route("api/people")]
+		[HttpPost]
+		public HttpResponseMessage PostPerson(Person newPerson)
+		{
+			if (ModelState.IsValid && newPerson != null)
+			{
+				var actualPerson = Person.PersonWithValidID(newPerson);
+				Storage.People.Add(actualPerson);
+
+				/*foreach (Person p in Storage.People)
+				{
+					Console.WriteLine(p.Name + "  " + p.Bio + " " + p.Id.ToString());
+				}*/
+
+				/*var response = new HttpResponseMessage(HttpStatusCode.Created)
+				{
+					Content = new StringContent(newPerson.Name + " " + newPerson.Bio + " has been added to the server.")
+				};
+				response.Headers.Location =
+					new Uri(Url.Link("DefaultApi", new { action = "status" }));
+				return response;*/
+				return Request.CreateResponse(HttpStatusCode.Created, actualPerson);
+			}
+			else
+			{
+				return Request.CreateResponse(HttpStatusCode.BadRequest);
+			}
+		}
+
+		[Route("api/people/{id}")]
         [HttpGet]
-        public HttpResponseMessage Get(int id)
+        public HttpResponseMessage GetPerson(int id)
         {
             Person found = Storage.FindPersonByID(id);
-            if (found != null)
-                return Request.CreateResponse<Person>(HttpStatusCode.OK, found);
-            else return Request.CreateResponse<string>(HttpStatusCode.BadRequest, "This person has not been found.");
+	        return found == null
+		        ? Request.CreateErrorResponse(HttpStatusCode.NotFound, new HttpError("No person with that ID exists"))
+		        : Request.CreateResponse(HttpStatusCode.OK, found);
         }
 
-        [Route("api/values/post")]
-        [HttpPost]
-        public HttpResponseMessage Post(Person newPerson)
-        {
-            if (ModelState.IsValid && newPerson != null)
-            {
-                //var id = Guid.NewGuid();
-                //newPerson.id = id;
-                //Person newPerson = JsonConvert.DeserializeObject<Person>(personjson);
-                Storage.People.Add(newPerson);
+	    [Route("api/people")]
+	    [HttpGet]
+	    public HttpResponseMessage GetPeople()
+	    {
+			return Request.CreateResponse(HttpStatusCode.OK, Storage.People.ToList());
+	    }
 
-                foreach(Person p in Storage.People)
-                {
-                    Console.WriteLine(p.Name + "  " + p.Bio + " " + p.Id.ToString());
-                }
+		[Route("api/people/{id}")]
+		[HttpPut]
+		public HttpResponseMessage UpdatePerson(int id, Person person)
+		{
+			var currentPerson = Storage.FindPersonByID(id);
+			if (currentPerson == null)
+			{
+				return Request.CreateResponse(HttpStatusCode.NotFound);
+			}
 
-                var response = new HttpResponseMessage(HttpStatusCode.Created)
-                {
-                    Content = new StringContent(newPerson.Name + " " + newPerson.Bio + " has been added to the server.")
-                };
-                response.Headers.Location =
-                    new Uri(Url.Link("DefaultApi", new { action = "status" }));
-                return response;
-            }
-            else
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
-            }
-        }
+			if (person.Name != null)
+			{
+				currentPerson.Name = person.Name;
+			}
+
+			if (person.Bio != null)
+			{
+				currentPerson.Bio = person.Bio;
+			}
+
+			if (person.Likes != null)
+			{
+				currentPerson.Likes = person.Likes;
+			}
+
+			return Request.CreateResponse(HttpStatusCode.OK);
+		}
+
+		[Route("api/people/{id}")]
+		[HttpDelete]
+		public HttpResponseMessage DeletePerson(int id)
+		{
+			var currentPerson = Storage.FindPersonByID(id);
+			if (currentPerson == null)
+			{
+				return Request.CreateResponse(HttpStatusCode.NotFound);
+			}
+
+			Storage.People.Remove(currentPerson);
+			return Request.CreateResponse(HttpStatusCode.OK);
+		}
     }
 }

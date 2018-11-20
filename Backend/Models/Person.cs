@@ -59,5 +59,9 @@ namespace Backend.Models
             Id = IdFactory.GetCurrentId();
         }
 
+	    public static Person PersonWithValidID(Person person)
+	    {
+			return new Person(person.Name, person.Bio, person.likes);
+	    }
     }
 }
