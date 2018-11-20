@@ -257,10 +257,10 @@ namespace LiveCam.Droid
 
         public override void OnUpdate(Detector.Detections detections, Java.Lang.Object item)
         {
-            var face = item as Face;
+            _face = item as Face;
             
             mOverlay.Add(mFaceGraphic);
-            mFaceGraphic.UpdateFace(face);
+            mFaceGraphic.UpdateFace(_face);
             
             
         }
@@ -299,9 +299,19 @@ namespace LiveCam.Droid
 
                         //var bitmapScalled = Bitmap.CreateScaledBitmap(bitmap, 128, 128, true);
                         //bitmap = Bitmap.CreateBitmap(bitmap, (int)_face.Position.X, (int)_face.Position.Y, (int)_face.Width, (int)_face.Height);
-                        bitmap = Bitmap.CreateBitmap(bitmap, (int)_face.Position.X/2, (int)_face.Position.Y/2, (int)_face.Width/2, (int)_face.Height/2);
-                        bitmap = Bitmap.CreateScaledBitmap(bitmap, 240, 320, false);
-                        _img.SetImageBitmap(bitmap);
+
+
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                        Task.Factory.StartNew(() =>
+                        {
+                            System.Threading.Thread.Sleep(200);
+                            bitmap = Bitmap.CreateBitmap(bitmap, (int)_face.Position.X/2, (int)_face.Position.Y/2, (int)_face.Width/2, (int)_face.Height/2);
+                            bitmap = Bitmap.CreateScaledBitmap(bitmap, 240, 320, false);
+                             _img.SetImageBitmap(bitmap);
+                        });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+
+
                     }
                     
 
