@@ -21,6 +21,8 @@ using System.Threading.Tasks;
 using Android.Graphics;
 using ServiceHelpers;
 using Exception = Java.Lang.Exception;
+using Android.Graphics;
+
 
 namespace LiveCam.Droid
 {
@@ -238,6 +240,14 @@ namespace LiveCam.Droid
             {
                 if (mCameraSource != null && !isProcessing)
                     mCameraSource.TakePicture(null, this);
+
+                var face = item as Face;
+
+                float x = face.Position.X + face.Width / 2;
+                float y = face.Position.Y + face.Height / 2;
+
+
+
             }
             catch (System.Exception e)
             {
@@ -251,6 +261,7 @@ namespace LiveCam.Droid
         public override void OnUpdate(Detector.Detections detections, Java.Lang.Object item)
         {
             var face = item as Face;
+            
             mOverlay.Add(mFaceGraphic);
             mFaceGraphic.UpdateFace(face);
             
