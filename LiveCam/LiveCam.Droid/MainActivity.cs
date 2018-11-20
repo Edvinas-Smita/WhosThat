@@ -141,7 +141,7 @@ namespace LiveCam.Droid
             _mCameraSource = new CameraSource.Builder(context, detector)
                     .SetRequestedPreviewSize(640, 480)
                                             .SetFacing(CameraFacing.Front)
-                    .SetRequestedFps(60.0f)
+                    .SetRequestedFps(30.0f)
                     .Build();
 
             
@@ -286,15 +286,21 @@ namespace LiveCam.Droid
                     isProcessing = true;
 
                     Console.WriteLine("face detected: ");
-                    var bitmap = BitmapFactory.DecodeByteArray(data, 0, data.Length);
+                    var bitmap = Bitmap.CreateScaledBitmap(BitmapFactory.DecodeByteArray(data, 0, data.Length),240,320,false);
                     
                     if (_face != null)
                     {
+                        //240width
+                        //320height
+                        //bitmap.Height = 320;
+                        //bitmap.Width = 240;
+
                         Console.WriteLine($"position x: {_face.Position.X} position y: {_face. Position.Y} width: {_face.Width} height: {_face.Height} bitmapWidth: {bitmap.Width} bitmapHeight: {bitmap.Height}");
 
                         //var bitmapScalled = Bitmap.CreateScaledBitmap(bitmap, 128, 128, true);
                         //bitmap = Bitmap.CreateBitmap(bitmap, (int)_face.Position.X, (int)_face.Position.Y, (int)_face.Width, (int)_face.Height);
                         bitmap = Bitmap.CreateBitmap(bitmap, (int)_face.Position.X/2, (int)_face.Position.Y/2, (int)_face.Width/2, (int)_face.Height/2);
+                        bitmap = Bitmap.CreateScaledBitmap(bitmap, 240, 320, false);
                         _img.SetImageBitmap(bitmap);
                     }
                     
