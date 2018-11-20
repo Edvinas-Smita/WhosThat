@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveCam.iOS", "LiveCam\LiveCam.iOS.csproj", "{212ABB9C-5F35-463F-9A27-8F39811C4128}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceHelpers", "ServiceHelpers\ServiceHelpers.csproj", "{5D9320AF-A9E4-48E3-89BC-9F7F0954B298}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.ProjectOxford.Face", "Microsoft.ProjectOxford.Face\Microsoft.ProjectOxford.Face.csproj", "{25D58BA5-660F-407B-803C-22B4547C09DC}"
@@ -33,26 +31,6 @@ Global
 		Release|iPhoneSimulator = Release|iPhoneSimulator
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{212ABB9C-5F35-463F-9A27-8F39811C4128}.Ad-Hoc|Any CPU.ActiveCfg = Ad-Hoc|iPhoneSimulator
-		{212ABB9C-5F35-463F-9A27-8F39811C4128}.Ad-Hoc|iPhone.ActiveCfg = Ad-Hoc|iPhone
-		{212ABB9C-5F35-463F-9A27-8F39811C4128}.Ad-Hoc|iPhone.Build.0 = Ad-Hoc|iPhone
-		{212ABB9C-5F35-463F-9A27-8F39811C4128}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Ad-Hoc|iPhoneSimulator
-		{212ABB9C-5F35-463F-9A27-8F39811C4128}.Ad-Hoc|iPhoneSimulator.Build.0 = Ad-Hoc|iPhoneSimulator
-		{212ABB9C-5F35-463F-9A27-8F39811C4128}.AppStore|Any CPU.ActiveCfg = AppStore|iPhoneSimulator
-		{212ABB9C-5F35-463F-9A27-8F39811C4128}.AppStore|iPhone.ActiveCfg = AppStore|iPhone
-		{212ABB9C-5F35-463F-9A27-8F39811C4128}.AppStore|iPhone.Build.0 = AppStore|iPhone
-		{212ABB9C-5F35-463F-9A27-8F39811C4128}.AppStore|iPhoneSimulator.ActiveCfg = AppStore|iPhoneSimulator
-		{212ABB9C-5F35-463F-9A27-8F39811C4128}.AppStore|iPhoneSimulator.Build.0 = AppStore|iPhoneSimulator
-		{212ABB9C-5F35-463F-9A27-8F39811C4128}.Debug|Any CPU.ActiveCfg = Debug|iPhoneSimulator
-		{212ABB9C-5F35-463F-9A27-8F39811C4128}.Debug|iPhone.ActiveCfg = Debug|iPhone
-		{212ABB9C-5F35-463F-9A27-8F39811C4128}.Debug|iPhone.Build.0 = Debug|iPhone
-		{212ABB9C-5F35-463F-9A27-8F39811C4128}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
-		{212ABB9C-5F35-463F-9A27-8F39811C4128}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
-		{212ABB9C-5F35-463F-9A27-8F39811C4128}.Release|Any CPU.ActiveCfg = Release|iPhoneSimulator
-		{212ABB9C-5F35-463F-9A27-8F39811C4128}.Release|iPhone.ActiveCfg = Release|iPhone
-		{212ABB9C-5F35-463F-9A27-8F39811C4128}.Release|iPhone.Build.0 = Release|iPhone
-		{212ABB9C-5F35-463F-9A27-8F39811C4128}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
-		{212ABB9C-5F35-463F-9A27-8F39811C4128}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 		{5D9320AF-A9E4-48E3-89BC-9F7F0954B298}.Ad-Hoc|Any CPU.ActiveCfg = Release|Any CPU
 		{5D9320AF-A9E4-48E3-89BC-9F7F0954B298}.Ad-Hoc|Any CPU.Build.0 = Release|Any CPU
 		{5D9320AF-A9E4-48E3-89BC-9F7F0954B298}.Ad-Hoc|iPhone.ActiveCfg = Release|Any CPU
@@ -140,5 +118,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DF48C31D-23A8-4240-BB49-9CE9AF07FE81}
 	EndGlobalSection
 EndGlobal

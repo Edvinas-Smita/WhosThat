@@ -42,18 +42,18 @@ namespace LiveCam.Shared
 
             try
             {
-                var persongroupId = Guid.NewGuid().ToString();
-                await FaceServiceHelper.CreatePersonGroupAsync(persongroupId,
+                var personGroupId = Guid.NewGuid().ToString();
+                await FaceServiceHelper.CreatePersonGroupAsync(personGroupId,
                                                         "Xamarin",
                                                      WorkspaceKey);
-                await FaceServiceHelper.CreatePersonAsync(persongroupId, "Albert Einstein");
+                await FaceServiceHelper.CreatePersonAsync(personGroupId, "Albert Einstein");
 
-                var personsInGroup = await FaceServiceHelper.GetPersonsAsync(persongroupId);
+                var personsInGroup = await FaceServiceHelper.GetPersonsAsync(personGroupId);
 
-                await FaceServiceHelper.AddPersonFaceAsync(persongroupId, personsInGroup[0].PersonId,
+                await FaceServiceHelper.AddPersonFaceAsync(personGroupId, personsInGroup[0].PersonId,
                                                            "https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg", null, null);
 
-                await FaceServiceHelper.TrainPersonGroupAsync(persongroupId);
+                await FaceServiceHelper.TrainPersonGroupAsync(personGroupId);
 
 
                 IsFaceRegistered = true;

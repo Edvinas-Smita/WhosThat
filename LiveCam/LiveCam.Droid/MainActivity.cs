@@ -27,10 +27,10 @@ namespace LiveCam.Droid
     {
         private static readonly string TAG = "FaceTracker";
 
-        private CameraSource mCameraSource = null;
+        private CameraSource _mCameraSource = null;
 
-        private CameraSourcePreview mPreview;
-        private GraphicOverlay mGraphicOverlay;
+        private CameraSourcePreview _mPreview;
+        private GraphicOverlay _mGraphicOverlay;
 
 
         public static string GreetingsText
@@ -43,24 +43,24 @@ namespace LiveCam.Droid
         // permission request codes need to be < 256
         private static readonly int RC_HANDLE_CAMERA_PERM = 2;
 
-        protected async override void OnCreate(Bundle bundle)
+        protected override async void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
-            mPreview = FindViewById<CameraSourcePreview>(Resource.Id.preview);
-            mGraphicOverlay = FindViewById<GraphicOverlay>(Resource.Id.faceOverlay);
+            _mPreview = FindViewById<CameraSourcePreview>(Resource.Id.preview);
+            _mGraphicOverlay = FindViewById<GraphicOverlay>(Resource.Id.faceOverlay);
             //greetingsText = FindViewById<TextView>(Resource.Id.greetingsTextView);
 
 
             if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
             {
-                CreateCameraSource();
-                LiveCamHelper.Init();
-                LiveCamHelper.GreetingsCallback = (s) => { RunOnUiThread(()=> GreetingsText = s ); };
-                await LiveCamHelper.RegisterFaces();
+                CreateCameraSource(CameraFacing.Back);
+                //LiveCamHelper.Init();
+                //LiveCamHelper.GreetingsCallback = (s) => { RunOnUiThread(()=> GreetingsText = s ); };
+                //await LiveCamHelper.RegisterFaces();
             }
             else { RequestCameraPermission(); }
 
@@ -79,15 +79,15 @@ namespace LiveCam.Droid
         protected override void OnPause()
         {
             base.OnPause();
-            mPreview.Stop();
+            _mPreview.Stop();
         }
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            if (mCameraSource != null)
+            if (_mCameraSource != null)
             {
-                mCameraSource.Release();
+                _mCameraSource.Release();
             }
         }
 
@@ -104,18 +104,18 @@ namespace LiveCam.Droid
                 return;
             }
 
-            Snackbar.Make(mGraphicOverlay, Resource.String.permission_camera_rationale,
+            Snackbar.Make(_mGraphicOverlay, Resource.String.permission_camera_rationale,
                     Snackbar.LengthIndefinite)
                     .SetAction(Resource.String.ok, (o) => { ActivityCompat.RequestPermissions(this, permissions, RC_HANDLE_CAMERA_PERM); })
                     .Show();
         }
 
         /**
- * Creates and starts the camera.  Note that this uses a higher resolution in comparison
- * to other detection examples to enable the barcode detector to detect small barcodes
- * at long distances.
- */
-        private void CreateCameraSource()
+         * Creates and starts the camera.  Note that this uses a higher resolution in comparison
+         * to other detection examples to enable the barcode detector to detect small barcodes
+         * at long distances.
+         */
+        private void CreateCameraSource(CameraFacing direction)
         {
 
             var context = Application.Context;
@@ -140,7 +140,7 @@ namespace LiveCam.Droid
                 Log.Warn(TAG, "Face detector dependencies are not yet available.");
             }
 
-            mCameraSource = new CameraSource.Builder(context, detector)
+            _mCameraSource = new CameraSource.Builder(context, detector)
                     .SetRequestedPreviewSize(640, 480)
                                             .SetFacing(CameraFacing.Back)
                     .SetRequestedFps(30.0f)
@@ -167,23 +167,23 @@ namespace LiveCam.Droid
                 dlg.Show();
             }
 
-            if (mCameraSource != null)
+            if (_mCameraSource != null)
             {
                 try
                 {
-                    mPreview.Start(mCameraSource, mGraphicOverlay);
+                    _mPreview.Start(_mCameraSource, _mGraphicOverlay);
                 }
                 catch (System.Exception e)
                 {
                     Log.Error(TAG, "Unable to start camera source.", e);
-                    mCameraSource.Release();
-                    mCameraSource = null;
+                    _mCameraSource.Release();
+                    _mCameraSource = null;
                 }
             }
         }
         public Tracker Create(Java.Lang.Object item)
         {
-            return new GraphicFaceTracker(mGraphicOverlay, mCameraSource);
+            return new GraphicFaceTracker(_mGraphicOverlay, _mCameraSource);
         }
 
 
@@ -201,7 +201,7 @@ namespace LiveCam.Droid
             {
                 Log.Debug(TAG, "Camera permission granted - initialize the camera source");
                 // we have permission, so create the camerasource
-                CreateCameraSource();
+                CreateCameraSource(CameraFacing.Back);
                 return;
             }
 
@@ -262,7 +262,7 @@ namespace LiveCam.Droid
 
         public void OnPictureTaken(byte[] data)
         {
-            Task.Run(async () =>
+            /*Task.Run(async () =>
             {
                 try
                 {
@@ -282,7 +282,7 @@ namespace LiveCam.Droid
 
                 }
 
-            });
+            });*/
         }
     }
 
