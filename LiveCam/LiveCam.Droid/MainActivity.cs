@@ -22,6 +22,7 @@ using Android.Graphics;
 using ServiceHelpers;
 using Exception = Java.Lang.Exception;
 using Android.Graphics;
+using Android.Views;
 
 
 namespace LiveCam.Droid
@@ -45,6 +46,7 @@ namespace LiveCam.Droid
 
         protected override async void OnCreate(Bundle bundle)
         {
+            RequestWindowFeature(WindowFeatures.NoTitle);
             base.OnCreate(bundle);
 
             // Set our view from the "main" layout resource
@@ -55,6 +57,7 @@ namespace LiveCam.Droid
             _imgBtn = FindViewById<ImageButton>(Resource.Id.imageButton1);
             //greetingsText = FindViewById<TextView>(Resource.Id.greetingsTextView);
 
+            _imgBtn.Click += _imgBtn_Click;
 
             if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
             {
@@ -66,6 +69,31 @@ namespace LiveCam.Droid
             else { RequestCameraPermission(); }
 
 
+        }
+
+        private void _imgBtn_Click(object sender, EventArgs e)
+        {
+            
+            if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
+            {
+                if (_mCameraSource != null && _mCameraSource.CameraFacing == CameraFacing.Front)
+                {
+                    _mCameraSource.Release();
+                    CreateCameraSource(CameraFacing.Back);
+                    StartCameraSource();
+                }
+                else if (_mCameraSource != null)
+                {
+                    _mCameraSource.Release();
+                    CreateCameraSource(CameraFacing.Front);
+                    StartCameraSource();
+                }
+                    
+            }
+            else
+            {
+                RequestCameraPermission();
+            }
         }
 
         protected override void OnResume()
@@ -140,7 +168,7 @@ namespace LiveCam.Droid
 
             _mCameraSource = new CameraSource.Builder(context, detector)
                     .SetRequestedPreviewSize(640, 480)
-                                            .SetFacing(CameraFacing.Front)
+                                            .SetFacing(direction)
                     .SetRequestedFps(30.0f)
                     .Build();
 
