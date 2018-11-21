@@ -86,18 +86,21 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="License-LGPL.txt" />
-    <Content Include="Recognition\HaarClassifiers\haarcascade_eye.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Recognition\HaarClassifiers\haarcascade_frontalcatface_extended.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Recognition\HaarClassifiers\haarcascade_frontalface_default.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Recognition\HaarClassifiers\lbpcascade_frontalcatface.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Logic\UserManagement\Test\balthazar_cottonsnack.jpg" />
+    <Content Include="Logic\UserManagement\Test\bendfit_cumberland.jpg" />
+    <Content Include="Logic\UserManagement\Test\bendynoodle_crumplybuns.jpg" />
+    <Content Include="Logic\UserManagement\Test\buttercup_cumberbotch.jpg" />
+    <Content Include="Logic\UserManagement\Test\cucumber_1.jpg" />
+    <Content Include="Logic\UserManagement\Test\dj1.jpg" />
+    <Content Include="Logic\UserManagement\Test\dj2.jpg" />
+    <Content Include="Logic\UserManagement\Test\dj3.jpg" />
+    <Content Include="Logic\UserManagement\Test\dj4.jpg" />
+    <Content Include="Logic\UserManagement\Test\dj5.jpg" />
+    <Content Include="Logic\UserManagement\Test\dt1.jpg" />
+    <Content Include="Logic\UserManagement\Test\dt2.jpg" />
+    <Content Include="Logic\UserManagement\Test\dt3.jpg" />
+    <Content Include="Logic\UserManagement\Test\dt4.jpg" />
+    <Content Include="Logic\UserManagement\Test\dt5.jpg" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -110,14 +113,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="IdFactory.cs" />
+    <Compile Include="Logic\IdFactory.cs" />
+    <Compile Include="Logic\Recognition\RecognizerEngine.cs" />
+    <Compile Include="Logic\Recognition\Storage.cs" />
+    <Compile Include="Logic\Recognition\Util\ConcurrentHashSet.cs" />
+    <Compile Include="Logic\Recognition\Util\EmguSingleton.cs" />
+    <Compile Include="Logic\Recognition\Util\Statics.cs" />
+    <Compile Include="Logic\UserManagement\Test\TestUser.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Recognition\Face.cs" />
-    <Compile Include="Recognition\Interfaces\IDataStoreAccess.cs" />
-    <Compile Include="Recognition\RecognizerEngine.cs" />
-    <Compile Include="Recognition\Storage.cs" />
-    <Compile Include="Recognition\Util\EmguSingleton.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

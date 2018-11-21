@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
-using Backend.Models;
 using WhosThat.Recognition;
 
 namespace Backend.Controllers
@@ -67,7 +61,7 @@ namespace Backend.Controllers
 			    Content = new ByteArrayContent(currentPerson.Images[pictureNr])
 		    };
 		    result.Content.Headers.ContentDisposition =
-			    new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
+			    new ContentDispositionHeaderValue("attachment")
 			    {
 				    FileName = personID + "_" + pictureNr
 			    };

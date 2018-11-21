@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -7,14 +6,12 @@ using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Face;
 using Emgu.CV.Structure;
-using WhosThat.Recognition.Util;
-using WhosThat.Recognition;
 
 namespace WhosThat.Recognition
 {
     class RecognizerEngine
     {
-        public EigenFaceRecognizer _faceRecognizer;
+        private FaceRecognizer _faceRecognizer;
         //private DataStoreAccess _dataStoreAccess;
         private String _recognizerFilePath;
 
@@ -25,45 +22,9 @@ namespace WhosThat.Recognition
             _faceRecognizer = new EigenFaceRecognizer(80, double.PositiveInfinity);
         }
 
-        public bool TrainRecognizer(int widthToProccess = 128, int heightToProccess = 128)
+        /*public bool TrainRecognizer()
         {
-	        var allPeople = Storage.People;
-			if (allPeople != null)
-			{
-				List<Bitmap> fullImageList = new List<Bitmap>();
-				List<int> fullIdList = new List<int>();
-				foreach (var person in allPeople)
-				{
-					fullImageList.AddRange(person.Images);
-					foreach (var notUsed in person.Images)
-					{
-						fullIdList.Add(person.Id);
-					}
-				}
-				var grayScaleFaces = new Image<Gray, byte>[fullImageList.Count];
-				for (int i = 0; i < fullImageList.Count; i++)
-				{
-					Bitmap image = fullImageList[i];
-
-					var grayScaleFull = new Image<Gray, byte>(image);
-					var faceRects = EmguSingleton.DetectFacesFromGrayscale(grayScaleFull);
-					if (faceRects.Length > 0)
-					{
-						grayScaleFaces[i] = grayScaleFull.Copy(faceRects[0]).Resize(widthToProccess, heightToProccess, Inter.Cubic);
-					} else
-					{
-						grayScaleFaces[i] = grayScaleFull.Clone().Resize(widthToProccess, heightToProccess, Inter.Cubic);
-					}
-					grayScaleFull.Dispose();
-				}
-				_faceRecognizer.Train(grayScaleFaces, fullIdList.ToArray());
-				_faceRecognizer.Write(_recognizerFilePath);
-				foreach (var grayScaleFace in grayScaleFaces)
-				{
-					grayScaleFace.Dispose();
-				}
-			}
-            /*var allFaces = Storage.Faces;
+            var allFaces = Storage.Faces;
             if (allFaces != null)
             {
                 var faceImages = new Image<Gray, byte>[allFaces.Count()];
@@ -78,9 +39,10 @@ namespace WhosThat.Recognition
                 }
                 _faceRecognizer.Train(faceImages, faceLabels);
                 _faceRecognizer.Write(_recognizerFilePath);
-            }*/
+            }
             return true;
-        }
+
+        }*/
 
         public void LoadRecognizerData()
         {
