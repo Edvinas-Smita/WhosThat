@@ -58,7 +58,7 @@ namespace LiveCam.Droid
             //greetingsText = FindViewById<TextView>(Resource.Id.greetingsTextView);
 
             _imgBtn.Click += _imgBtn_Click;
-
+            _imgBtn.LongClick += _imgBtn_LongClick;
             if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
             {
                 CreateCameraSource(CameraFacing.Front);
@@ -69,6 +69,12 @@ namespace LiveCam.Droid
             else { RequestCameraPermission(); }
 
 
+        }
+
+        private void _imgBtn_LongClick(object sender, View.LongClickEventArgs e)
+        {
+            //todo: implement algorythm training hrere
+            throw new NotImplementedException();
         }
 
         private void _imgBtn_Click(object sender, EventArgs e)
