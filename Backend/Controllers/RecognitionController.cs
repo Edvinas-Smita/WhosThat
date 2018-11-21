@@ -89,5 +89,15 @@ namespace Backend.Controllers
 			Statics.TrainSinglePersonFaces(imagesToTrain, userID);
 		    return Ok();
 	    }
+
+		[HttpDelete, Route("api/train/{userID}")]
+	    public async Task<IHttpActionResult> DeleteUserRecognitionData(int userID)	//all of it
+		{
+			return ResponseMessage(Request.CreateResponse(HttpStatusCode.NotImplemented));
+			//write recognizer training data to file (or memory stream),
+			//regexp replace all lines that contain data with userID label with nothing,
+			//???
+			//profit
+		}
 	}
 }
