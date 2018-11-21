@@ -19,6 +19,7 @@ namespace WhosThat.Recognition.Util
 		public CascadeClassifier EyeDetector { get; set; }
 
 		public LBPHFaceRecognizer Recognizer { get; } = new LBPHFaceRecognizer();
+		public bool RecognizerIsTrained = false;
 
 		public bool SetUp(string faceHaarCascadePath, string eyeHaarCascadePath, string recognizerDataPath)
 		{
@@ -29,6 +30,7 @@ namespace WhosThat.Recognition.Util
 				if (File.Exists(recognizerDataPath))
 				{
 					Recognizer.Read(recognizerDataPath);
+					RecognizerIsTrained = true;
 				}
 
 				return true;
