@@ -22,7 +22,11 @@ using Android.Graphics;
 using ServiceHelpers;
 using Exception = Java.Lang.Exception;
 using Android.Graphics;
-
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.IO;
+//using Java.IO;
+using System.Drawing;
 
 namespace LiveCam.Droid
 {
@@ -277,6 +281,45 @@ namespace LiveCam.Droid
 
         }
 
+        private async Task<string> PostRecognition(Bitmap bitmap)
+        {
+            //convert to base64
+            var client = new HttpClient();    //Iskelt kad ne ant kiekvieno siuntimo kurtu
+            client.BaseAddress = new Uri("http://88.119.27.98:55555");
+
+            var stream = new MemoryStream();
+            bitmap.Compress(Bitmap.CompressFormat.Jpeg, 100, stream);
+            var content = new MultipartContent("application/octet-stream");
+            content.Add(new StreamContent(stream));
+
+            var response = await client.PostAsync("/api/recognize", content);
+
+            Console.WriteLine("Response from /api/recognize is " + response.StatusCode);
+            Console.WriteLine(await response.Content.ReadAsStringAsync());
+            if (stream.Equals(null)) Console.WriteLine("The stream is null");
+            else Console.WriteLine("the stream is not null");
+            stream.Dispose();
+            
+            return response.StatusCode.ToString();
+
+
+
+
+
+
+
+
+
+            //String encodedImage = Base64.EncodeToString()
+
+
+            //var client = new HttpClient();
+            //var content = new StringContent(
+            //    JsonConvert.SerializeObject(new { username = "myusername", usage = "recognise" }));
+            //var result = await client.PostAsync("localhost:8080", content).ConfigureAwait(false);
+            //return result.ToString();
+        }
+
         public void OnPictureTaken(byte[] data)
         {
             Task.Run(async () =>
@@ -308,6 +351,16 @@ namespace LiveCam.Droid
                             bitmap = Bitmap.CreateBitmap(bitmap, (int)_face.Position.X/2, (int)_face.Position.Y/2, (int)_face.Width/2, (int)_face.Height/2);
                             bitmap = Bitmap.CreateScaledBitmap(bitmap, 240, 320, false);
                              _img.SetImageBitmap(bitmap);
+
+
+                            Task<string> task = PostRecognition(bitmap);
+                            
+                            task.Wait();
+                            var x = task.Result;
+                            Console.WriteLine(x+" --- Post recognition response");
+
+
+
                         });
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
