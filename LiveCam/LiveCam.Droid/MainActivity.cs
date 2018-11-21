@@ -27,7 +27,7 @@ using Android.Views;
 
 namespace LiveCam.Droid
 {
-    [Activity(Label = "LiveCam.Droid", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/Theme.AppCompat.NoActionBar", ScreenOrientation = ScreenOrientation.FullSensor)]
+    [Activity(Label = "LiveCam.Droid", MainLauncher = false, Icon = "@drawable/icon", Theme = "@style/Theme.AppCompat.NoActionBar", ScreenOrientation = ScreenOrientation.FullSensor)]
     public class MainActivity : AppCompatActivity, IFactory
     {
         private static readonly string TAG = "FaceTracker";
