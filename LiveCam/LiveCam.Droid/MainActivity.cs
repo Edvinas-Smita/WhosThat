@@ -68,8 +68,7 @@ namespace LiveCam.Droid
                 //await LiveCamHelper.RegisterFaces();
             }
             else { RequestCameraPermission(); }
-
-
+            
         }
 
         protected override void OnResume()
@@ -353,12 +352,37 @@ namespace LiveCam.Droid
                              _img.SetImageBitmap(bitmap);
 
 
-                            Task<string> task = PostRecognition(bitmap);
-                            
-                            task.Wait();
-                            var x = task.Result;
-                            Console.WriteLine(x+" --- Post recognition response");
+                            //Task<string> task = PostRecognition(bitmap);
 
+                            //task.Wait();
+                            //var x = task.Result;
+                            //Console.WriteLine(x+" --- Post recognition response");
+
+
+                            Console.WriteLine("taskstart----------");
+                            Task.Run(async () =>
+                            {
+                                Console.WriteLine("taskstarted++++++++++");
+                                //convert to base64
+                                var client = new HttpClient();    //Iskelt kad ne ant kiekvieno siuntimo kurtu
+                                client.BaseAddress = new Uri("http://88.119.27.98:55555");
+                                Console.WriteLine("taskstartedIPPPPPPPPPP");
+                                var stream = new MemoryStream();
+                                bitmap.Compress(Bitmap.CompressFormat.Jpeg, 100, stream);
+                                Console.WriteLine("taskstartedCOMPRESSSSSSS");
+                                var content = new ByteArrayContent(stream.GetBuffer());
+                                Console.WriteLine("taskstartedOCTETTTTTTTTTTT");
+                                //content.Add(new StreamContent(stream));
+                                Console.WriteLine("taskstartedCONTENTADDDDDD");
+                                var response = await client.PostAsync("/api/recognize", content);
+                                Console.WriteLine("taskstartedRESPONSEEEEEE");
+                                Console.WriteLine("Response from /api/recognize is " + response.StatusCode);
+                                Console.WriteLine(await response.Content.ReadAsStringAsync());
+                                if (stream.Equals(null)) Console.WriteLine("The stream is null");
+                                else Console.WriteLine("the stream is not null");
+                                stream.Dispose();
+                                Console.WriteLine("taskstartedDISPOSEDDDDDDD");
+                            });
 
 
                         });
