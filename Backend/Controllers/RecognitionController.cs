@@ -43,6 +43,12 @@ namespace Backend.Controllers
 				return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, Request.Content));
 			}
 
+			if (!EmguSingleton.Instance.RecognizerIsTrained)
+			{
+				return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError,
+					new StringContent("Recognition algorythm has not been trained yet - cannot recognize")));
+			}
+
 			var recognizedUserID = Statics.RecognizeUser(Statics.ByteArrayToImage(buffer, 240, 320));
 
 			return Ok(recognizedUserID);
@@ -51,12 +57,6 @@ namespace Backend.Controllers
 	    [HttpPost, Route("api/train/{userID}/{imgCount}")]
 	    public async Task<IHttpActionResult> TrainRecognizer(int userID, int imgCount)
 	    {
-		    if (!EmguSingleton.Instance.RecognizerIsTrained)
-		    {
-			    return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError,
-				    new StringContent("Recognition algorythm has not been trained yet - cannot recognize")));
-		    }
-
 		    if (imgCount < 1 || imgCount > 50)
 			{
 				return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, Request.Content));
