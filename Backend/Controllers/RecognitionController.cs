@@ -17,7 +17,7 @@ namespace Backend.Controllers
 		[HttpPost, Route("api/recognize")]
 		public async Task<IHttpActionResult> RecognizeUser()
 		{
-			if (!Request.Content.IsMimeMultipartContent() || !Request.Content.Headers.ContentType.Equals("application/octet-stream"))
+			/*if (!Request.Content.IsMimeMultipartContent() || !Request.Content.Headers.ContentType.Equals("application/octet-stream"))
 			{
 				//throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
 				return ResponseMessage(Request.CreateResponse(HttpStatusCode.UnsupportedMediaType, Request.Content));
@@ -32,7 +32,9 @@ namespace Backend.Controllers
 			}
 
 			var file = provider.Contents[0];
-			var buffer = await file.ReadAsByteArrayAsync();
+			var buffer = await file.ReadAsByteArrayAsync();*/
+
+			var buffer = await Request.Content.ReadAsByteArrayAsync();
 			Debug.WriteLine(buffer.Length);
 			File.WriteAllBytes("D:/SomeDump/uploaded.bmp", buffer);
 			if (buffer.Length != 76800)	//240*320	//Receiving only 240*320 gray image bytes - we will convert it to grayscale and remove any metadata in frontend
@@ -43,7 +45,7 @@ namespace Backend.Controllers
 
 			var recognizedUserID = Statics.RecognizeUser(Statics.ByteArrayToImage(buffer, 240, 320));
 
-			return Ok(Request.Content);
+			return Ok(recognizedUserID);
 		}
 
 	    [HttpPost, Route("api/train/{userID}/{imgCount}")]

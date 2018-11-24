@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Http;
 using WhosThat.Recognition;
+using System.Diagnostics;
 
 namespace Backend.Controllers
 {
@@ -12,8 +13,9 @@ namespace Backend.Controllers
     {
 	    [HttpPost, Route("api/pictures/{personID}")]
 	    public async Task<IHttpActionResult> PostPersonPicture(int personID)
-	    {
-		    if (!Request.Content.IsMimeMultipartContent())
+		{
+			Debug.WriteLine("Incoming POST for api/pictures/id");
+			if (!Request.Content.IsMimeMultipartContent())
 		    {
 			    throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
 		    }
@@ -44,8 +46,9 @@ namespace Backend.Controllers
 
 	    [HttpGet, Route("api/pictures/{personID}/{pictureNr}")]
         public HttpResponseMessage GetPersonPicture(int personID, int pictureNr)
-	    {
-		    if (pictureNr < 0)
+		{
+			Debug.WriteLine("Incoming GET for api/pictures/id/nr");
+			if (pictureNr < 0)
 		    {
 			    throw new HttpResponseException(HttpStatusCode.BadRequest);
 		    }
@@ -100,6 +103,7 @@ namespace Backend.Controllers
 		[HttpDelete, Route("api/pictures/{personID}/{pictureNr}")]
 		public HttpResponseMessage DeletePersonPicture(int personID, int pictureNr)
 		{
+			Debug.WriteLine("Incoming DELETE for api/pictures/id/nr");
 			if (pictureNr < 0)
 			{
 				throw new HttpResponseException(HttpStatusCode.BadRequest);
