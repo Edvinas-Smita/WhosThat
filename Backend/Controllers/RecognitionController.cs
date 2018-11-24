@@ -14,6 +14,8 @@ namespace Backend.Controllers
 {
     public class RecognitionController : ApiController
     {
+		private static int IMAGE_BYTE_COUNT = 76800;    //240*320	//Receiving only 240*320 gray image bytes - we will convert it to grayscale and remove any metadata in frontend
+
 		[HttpPost, Route("api/recognize")]
 		public async Task<IHttpActionResult> RecognizeUser()
 		{
@@ -37,7 +39,7 @@ namespace Backend.Controllers
 			var buffer = await Request.Content.ReadAsByteArrayAsync();
 			Debug.WriteLine(buffer.Length);
 			File.WriteAllBytes("D:/SomeDump/uploaded.bmp", buffer);
-			if (buffer.Length != 76800)	//240*320	//Receiving only 240*320 gray image bytes - we will convert it to grayscale and remove any metadata in frontend
+			if (buffer.Length != IMAGE_BYTE_COUNT)
 			{
 				//throw new HttpResponseException(HttpStatusCode.BadRequest);
 				return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, Request.Content));
@@ -68,24 +70,16 @@ namespace Backend.Controllers
 				return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, Request.Content));
 			}
 
-			var provider = new MultipartMemoryStreamProvider();
-		    await Request.Content.ReadAsMultipartAsync(provider);
-		    if (provider.Contents.Count != imgCount)
-		    {
-			    //throw new HttpResponseException(HttpStatusCode.BadRequest);
-			    return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, Request.Content));
-		    }
+			var buffer = await Request.Content.ReadAsByteArrayAsync();
+			if (buffer.Length != IMAGE_BYTE_COUNT * imgCount)
+			{
+				return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, Request.Content));
+			}
 
 			var imagesToTrain = new List<Image<Gray, byte>>(imgCount);
-		    foreach (var file in provider.Contents)
+		    for (int i = 0; i < imgCount; ++i)
 		    {
-			    var fileBytes = await file.ReadAsByteArrayAsync();
-			    if (fileBytes.Length != 76800) //240*320	//Receiving only 240*320 gray image bytes - we will convert it to grayscale and remove any metadata in frontend
-			    {
-				    //throw new HttpResponseException(HttpStatusCode.BadRequest);
-				    return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, Request.Content));
-			    }
-				imagesToTrain.Add(Statics.ByteArrayToImage(fileBytes, 240, 320));
+				imagesToTrain.Add(Statics.ByteArrayToImage(Statics.SubArray(buffer, i * IMAGE_BYTE_COUNT, IMAGE_BYTE_COUNT), 240, 320));
 			}
 
 			Statics.TrainSinglePersonFaces(imagesToTrain, userID);
