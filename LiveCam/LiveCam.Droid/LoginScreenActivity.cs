@@ -43,7 +43,7 @@ namespace LiveCam.Droid
 
         private void _btnLogin_Click(object sender, EventArgs e)
         {
-            if (_txtUser.Text == "" || _txtPass.Text == "") Toast.MakeText(this, "The fields can not be empty", ToastLength.Short);
+            if (String.IsNullOrEmpty(_txtUser.Text) || String.IsNullOrEmpty(_txtPass.Text)) Toast.MakeText(this, "The fields can not be empty", ToastLength.Long).Show();
             else
             {
 
