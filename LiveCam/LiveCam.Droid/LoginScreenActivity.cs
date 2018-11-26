@@ -70,7 +70,8 @@ namespace LiveCam.Droid
 
         private void LoginSuccesful()
         {
-            
+            Intent nextActivity = new Intent(this, typeof(MainActivity));
+            StartActivity(nextActivity);
         }
 
         static string Sha256(string randomString)
