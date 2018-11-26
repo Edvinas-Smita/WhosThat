@@ -1,17 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
-
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Text;
 namespace LiveCam.Droid
 {
+    public static class Extensions
+    {
+        public static StringContent AsJson(this object o)
+         => new StringContent(JsonConvert.SerializeObject(o), Encoding.UTF8, "application/json");
+    }
+
     [Activity(Label = "LoginScreenActivity", MainLauncher = true)]
     public class LoginScreenActivity : Activity
     {
@@ -37,9 +46,31 @@ namespace LiveCam.Droid
             if (_txtUser.Text == "" || _txtPass.Text == "") Toast.MakeText(this, "The fields can not be empty", ToastLength.Short);
             else
             {
-                string pass = Sha256(_txtPass.Text);
 
+
+                //UZKOMENTUOTI, KAI BUS PADARYTA, KAD BACKENDAS ATSIUNCIA ATGAL ATSAKYMA
+                if (_txtUser.Text == "admin" && _txtPass.Text == "admin")
+                    LoginSuccesful();
+
+
+
+
+
+
+                Task.Run(async () =>
+                {
+                    string pass = Sha256(_txtPass.Text);
+                    var client = new HttpClient();
+                    client.BaseAddress = new Uri("http://88.119.27.98:55555");
+                    var data = new { identifier = _txtUser.Text, password = pass };
+                    var result = await client.PostAsync("api/login", data.AsJson());
+                });
             }
+        }
+
+        private void LoginSuccesful()
+        {
+            
         }
 
         static string Sha256(string randomString)
