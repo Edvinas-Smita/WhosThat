@@ -30,7 +30,7 @@ using System.Drawing;
 
 namespace LiveCam.Droid
 {
-    [Activity(Label = "LiveCam.Droid", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/Theme.AppCompat.NoActionBar", ScreenOrientation = ScreenOrientation.FullSensor)]
+    [Activity(Label = "LiveCam.Droid", MainLauncher = false, Icon = "@drawable/icon", Theme = "@style/Theme.AppCompat.NoActionBar", ScreenOrientation = ScreenOrientation.FullSensor)]
     public class MainActivity : AppCompatActivity, IFactory
     {
         private static readonly string TAG = "FaceTracker";
@@ -40,6 +40,7 @@ namespace LiveCam.Droid
         private CameraSourcePreview _mPreview;
         private GraphicOverlay _mGraphicOverlay;
         private ImageButton _imgBtn;
+        
 
         public static string GreetingsText{ get; set; }
 
@@ -58,6 +59,7 @@ namespace LiveCam.Droid
             _mGraphicOverlay = FindViewById<GraphicOverlay>(Resource.Id.faceOverlay);
             _imgBtn = FindViewById<ImageButton>(Resource.Id.imageButton1);
             //greetingsText = FindViewById<TextView>(Resource.Id.greetingsTextView);
+
 
 
             if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
