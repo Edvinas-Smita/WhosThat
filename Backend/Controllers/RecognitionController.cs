@@ -14,10 +14,12 @@ namespace Backend.Controllers
 {
     public class RecognitionController : ApiController
     {
+		private static int IMAGE_BYTE_COUNT = 76800;    //240*320	//Receiving only 240*320 gray image bytes - we will convert it to grayscale and remove any metadata in frontend
+
 		[HttpPost, Route("api/recognize")]
 		public async Task<IHttpActionResult> RecognizeUser()
 		{
-			if (!Request.Content.IsMimeMultipartContent() || !Request.Content.Headers.ContentType.Equals("application/octet-stream"))
+			/*if (!Request.Content.IsMimeMultipartContent() || !Request.Content.Headers.ContentType.Equals("application/octet-stream"))
 			{
 				//throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
 				return ResponseMessage(Request.CreateResponse(HttpStatusCode.UnsupportedMediaType, Request.Content));
@@ -32,29 +34,31 @@ namespace Backend.Controllers
 			}
 
 			var file = provider.Contents[0];
-			var buffer = await file.ReadAsByteArrayAsync();
+			var buffer = await file.ReadAsByteArrayAsync();*/
+
+			var buffer = await Request.Content.ReadAsByteArrayAsync();
 			Debug.WriteLine(buffer.Length);
 			File.WriteAllBytes("D:/SomeDump/uploaded.bmp", buffer);
-			if (buffer.Length != 76800)	//240*320	//Receiving only 240*320 gray image bytes - we will convert it to grayscale and remove any metadata in frontend
+			if (buffer.Length != IMAGE_BYTE_COUNT)
 			{
 				//throw new HttpResponseException(HttpStatusCode.BadRequest);
 				return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, Request.Content));
 			}
 
+			if (!EmguSingleton.Instance.RecognizerIsTrained)
+			{
+				return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError,
+					new StringContent("Recognition algorythm has not been trained yet - cannot recognize")));
+			}
+
 			var recognizedUserID = Statics.RecognizeUser(Statics.ByteArrayToImage(buffer, 240, 320));
 
-			return Ok(Request.Content);
+			return Ok(recognizedUserID);
 		}
 
 	    [HttpPost, Route("api/train/{userID}/{imgCount}")]
 	    public async Task<IHttpActionResult> TrainRecognizer(int userID, int imgCount)
 	    {
-		    if (!EmguSingleton.Instance.RecognizerIsTrained)
-		    {
-			    return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError,
-				    new StringContent("Recognition algorythm has not been trained yet - cannot recognize")));
-		    }
-
 		    if (imgCount < 1 || imgCount > 50)
 			{
 				return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, Request.Content));
@@ -66,24 +70,16 @@ namespace Backend.Controllers
 				return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, Request.Content));
 			}
 
-			var provider = new MultipartMemoryStreamProvider();
-		    await Request.Content.ReadAsMultipartAsync(provider);
-		    if (provider.Contents.Count != imgCount)
-		    {
-			    //throw new HttpResponseException(HttpStatusCode.BadRequest);
-			    return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, Request.Content));
-		    }
+			var buffer = await Request.Content.ReadAsByteArrayAsync();
+			if (buffer.Length != IMAGE_BYTE_COUNT * imgCount)
+			{
+				return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, Request.Content));
+			}
 
 			var imagesToTrain = new List<Image<Gray, byte>>(imgCount);
-		    foreach (var file in provider.Contents)
+		    for (int i = 0; i < imgCount; ++i)
 		    {
-			    var fileBytes = await file.ReadAsByteArrayAsync();
-			    if (fileBytes.Length != 76800) //240*320	//Receiving only 240*320 gray image bytes - we will convert it to grayscale and remove any metadata in frontend
-			    {
-				    //throw new HttpResponseException(HttpStatusCode.BadRequest);
-				    return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, Request.Content));
-			    }
-				imagesToTrain.Add(Statics.ByteArrayToImage(fileBytes, 240, 320));
+				imagesToTrain.Add(Statics.ByteArrayToImage(Statics.SubArray(buffer, i * IMAGE_BYTE_COUNT, IMAGE_BYTE_COUNT), 240, 320));
 			}
 
 			Statics.TrainSinglePersonFaces(imagesToTrain, userID);
