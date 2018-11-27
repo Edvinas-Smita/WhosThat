@@ -63,7 +63,12 @@ namespace LiveCam.Droid
             _switchCamBtn = FindViewById<ImageButton>(Resource.Id.imageButton1);
             //greetingsText = FindViewById<TextView>(Resource.Id.greetingsTextView);
 
+
+            var person = this.Intent.Extras.GetString("Person");
+            Console.WriteLine(person+"--------");
+
             _switchCamBtn.Click += SwichCamBtnClick;
+
 
 
             if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
