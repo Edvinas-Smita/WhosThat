@@ -63,5 +63,12 @@ namespace Backend.Logic.Recognition.Util
 			image.Bytes = array;
 			return image;
 		}
+
+		public static T[] SubArray<T>(this T[] original, int index, int length)
+		{
+			T[] subArray = new T[length];
+			Array.Copy(original, index, subArray, 0, length);
+			return subArray;
+		}
 	}
 }
