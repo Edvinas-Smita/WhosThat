@@ -42,6 +42,8 @@ namespace LiveCam.Droid
         private CameraSourcePreview _mPreview;
         private GraphicOverlay _mGraphicOverlay;
         private ImageButton _switchCamBtn;
+        private ImageButton _trainNewFaceButton;
+
         private JObject jsonOfLoggedInPerson;
 
         public static string GreetingsText{ get; set; }
@@ -62,6 +64,7 @@ namespace LiveCam.Droid
             _mPreview = FindViewById<CameraSourcePreview>(Resource.Id.preview);
             _mGraphicOverlay = FindViewById<GraphicOverlay>(Resource.Id.faceOverlay);
             _switchCamBtn = FindViewById<ImageButton>(Resource.Id.imageButton1);
+            _trainNewFaceButton = FindViewById<ImageButton>(Resource.Id.trainNewFaceButton);
             //greetingsText = FindViewById<TextView>(Resource.Id.greetingsTextView);
 
 

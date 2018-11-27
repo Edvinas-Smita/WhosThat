@@ -2266,26 +2266,26 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f020053
 			public const int avd_hide_password = 2130837587;
 			
-			// aapt resource value: 0x7f020083
-			public const int avd_hide_password_1 = 2130837635;
-			
 			// aapt resource value: 0x7f020084
-			public const int avd_hide_password_2 = 2130837636;
+			public const int avd_hide_password_1 = 2130837636;
 			
 			// aapt resource value: 0x7f020085
-			public const int avd_hide_password_3 = 2130837637;
+			public const int avd_hide_password_2 = 2130837637;
+			
+			// aapt resource value: 0x7f020086
+			public const int avd_hide_password_3 = 2130837638;
 			
 			// aapt resource value: 0x7f020054
 			public const int avd_show_password = 2130837588;
 			
-			// aapt resource value: 0x7f020086
-			public const int avd_show_password_1 = 2130837638;
-			
 			// aapt resource value: 0x7f020087
-			public const int avd_show_password_2 = 2130837639;
+			public const int avd_show_password_1 = 2130837639;
 			
 			// aapt resource value: 0x7f020088
-			public const int avd_show_password_3 = 2130837640;
+			public const int avd_show_password_2 = 2130837640;
+			
+			// aapt resource value: 0x7f020089
+			public const int avd_show_password_3 = 2130837641;
 			
 			// aapt resource value: 0x7f020055
 			public const int camera = 2130837589;
@@ -2407,11 +2407,11 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f02007c
 			public const int notification_icon_background = 2130837628;
 			
-			// aapt resource value: 0x7f020081
-			public const int notification_template_icon_bg = 2130837633;
-			
 			// aapt resource value: 0x7f020082
-			public const int notification_template_icon_low_bg = 2130837634;
+			public const int notification_template_icon_bg = 2130837634;
+			
+			// aapt resource value: 0x7f020083
+			public const int notification_template_icon_low_bg = 2130837635;
 			
 			// aapt resource value: 0x7f02007d
 			public const int notification_tile_bg = 2130837629;
@@ -2424,6 +2424,9 @@ namespace LiveCam.Droid
 			
 			// aapt resource value: 0x7f020080
 			public const int tooltip_frame_light = 2130837632;
+			
+			// aapt resource value: 0x7f020081
+			public const int trainNewFaceIcon = 2130837633;
 			
 			static Drawable()
 			{
@@ -2456,8 +2459,8 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a003f
 			public const int SYM = 2131361855;
 			
-			// aapt resource value: 0x7f0a00af
-			public const int action0 = 2131361967;
+			// aapt resource value: 0x7f0a00b0
+			public const int action0 = 2131361968;
 			
 			// aapt resource value: 0x7f0a0083
 			public const int action_bar = 2131361923;
@@ -2480,17 +2483,17 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a0061
 			public const int action_bar_title = 2131361889;
 			
-			// aapt resource value: 0x7f0a00ac
-			public const int action_container = 2131361964;
+			// aapt resource value: 0x7f0a00ad
+			public const int action_container = 2131361965;
 			
 			// aapt resource value: 0x7f0a0084
 			public const int action_context_bar = 2131361924;
 			
-			// aapt resource value: 0x7f0a00b3
-			public const int action_divider = 2131361971;
+			// aapt resource value: 0x7f0a00b4
+			public const int action_divider = 2131361972;
 			
-			// aapt resource value: 0x7f0a00ad
-			public const int action_image = 2131361965;
+			// aapt resource value: 0x7f0a00ae
+			public const int action_image = 2131361966;
 			
 			// aapt resource value: 0x7f0a0003
 			public const int action_menu_divider = 2131361795;
@@ -2507,11 +2510,11 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a0063
 			public const int action_mode_close_button = 2131361891;
 			
-			// aapt resource value: 0x7f0a00ae
-			public const int action_text = 2131361966;
+			// aapt resource value: 0x7f0a00af
+			public const int action_text = 2131361967;
 			
-			// aapt resource value: 0x7f0a00bc
-			public const int actions = 2131361980;
+			// aapt resource value: 0x7f0a00bd
+			public const int actions = 2131361981;
 			
 			// aapt resource value: 0x7f0a0064
 			public const int activity_chooser_view_content = 2131361892;
@@ -2558,8 +2561,8 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a006a
 			public const int buttonPanel = 2131361898;
 			
-			// aapt resource value: 0x7f0a00b0
-			public const int cancel_action = 2131361968;
+			// aapt resource value: 0x7f0a00b1
+			public const int cancel_action = 2131361969;
 			
 			// aapt resource value: 0x7f0a004c
 			public const int center = 2131361868;
@@ -2573,8 +2576,8 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a007a
 			public const int checkbox = 2131361914;
 			
-			// aapt resource value: 0x7f0a00b8
-			public const int chronometer = 2131361976;
+			// aapt resource value: 0x7f0a00b9
+			public const int chronometer = 2131361977;
 			
 			// aapt resource value: 0x7f0a0055
 			public const int clip_horizontal = 2131361877;
@@ -2633,8 +2636,8 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a0038
 			public const int end = 2131361848;
 			
-			// aapt resource value: 0x7f0a00be
-			public const int end_padder = 2131361982;
+			// aapt resource value: 0x7f0a00bf
+			public const int end_padder = 2131361983;
 			
 			// aapt resource value: 0x7f0a0047
 			public const int enterAlways = 2131361863;
@@ -2681,8 +2684,8 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a0069
 			public const int icon = 2131361897;
 			
-			// aapt resource value: 0x7f0a00bd
-			public const int icon_group = 2131361981;
+			// aapt resource value: 0x7f0a00be
+			public const int icon_group = 2131361982;
 			
 			// aapt resource value: 0x7f0a0020
 			public const int icon_only = 2131361824;
@@ -2696,8 +2699,8 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a00aa
 			public const int imageButton1 = 2131361962;
 			
-			// aapt resource value: 0x7f0a00b9
-			public const int info = 2131361977;
+			// aapt resource value: 0x7f0a00ba
+			public const int info = 2131361978;
 			
 			// aapt resource value: 0x7f0a0060
 			public const int italic = 2131361888;
@@ -2729,14 +2732,14 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a00a0
 			public const int loginLayout = 2131361952;
 			
-			// aapt resource value: 0x7f0a00c1
-			public const int masked = 2131361985;
+			// aapt resource value: 0x7f0a00c2
+			public const int masked = 2131361986;
 			
-			// aapt resource value: 0x7f0a00b2
-			public const int media_actions = 2131361970;
+			// aapt resource value: 0x7f0a00b3
+			public const int media_actions = 2131361971;
 			
-			// aapt resource value: 0x7f0a00bf
-			public const int message = 2131361983;
+			// aapt resource value: 0x7f0a00c0
+			public const int message = 2131361984;
 			
 			// aapt resource value: 0x7f0a0039
 			public const int middle = 2131361849;
@@ -2759,14 +2762,14 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a0027
 			public const int normal = 2131361831;
 			
-			// aapt resource value: 0x7f0a00bb
-			public const int notification_background = 2131361979;
+			// aapt resource value: 0x7f0a00bc
+			public const int notification_background = 2131361980;
+			
+			// aapt resource value: 0x7f0a00b6
+			public const int notification_main_column = 2131361974;
 			
 			// aapt resource value: 0x7f0a00b5
-			public const int notification_main_column = 2131361973;
-			
-			// aapt resource value: 0x7f0a00b4
-			public const int notification_main_column_container = 2131361972;
+			public const int notification_main_column_container = 2131361973;
 			
 			// aapt resource value: 0x7f0a0053
 			public const int parallax = 2131361875;
@@ -2795,11 +2798,11 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a0051
 			public const int right = 2131361873;
 			
-			// aapt resource value: 0x7f0a00ba
-			public const int right_icon = 2131361978;
+			// aapt resource value: 0x7f0a00bb
+			public const int right_icon = 2131361979;
 			
-			// aapt resource value: 0x7f0a00b6
-			public const int right_side = 2131361974;
+			// aapt resource value: 0x7f0a00b7
+			public const int right_side = 2131361975;
 			
 			// aapt resource value: 0x7f0a000c
 			public const int save_image_matrix = 2131361804;
@@ -2909,8 +2912,8 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a0052
 			public const int start = 2131361874;
 			
-			// aapt resource value: 0x7f0a00b1
-			public const int status_bar_latest_event_content = 2131361969;
+			// aapt resource value: 0x7f0a00b2
+			public const int status_bar_latest_event_content = 2131361970;
 			
 			// aapt resource value: 0x7f0a007d
 			public const int submenuarrow = 2131361917;
@@ -2945,8 +2948,8 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a0015
 			public const int textinput_error = 2131361813;
 			
-			// aapt resource value: 0x7f0a00b7
-			public const int time = 2131361975;
+			// aapt resource value: 0x7f0a00b8
+			public const int time = 2131361976;
 			
 			// aapt resource value: 0x7f0a001c
 			public const int title = 2131361820;
@@ -2968,6 +2971,9 @@ namespace LiveCam.Droid
 			
 			// aapt resource value: 0x7f0a0096
 			public const int touch_outside = 2131361942;
+			
+			// aapt resource value: 0x7f0a00ac
+			public const int trainNewFaceButton = 2131361964;
 			
 			// aapt resource value: 0x7f0a000f
 			public const int transition_current_scene = 2131361807;
@@ -3008,8 +3014,8 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a0016
 			public const int view_offset_helper = 2131361814;
 			
-			// aapt resource value: 0x7f0a00c0
-			public const int visible = 2131361984;
+			// aapt resource value: 0x7f0a00c1
+			public const int visible = 2131361985;
 			
 			// aapt resource value: 0x7f0a0022
 			public const int wide = 2131361826;
