@@ -29,7 +29,7 @@ using System.IO;
 using System.Drawing;
 using Android.Views;
 using Newtonsoft.Json.Linq;
-
+using LiveCam.Droid.Proxies;
 namespace LiveCam.Droid
 {
     [Activity(Label = "LiveCam.Droid", MainLauncher = false, Icon = "@drawable/icon", Theme = "@style/Theme.AppCompat.NoActionBar", ScreenOrientation = ScreenOrientation.FullSensor)]
@@ -39,9 +39,13 @@ namespace LiveCam.Droid
 
         private CameraSource _mCameraSource = null;
 
+        
+
         private CameraSourcePreview _mPreview;
         private GraphicOverlay _mGraphicOverlay;
         private ImageButton _switchCamBtn;
+        private ImageButton _trainNewFaceButton;
+
         private JObject jsonOfLoggedInPerson;
 
         public static string GreetingsText{ get; set; }
@@ -62,6 +66,7 @@ namespace LiveCam.Droid
             _mPreview = FindViewById<CameraSourcePreview>(Resource.Id.preview);
             _mGraphicOverlay = FindViewById<GraphicOverlay>(Resource.Id.faceOverlay);
             _switchCamBtn = FindViewById<ImageButton>(Resource.Id.imageButton1);
+            _trainNewFaceButton = FindViewById<ImageButton>(Resource.Id.trainNewFaceButton);
             //greetingsText = FindViewById<TextView>(Resource.Id.greetingsTextView);
 
 
@@ -70,8 +75,10 @@ namespace LiveCam.Droid
             jsonOfLoggedInPerson = JObject.Parse(personLoggedIn);
 
             Toast.MakeText(this, "Welcome back " + jsonOfLoggedInPerson.GetValue("Name") + "!",ToastLength.Long).Show();
-            _switchCamBtn.Click += SwichCamBtnClick;
 
+
+            _switchCamBtn.Click += SwichCamBtnClick;
+            _trainNewFaceButton.Click += _trainNewFaceButton_Click;
 
 
             if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
@@ -85,6 +92,25 @@ namespace LiveCam.Droid
             
         }
 
+        private void _trainNewFaceButton_Click(object sender, EventArgs e)
+        {
+            if (PhotoProxy.LastPhoto != null)
+            {
+                Bitmap photo = PhotoProxy.LastPhoto;
+                Task.Run(async () =>
+                {
+                    //convert to base64
+                    var client = new HttpClient();    //Iskelt kad ne ant kiekvieno siuntimo kurtu
+                    client.BaseAddress = new Uri("http://88.119.27.98:55555");
+                    byte[] byteArray = LiveCamHelper.BitmapToGrayscaleBytes(photo);
+                    var content = new ByteArrayContent(byteArray);
+                    var response = await client.PostAsync("api/train/"+ jsonOfLoggedInPerson.GetValue("Id") + "/1", content);
+                    Console.WriteLine("Response from /api/train is " + response.StatusCode);
+                    Console.WriteLine(await response.Content.ReadAsStringAsync());
+                });
+            }
+
+        }
 
         private void SwichCamBtnClick(object sender, EventArgs e)
         {
@@ -260,6 +286,7 @@ namespace LiveCam.Droid
     }
 
 
+
     class GraphicFaceTracker : Tracker, CameraSource.IPictureCallback
     {
         private GraphicOverlay mOverlay;
@@ -324,6 +351,7 @@ namespace LiveCam.Droid
 
         public void OnPictureTaken(byte[] data)
         {
+            
             Task.Run(async () =>
             {
                 try
@@ -354,6 +382,8 @@ namespace LiveCam.Droid
                             bitmap = Bitmap.CreateScaledBitmap(bitmap, 240, 320, false);
                              _img.SetImageBitmap(bitmap);
 
+
+                            PhotoProxy.LastPhoto = bitmap;
 
                             //Task<string> task = PostRecognition(bitmap);
 
