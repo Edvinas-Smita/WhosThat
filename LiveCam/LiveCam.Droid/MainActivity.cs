@@ -23,7 +23,11 @@ using ServiceHelpers;
 using Exception = Java.Lang.Exception;
 using Android.Graphics;
 using Android.Views;
-
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.IO;
+//using Java.IO;
+using System.Drawing;
 
 namespace LiveCam.Droid
 {
@@ -37,6 +41,7 @@ namespace LiveCam.Droid
         private CameraSourcePreview _mPreview;
         private GraphicOverlay _mGraphicOverlay;
         private ImageButton _imgBtn;
+        
 
         public static string GreetingsText{ get; set; }
 
@@ -59,6 +64,7 @@ namespace LiveCam.Droid
 
             _imgBtn.Click += _imgBtn_Click;
             _imgBtn.LongClick += _imgBtn_LongClick;
+
             if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
             {
                 CreateCameraSource(CameraFacing.Front);
@@ -67,8 +73,7 @@ namespace LiveCam.Droid
                 //await LiveCamHelper.RegisterFaces();
             }
             else { RequestCameraPermission(); }
-
-
+            
         }
 
         private void _imgBtn_LongClick(object sender, View.LongClickEventArgs e)
@@ -311,6 +316,8 @@ namespace LiveCam.Droid
 
         }
 
+    
+
         public void OnPictureTaken(byte[] data)
         {
             Task.Run(async () =>
@@ -342,6 +349,36 @@ namespace LiveCam.Droid
                             bitmap = Bitmap.CreateBitmap(bitmap, (int)_face.Position.X/2, (int)_face.Position.Y/2, (int)_face.Width/2, (int)_face.Height/2);
                             bitmap = Bitmap.CreateScaledBitmap(bitmap, 240, 320, false);
                              _img.SetImageBitmap(bitmap);
+
+
+                            //Task<string> task = PostRecognition(bitmap);
+
+                            //task.Wait();
+                            //var x = task.Result;
+                            //Console.WriteLine(x+" --- Post recognition response");
+
+
+                            Task.Run(async () =>
+                            {
+                                //convert to base64
+                                var client = new HttpClient();    //Iskelt kad ne ant kiekvieno siuntimo kurtu
+                                client.BaseAddress = new Uri("http://88.119.27.98:55555");
+                                //var stream = new MemoryStream();
+                                byte[] byteArray=LiveCamHelper.BitmapToGrayscaleBytes(bitmap);
+                                //stream.Write(byteArray, 0, byteArray.Length);
+                                //bitmap.Compress(Bitmap.CompressFormat.Jpeg, 100, stream);
+                                var content = new ByteArrayContent(byteArray);
+                                //content.Add(new StreamContent(stream));
+                                var response = await client.PostAsync("api/recognize", content);
+                                Console.WriteLine("Response from /api/recognize is " + response.StatusCode);
+                                Console.WriteLine(await response.Content.ReadAsStringAsync());
+                                //if (stream.Equals(null)) Console.WriteLine("The stream is null");
+                                //else Console.WriteLine("the stream is not null");
+                                //stream.Dispose();
+
+                            });
+
+
                         });
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
