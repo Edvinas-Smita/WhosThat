@@ -3,8 +3,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Linq;
 using Backend.Models;
-using WhosThat.Recognition;
 using System.Diagnostics;
+using Backend.Logic.Recognition;
 
 namespace bigbackend
 {
@@ -12,16 +12,16 @@ namespace bigbackend
 	{
         [Route("api/login")]
         [HttpPost]
-        public HttpResponseMessage GetPersonByLogin(string name, string password)
+        public HttpResponseMessage GetPersonByLogin([FromBody] LoginData login)
         {
-            Person person = Storage.FindPersonByCredentials(name, password);
+            Person person = Storage.FindPersonByCredentials(login.identifier, login.password);
             if (person != null)
             {
                 return Request.CreateResponse(HttpStatusCode.OK, person);
             }
             else
             {
-                return Request.CreateResponse(HttpStatusCode.NotFound, new HttpError("Person with these credentials was not found."));
+                return Request.CreateResponse(HttpStatusCode.NotFound);
             }
 
         }

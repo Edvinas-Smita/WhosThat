@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace WhosThat.Recognition
+namespace Backend.Logic.Recognition
 {
     public static class Storage
     {
