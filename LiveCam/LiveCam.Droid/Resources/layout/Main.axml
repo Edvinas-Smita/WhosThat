@@ -16,18 +16,28 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent" />
 	</LiveCam.Droid.CameraSourcePreview>
-	<ImageButton
-		android:src="@drawable/camera"
-		android:layout_width="0dp"
-		android:layout_height="match_parent"
-		android:layout_weight=".8"
-		android:id="@+id/imageButton1" />
+
+    <LinearLayout
+    android:id="@+id/bottomLayout"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight=".1"
+    android:keepScreenOn="true">
+        <ImageButton
+            android:src="@drawable/camera"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight=".5"
+            android:id="@+id/imageButton1" />
 	<ImageButton
 			android:src="@drawable/gear"
 			android:scaleType="fitCenter"
 			android:adjustViewBounds="true"
 			android:layout_width="0dp"
 			android:layout_height="match_parent"
-			android:layout_weight=".8"
+			android:layout_weight=".5"
 			android:id="@+id/settingsButton" />
-</LinearLayout>
+</LinearLayout></LinearLayout>

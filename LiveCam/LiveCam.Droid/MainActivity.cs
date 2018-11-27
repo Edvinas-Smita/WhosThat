@@ -27,6 +27,7 @@ using Newtonsoft.Json;
 using System.IO;
 //using Java.IO;
 using System.Drawing;
+using Android.Views;
 
 namespace LiveCam.Droid
 {
@@ -50,6 +51,8 @@ namespace LiveCam.Droid
 
         protected override async void OnCreate(Bundle bundle)
         {
+            RequestWindowFeature(WindowFeatures.NoTitle);
+
             base.OnCreate(bundle);
 
             // Set our view from the "main" layout resource
@@ -172,7 +175,7 @@ namespace LiveCam.Droid
 
             _mCameraSource = new CameraSource.Builder(context, detector)
                     .SetRequestedPreviewSize(640, 480)
-                                            .SetFacing(CameraFacing.Front)
+                                            .SetFacing(direction)
                     .SetRequestedFps(30.0f)
                     .Build();
 
