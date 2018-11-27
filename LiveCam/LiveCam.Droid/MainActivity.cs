@@ -27,6 +27,7 @@ using Newtonsoft.Json;
 using System.IO;
 //using Java.IO;
 using System.Drawing;
+using Android.Views;
 
 namespace LiveCam.Droid
 {
@@ -39,7 +40,7 @@ namespace LiveCam.Droid
 
         private CameraSourcePreview _mPreview;
         private GraphicOverlay _mGraphicOverlay;
-        private ImageButton _imgBtn;
+        private ImageButton _switchCamBtn;
         
 
         public static string GreetingsText{ get; set; }
@@ -50,6 +51,8 @@ namespace LiveCam.Droid
 
         protected override async void OnCreate(Bundle bundle)
         {
+            RequestWindowFeature(WindowFeatures.NoTitle);
+
             base.OnCreate(bundle);
 
             // Set our view from the "main" layout resource
@@ -57,11 +60,17 @@ namespace LiveCam.Droid
 
             _mPreview = FindViewById<CameraSourcePreview>(Resource.Id.preview);
             _mGraphicOverlay = FindViewById<GraphicOverlay>(Resource.Id.faceOverlay);
-            _imgBtn = FindViewById<ImageButton>(Resource.Id.imageButton1);
+            _switchCamBtn = FindViewById<ImageButton>(Resource.Id.imageButton1);
             //greetingsText = FindViewById<TextView>(Resource.Id.greetingsTextView);
+
 
             var person = this.Intent.Extras.GetString("Person");
             Console.WriteLine(person+"--------");
+
+            _switchCamBtn.Click += SwichCamBtnClick;
+
+
+
             if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
             {
                 CreateCameraSource(CameraFacing.Front);
@@ -71,6 +80,32 @@ namespace LiveCam.Droid
             }
             else { RequestCameraPermission(); }
             
+        }
+
+
+        private void SwichCamBtnClick(object sender, EventArgs e)
+        {
+
+            if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
+            {
+                if (_mCameraSource != null && _mCameraSource.CameraFacing == CameraFacing.Front)
+                {
+                    _mCameraSource.Release();
+                    CreateCameraSource(CameraFacing.Back);
+                    StartCameraSource();
+                }
+                else if (_mCameraSource != null)
+                {
+                    _mCameraSource.Release();
+                    CreateCameraSource(CameraFacing.Front);
+                    StartCameraSource();
+                }
+
+            }
+            else
+            {
+                RequestCameraPermission();
+            }
         }
 
         protected override void OnResume()
@@ -145,7 +180,7 @@ namespace LiveCam.Droid
 
             _mCameraSource = new CameraSource.Builder(context, detector)
                     .SetRequestedPreviewSize(640, 480)
-                                            .SetFacing(CameraFacing.Front)
+                                            .SetFacing(direction)
                     .SetRequestedFps(30.0f)
                     .Build();
 
@@ -186,7 +221,7 @@ namespace LiveCam.Droid
         }
         public Tracker Create(Java.Lang.Object item)
         {
-            return new GraphicFaceTracker(_mGraphicOverlay, _imgBtn, _mCameraSource);
+            return new GraphicFaceTracker(_mGraphicOverlay, _switchCamBtn, _mCameraSource);
         }
 
 

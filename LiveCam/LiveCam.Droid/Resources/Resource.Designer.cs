@@ -2266,155 +2266,164 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f020053
 			public const int avd_hide_password = 2130837587;
 			
-			// aapt resource value: 0x7f020080
-			public const int avd_hide_password_1 = 2130837632;
+			// aapt resource value: 0x7f020083
+			public const int avd_hide_password_1 = 2130837635;
 			
-			// aapt resource value: 0x7f020081
-			public const int avd_hide_password_2 = 2130837633;
+			// aapt resource value: 0x7f020084
+			public const int avd_hide_password_2 = 2130837636;
 			
-			// aapt resource value: 0x7f020082
-			public const int avd_hide_password_3 = 2130837634;
+			// aapt resource value: 0x7f020085
+			public const int avd_hide_password_3 = 2130837637;
 			
 			// aapt resource value: 0x7f020054
 			public const int avd_show_password = 2130837588;
 			
-			// aapt resource value: 0x7f020083
-			public const int avd_show_password_1 = 2130837635;
+			// aapt resource value: 0x7f020086
+			public const int avd_show_password_1 = 2130837638;
 			
-			// aapt resource value: 0x7f020084
-			public const int avd_show_password_2 = 2130837636;
+			// aapt resource value: 0x7f020087
+			public const int avd_show_password_2 = 2130837639;
 			
-			// aapt resource value: 0x7f020085
-			public const int avd_show_password_3 = 2130837637;
+			// aapt resource value: 0x7f020088
+			public const int avd_show_password_3 = 2130837640;
 			
 			// aapt resource value: 0x7f020055
-			public const int common_full_open_on_phone = 2130837589;
+			public const int camera = 2130837589;
 			
 			// aapt resource value: 0x7f020056
-			public const int common_google_signin_btn_icon_dark = 2130837590;
+			public const int common_full_open_on_phone = 2130837590;
 			
 			// aapt resource value: 0x7f020057
-			public const int common_google_signin_btn_icon_dark_focused = 2130837591;
+			public const int common_google_signin_btn_icon_dark = 2130837591;
 			
 			// aapt resource value: 0x7f020058
-			public const int common_google_signin_btn_icon_dark_normal = 2130837592;
+			public const int common_google_signin_btn_icon_dark_focused = 2130837592;
 			
 			// aapt resource value: 0x7f020059
-			public const int common_google_signin_btn_icon_dark_normal_background = 2130837593;
+			public const int common_google_signin_btn_icon_dark_normal = 2130837593;
 			
 			// aapt resource value: 0x7f02005a
-			public const int common_google_signin_btn_icon_disabled = 2130837594;
+			public const int common_google_signin_btn_icon_dark_normal_background = 2130837594;
 			
 			// aapt resource value: 0x7f02005b
-			public const int common_google_signin_btn_icon_light = 2130837595;
+			public const int common_google_signin_btn_icon_disabled = 2130837595;
 			
 			// aapt resource value: 0x7f02005c
-			public const int common_google_signin_btn_icon_light_focused = 2130837596;
+			public const int common_google_signin_btn_icon_light = 2130837596;
 			
 			// aapt resource value: 0x7f02005d
-			public const int common_google_signin_btn_icon_light_normal = 2130837597;
+			public const int common_google_signin_btn_icon_light_focused = 2130837597;
 			
 			// aapt resource value: 0x7f02005e
-			public const int common_google_signin_btn_icon_light_normal_background = 2130837598;
+			public const int common_google_signin_btn_icon_light_normal = 2130837598;
 			
 			// aapt resource value: 0x7f02005f
-			public const int common_google_signin_btn_text_dark = 2130837599;
+			public const int common_google_signin_btn_icon_light_normal_background = 2130837599;
 			
 			// aapt resource value: 0x7f020060
-			public const int common_google_signin_btn_text_dark_focused = 2130837600;
+			public const int common_google_signin_btn_text_dark = 2130837600;
 			
 			// aapt resource value: 0x7f020061
-			public const int common_google_signin_btn_text_dark_normal = 2130837601;
+			public const int common_google_signin_btn_text_dark_focused = 2130837601;
 			
 			// aapt resource value: 0x7f020062
-			public const int common_google_signin_btn_text_dark_normal_background = 2130837602;
+			public const int common_google_signin_btn_text_dark_normal = 2130837602;
 			
 			// aapt resource value: 0x7f020063
-			public const int common_google_signin_btn_text_disabled = 2130837603;
+			public const int common_google_signin_btn_text_dark_normal_background = 2130837603;
 			
 			// aapt resource value: 0x7f020064
-			public const int common_google_signin_btn_text_light = 2130837604;
+			public const int common_google_signin_btn_text_disabled = 2130837604;
 			
 			// aapt resource value: 0x7f020065
-			public const int common_google_signin_btn_text_light_focused = 2130837605;
+			public const int common_google_signin_btn_text_light = 2130837605;
 			
 			// aapt resource value: 0x7f020066
-			public const int common_google_signin_btn_text_light_normal = 2130837606;
+			public const int common_google_signin_btn_text_light_focused = 2130837606;
 			
 			// aapt resource value: 0x7f020067
-			public const int common_google_signin_btn_text_light_normal_background = 2130837607;
+			public const int common_google_signin_btn_text_light_normal = 2130837607;
 			
 			// aapt resource value: 0x7f020068
-			public const int design_bottom_navigation_item_background = 2130837608;
+			public const int common_google_signin_btn_text_light_normal_background = 2130837608;
 			
 			// aapt resource value: 0x7f020069
-			public const int design_fab_background = 2130837609;
+			public const int design_bottom_navigation_item_background = 2130837609;
 			
 			// aapt resource value: 0x7f02006a
-			public const int design_ic_visibility = 2130837610;
+			public const int design_fab_background = 2130837610;
 			
 			// aapt resource value: 0x7f02006b
-			public const int design_ic_visibility_off = 2130837611;
+			public const int design_ic_visibility = 2130837611;
 			
 			// aapt resource value: 0x7f02006c
-			public const int design_password_eye = 2130837612;
+			public const int design_ic_visibility_off = 2130837612;
 			
 			// aapt resource value: 0x7f02006d
-			public const int design_snackbar_background = 2130837613;
+			public const int design_password_eye = 2130837613;
 			
 			// aapt resource value: 0x7f02006e
-			public const int googleg_disabled_color_18 = 2130837614;
+			public const int design_snackbar_background = 2130837614;
 			
 			// aapt resource value: 0x7f02006f
-			public const int googleg_standard_color_18 = 2130837615;
+			public const int gear = 2130837615;
 			
 			// aapt resource value: 0x7f020070
-			public const int Icon = 2130837616;
+			public const int googleg_disabled_color_18 = 2130837616;
 			
 			// aapt resource value: 0x7f020071
-			public const int navigation_empty_icon = 2130837617;
+			public const int googleg_standard_color_18 = 2130837617;
 			
 			// aapt resource value: 0x7f020072
-			public const int notification_action_background = 2130837618;
+			public const int Icon = 2130837618;
 			
 			// aapt resource value: 0x7f020073
-			public const int notification_bg = 2130837619;
+			public const int logo = 2130837619;
 			
 			// aapt resource value: 0x7f020074
-			public const int notification_bg_low = 2130837620;
+			public const int navigation_empty_icon = 2130837620;
 			
 			// aapt resource value: 0x7f020075
-			public const int notification_bg_low_normal = 2130837621;
+			public const int notification_action_background = 2130837621;
 			
 			// aapt resource value: 0x7f020076
-			public const int notification_bg_low_pressed = 2130837622;
+			public const int notification_bg = 2130837622;
 			
 			// aapt resource value: 0x7f020077
-			public const int notification_bg_normal = 2130837623;
+			public const int notification_bg_low = 2130837623;
 			
 			// aapt resource value: 0x7f020078
-			public const int notification_bg_normal_pressed = 2130837624;
+			public const int notification_bg_low_normal = 2130837624;
 			
 			// aapt resource value: 0x7f020079
-			public const int notification_icon_background = 2130837625;
-			
-			// aapt resource value: 0x7f02007e
-			public const int notification_template_icon_bg = 2130837630;
-			
-			// aapt resource value: 0x7f02007f
-			public const int notification_template_icon_low_bg = 2130837631;
+			public const int notification_bg_low_pressed = 2130837625;
 			
 			// aapt resource value: 0x7f02007a
-			public const int notification_tile_bg = 2130837626;
+			public const int notification_bg_normal = 2130837626;
 			
 			// aapt resource value: 0x7f02007b
-			public const int notify_panel_notification_icon_bg = 2130837627;
+			public const int notification_bg_normal_pressed = 2130837627;
 			
 			// aapt resource value: 0x7f02007c
-			public const int tooltip_frame_dark = 2130837628;
+			public const int notification_icon_background = 2130837628;
+			
+			// aapt resource value: 0x7f020081
+			public const int notification_template_icon_bg = 2130837633;
+			
+			// aapt resource value: 0x7f020082
+			public const int notification_template_icon_low_bg = 2130837634;
 			
 			// aapt resource value: 0x7f02007d
-			public const int tooltip_frame_light = 2130837629;
+			public const int notification_tile_bg = 2130837629;
+			
+			// aapt resource value: 0x7f02007e
+			public const int notify_panel_notification_icon_bg = 2130837630;
+			
+			// aapt resource value: 0x7f02007f
+			public const int tooltip_frame_dark = 2130837631;
+			
+			// aapt resource value: 0x7f020080
+			public const int tooltip_frame_light = 2130837632;
 			
 			static Drawable()
 			{
@@ -2447,8 +2456,8 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a003f
 			public const int SYM = 2131361855;
 			
-			// aapt resource value: 0x7f0a00ac
-			public const int action0 = 2131361964;
+			// aapt resource value: 0x7f0a00ae
+			public const int action0 = 2131361966;
 			
 			// aapt resource value: 0x7f0a0083
 			public const int action_bar = 2131361923;
@@ -2471,17 +2480,17 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a0061
 			public const int action_bar_title = 2131361889;
 			
-			// aapt resource value: 0x7f0a00a9
-			public const int action_container = 2131361961;
+			// aapt resource value: 0x7f0a00ab
+			public const int action_container = 2131361963;
 			
 			// aapt resource value: 0x7f0a0084
 			public const int action_context_bar = 2131361924;
 			
-			// aapt resource value: 0x7f0a00b0
-			public const int action_divider = 2131361968;
+			// aapt resource value: 0x7f0a00b2
+			public const int action_divider = 2131361970;
 			
-			// aapt resource value: 0x7f0a00aa
-			public const int action_image = 2131361962;
+			// aapt resource value: 0x7f0a00ac
+			public const int action_image = 2131361964;
 			
 			// aapt resource value: 0x7f0a0003
 			public const int action_menu_divider = 2131361795;
@@ -2498,11 +2507,11 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a0063
 			public const int action_mode_close_button = 2131361891;
 			
-			// aapt resource value: 0x7f0a00ab
-			public const int action_text = 2131361963;
+			// aapt resource value: 0x7f0a00ad
+			public const int action_text = 2131361965;
 			
-			// aapt resource value: 0x7f0a00b9
-			public const int actions = 2131361977;
+			// aapt resource value: 0x7f0a00bb
+			public const int actions = 2131361979;
 			
 			// aapt resource value: 0x7f0a0064
 			public const int activity_chooser_view_content = 2131361892;
@@ -2540,14 +2549,17 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a0045
 			public const int bottom = 2131361861;
 			
+			// aapt resource value: 0x7f0a00a8
+			public const int bottomLayout = 2131361960;
+			
 			// aapt resource value: 0x7f0a00a3
 			public const int btnLogin = 2131361955;
 			
 			// aapt resource value: 0x7f0a006a
 			public const int buttonPanel = 2131361898;
 			
-			// aapt resource value: 0x7f0a00ad
-			public const int cancel_action = 2131361965;
+			// aapt resource value: 0x7f0a00af
+			public const int cancel_action = 2131361967;
 			
 			// aapt resource value: 0x7f0a004c
 			public const int center = 2131361868;
@@ -2561,8 +2573,8 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a007a
 			public const int checkbox = 2131361914;
 			
-			// aapt resource value: 0x7f0a00b5
-			public const int chronometer = 2131361973;
+			// aapt resource value: 0x7f0a00b7
+			public const int chronometer = 2131361975;
 			
 			// aapt resource value: 0x7f0a0055
 			public const int clip_horizontal = 2131361877;
@@ -2621,8 +2633,8 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a0038
 			public const int end = 2131361848;
 			
-			// aapt resource value: 0x7f0a00bb
-			public const int end_padder = 2131361979;
+			// aapt resource value: 0x7f0a00bd
+			public const int end_padder = 2131361981;
 			
 			// aapt resource value: 0x7f0a0047
 			public const int enterAlways = 2131361863;
@@ -2669,8 +2681,8 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a0069
 			public const int icon = 2131361897;
 			
-			// aapt resource value: 0x7f0a00ba
-			public const int icon_group = 2131361978;
+			// aapt resource value: 0x7f0a00bc
+			public const int icon_group = 2131361980;
 			
 			// aapt resource value: 0x7f0a0020
 			public const int icon_only = 2131361824;
@@ -2681,11 +2693,11 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a0066
 			public const int image = 2131361894;
 			
-			// aapt resource value: 0x7f0a00a8
-			public const int imageButton1 = 2131361960;
+			// aapt resource value: 0x7f0a00a9
+			public const int imageButton1 = 2131361961;
 			
-			// aapt resource value: 0x7f0a00b6
-			public const int info = 2131361974;
+			// aapt resource value: 0x7f0a00b8
+			public const int info = 2131361976;
 			
 			// aapt resource value: 0x7f0a0060
 			public const int italic = 2131361888;
@@ -2717,14 +2729,14 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a00a0
 			public const int loginLayout = 2131361952;
 			
+			// aapt resource value: 0x7f0a00c0
+			public const int masked = 2131361984;
+			
+			// aapt resource value: 0x7f0a00b1
+			public const int media_actions = 2131361969;
+			
 			// aapt resource value: 0x7f0a00be
-			public const int masked = 2131361982;
-			
-			// aapt resource value: 0x7f0a00af
-			public const int media_actions = 2131361967;
-			
-			// aapt resource value: 0x7f0a00bc
-			public const int message = 2131361980;
+			public const int message = 2131361982;
 			
 			// aapt resource value: 0x7f0a0039
 			public const int middle = 2131361849;
@@ -2747,14 +2759,14 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a0027
 			public const int normal = 2131361831;
 			
-			// aapt resource value: 0x7f0a00b8
-			public const int notification_background = 2131361976;
+			// aapt resource value: 0x7f0a00ba
+			public const int notification_background = 2131361978;
 			
-			// aapt resource value: 0x7f0a00b2
-			public const int notification_main_column = 2131361970;
+			// aapt resource value: 0x7f0a00b4
+			public const int notification_main_column = 2131361972;
 			
-			// aapt resource value: 0x7f0a00b1
-			public const int notification_main_column_container = 2131361969;
+			// aapt resource value: 0x7f0a00b3
+			public const int notification_main_column_container = 2131361971;
 			
 			// aapt resource value: 0x7f0a0053
 			public const int parallax = 2131361875;
@@ -2783,11 +2795,11 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a0051
 			public const int right = 2131361873;
 			
-			// aapt resource value: 0x7f0a00b7
-			public const int right_icon = 2131361975;
+			// aapt resource value: 0x7f0a00b9
+			public const int right_icon = 2131361977;
 			
-			// aapt resource value: 0x7f0a00b3
-			public const int right_side = 2131361971;
+			// aapt resource value: 0x7f0a00b5
+			public const int right_side = 2131361973;
 			
 			// aapt resource value: 0x7f0a000c
 			public const int save_image_matrix = 2131361804;
@@ -2849,6 +2861,9 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a0091
 			public const int select_dialog_listview = 2131361937;
 			
+			// aapt resource value: 0x7f0a00aa
+			public const int settingsButton = 2131361962;
+			
 			// aapt resource value: 0x7f0a007b
 			public const int shortcut = 2131361915;
 			
@@ -2894,8 +2909,8 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a0052
 			public const int start = 2131361874;
 			
-			// aapt resource value: 0x7f0a00ae
-			public const int status_bar_latest_event_content = 2131361966;
+			// aapt resource value: 0x7f0a00b0
+			public const int status_bar_latest_event_content = 2131361968;
 			
 			// aapt resource value: 0x7f0a007d
 			public const int submenuarrow = 2131361917;
@@ -2930,8 +2945,8 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a0015
 			public const int textinput_error = 2131361813;
 			
-			// aapt resource value: 0x7f0a00b4
-			public const int time = 2131361972;
+			// aapt resource value: 0x7f0a00b6
+			public const int time = 2131361974;
 			
 			// aapt resource value: 0x7f0a001c
 			public const int title = 2131361820;
@@ -2990,8 +3005,8 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f0a0016
 			public const int view_offset_helper = 2131361814;
 			
-			// aapt resource value: 0x7f0a00bd
-			public const int visible = 2131361981;
+			// aapt resource value: 0x7f0a00bf
+			public const int visible = 2131361983;
 			
 			// aapt resource value: 0x7f0a0022
 			public const int wide = 2131361826;
