@@ -28,6 +28,7 @@ using System.IO;
 //using Java.IO;
 using System.Drawing;
 using Android.Views;
+using Newtonsoft.Json.Linq;
 
 namespace LiveCam.Droid
 {
@@ -66,7 +67,7 @@ namespace LiveCam.Droid
 
             var person = this.Intent.Extras.GetString("Person");
             Console.WriteLine(person+"--------");
-
+            
             _switchCamBtn.Click += SwichCamBtnClick;
 
 

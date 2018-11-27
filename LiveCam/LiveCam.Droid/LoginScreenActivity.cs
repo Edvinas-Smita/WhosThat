@@ -27,6 +27,7 @@ namespace LiveCam.Droid
         private Button _btnLogin;
         private TextView _txtUser;
         private TextView _txtPass;
+        private TextView _txtPasswordWarning;
         private bool loggedOn = false;
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -38,11 +39,13 @@ namespace LiveCam.Droid
             _btnLogin = FindViewById<Button>(Resource.Id.btnLogin);
             _txtPass = FindViewById<TextView>(Resource.Id.txtPass);
             _txtUser = FindViewById<TextView>(Resource.Id.txtUser);
+            _txtPasswordWarning = FindViewById<TextView>(Resource.Id.txtPasswordWarning);
             _btnLogin.Click += _btnLogin_Click;
         }
 
         private void _btnLogin_Click(object sender, EventArgs e)
         {
+
             if (String.IsNullOrEmpty(_txtUser.Text) || String.IsNullOrEmpty(_txtPass.Text)) Toast.MakeText(this, "The fields can not be empty", ToastLength.Long).Show();
             else
             {
@@ -63,12 +66,18 @@ namespace LiveCam.Droid
                     var client = new HttpClient();
                     client.BaseAddress = new Uri("http://88.119.27.98:55555");
                     var data = new { identifier = _txtUser.Text, password = pass };
-                    var result = await client.PostAsync("api/login", data.AsJson()).Result.Content.ReadAsStringAsync();
-                    Console.WriteLine(result);
-                    if(result==null) Toast.MakeText(this, "Password or username is incorrect", ToastLength.Long).Show();
+                    var result = await client.PostAsync("api/login", data.AsJson());
+                    var status = result.StatusCode.ToString();
+                    var resultString = await result.Content.ReadAsStringAsync();
+                    Console.WriteLine("'"+status+"' NICENICENICNEICNEICE");
+                    Console.WriteLine("'"+result+"'-+-+-+-+");
+                    if (status.Equals("NotFound"))
+                    {
+                        _txtPasswordWarning.Text = "Password or username is incorrect";
+                    }
                     else
                     {
-                        LoginSuccesful(result);
+                        LoginSuccesful(resultString);
                     }
                 });
             }
