@@ -60,8 +60,8 @@ namespace LiveCam.Droid
             _imgBtn = FindViewById<ImageButton>(Resource.Id.imageButton1);
             //greetingsText = FindViewById<TextView>(Resource.Id.greetingsTextView);
 
-
-
+            var person = this.Intent.Extras.GetString("Person");
+            Console.WriteLine(person+"--------");
             if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
             {
                 CreateCameraSource(CameraFacing.Front);
