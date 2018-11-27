@@ -38,6 +38,14 @@
 		android:layout_height="wrap_content"
 		android:id="@+id/btnLogin" />
 	<TextView
+		android:text=""
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="20dp"
+		android:layout_marginRight="20dp"
+		android:id="@+id/txtPasswordWarning" />
+	<TextView
 		android:text="Tip: Take more photos to make the recognition more accurate"
 		android:textAppearance="?android:attr/textAppearanceLarge"
 		android:layout_width="match_parent"

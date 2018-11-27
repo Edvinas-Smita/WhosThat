@@ -28,6 +28,7 @@ using System.IO;
 //using Java.IO;
 using System.Drawing;
 using Android.Views;
+using Newtonsoft.Json.Linq;
 
 namespace LiveCam.Droid
 {
@@ -41,7 +42,7 @@ namespace LiveCam.Droid
         private CameraSourcePreview _mPreview;
         private GraphicOverlay _mGraphicOverlay;
         private ImageButton _switchCamBtn;
-        
+        private JObject jsonOfLoggedInPerson;
 
         public static string GreetingsText{ get; set; }
 
@@ -64,9 +65,11 @@ namespace LiveCam.Droid
             //greetingsText = FindViewById<TextView>(Resource.Id.greetingsTextView);
 
 
-            var person = this.Intent.Extras.GetString("Person");
-            Console.WriteLine(person+"--------");
+            var personLoggedIn = this.Intent.Extras.GetString("Person");
+            Console.WriteLine(personLoggedIn+"--------");
+            jsonOfLoggedInPerson = JObject.Parse(personLoggedIn);
 
+            Toast.MakeText(this, "Welcome back " + jsonOfLoggedInPerson.GetValue("Name") + "!",ToastLength.Long).Show();
             _switchCamBtn.Click += SwichCamBtnClick;
 
 
