@@ -29,7 +29,7 @@ using System.IO;
 using System.Drawing;
 using Android.Views;
 using Newtonsoft.Json.Linq;
-
+using LiveCam.Droid.Proxies;
 namespace LiveCam.Droid
 {
     [Activity(Label = "LiveCam.Droid", MainLauncher = false, Icon = "@drawable/icon", Theme = "@style/Theme.AppCompat.NoActionBar", ScreenOrientation = ScreenOrientation.FullSensor)]
@@ -38,6 +38,8 @@ namespace LiveCam.Droid
         private static readonly string TAG = "FaceTracker";
 
         private CameraSource _mCameraSource = null;
+
+        
 
         private CameraSourcePreview _mPreview;
         private GraphicOverlay _mGraphicOverlay;
@@ -74,7 +76,7 @@ namespace LiveCam.Droid
 
             Toast.MakeText(this, "Welcome back " + jsonOfLoggedInPerson.GetValue("Name") + "!",ToastLength.Long).Show();
             _switchCamBtn.Click += SwichCamBtnClick;
-
+            _trainNewFaceButton.Click += _trainNewFaceButton_Click;
 
 
             if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
@@ -88,6 +90,14 @@ namespace LiveCam.Droid
             
         }
 
+        private void _trainNewFaceButton_Click(object sender, EventArgs e)
+        {
+            if (PhotoProxy.LastPhoto != null && PhotoProxy.LastPhoto.Length > 0)
+            {
+
+            }
+
+        }
 
         private void SwichCamBtnClick(object sender, EventArgs e)
         {
@@ -263,6 +273,7 @@ namespace LiveCam.Droid
     }
 
 
+
     class GraphicFaceTracker : Tracker, CameraSource.IPictureCallback
     {
         private GraphicOverlay mOverlay;
@@ -327,6 +338,7 @@ namespace LiveCam.Droid
 
         public void OnPictureTaken(byte[] data)
         {
+            PhotoProxy.LastPhoto = data;
             Task.Run(async () =>
             {
                 try
