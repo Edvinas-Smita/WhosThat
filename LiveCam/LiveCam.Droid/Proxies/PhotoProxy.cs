@@ -5,6 +5,7 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
@@ -14,6 +15,6 @@ namespace LiveCam.Droid.Proxies
 {
     public static class PhotoProxy
     {
-        public static byte[] LastPhoto { get; set; }
+        public static Bitmap LastPhoto { get; set; }
     }
 }

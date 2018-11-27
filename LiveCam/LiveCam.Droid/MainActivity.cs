@@ -75,6 +75,8 @@ namespace LiveCam.Droid
             jsonOfLoggedInPerson = JObject.Parse(personLoggedIn);
 
             Toast.MakeText(this, "Welcome back " + jsonOfLoggedInPerson.GetValue("Name") + "!",ToastLength.Long).Show();
+
+
             _switchCamBtn.Click += SwichCamBtnClick;
             _trainNewFaceButton.Click += _trainNewFaceButton_Click;
 
@@ -92,9 +94,20 @@ namespace LiveCam.Droid
 
         private void _trainNewFaceButton_Click(object sender, EventArgs e)
         {
-            if (PhotoProxy.LastPhoto != null && PhotoProxy.LastPhoto.Length > 0)
+            if (PhotoProxy.LastPhoto != null)
             {
-
+                Bitmap photo = PhotoProxy.LastPhoto;
+                Task.Run(async () =>
+                {
+                    //convert to base64
+                    var client = new HttpClient();    //Iskelt kad ne ant kiekvieno siuntimo kurtu
+                    client.BaseAddress = new Uri("http://88.119.27.98:55555");
+                    byte[] byteArray = LiveCamHelper.BitmapToGrayscaleBytes(photo);
+                    var content = new ByteArrayContent(byteArray);
+                    var response = await client.PostAsync("api/train/"+ jsonOfLoggedInPerson.GetValue("Id") + "/1", content);
+                    Console.WriteLine("Response from /api/train is " + response.StatusCode);
+                    Console.WriteLine(await response.Content.ReadAsStringAsync());
+                });
             }
 
         }
@@ -338,7 +351,7 @@ namespace LiveCam.Droid
 
         public void OnPictureTaken(byte[] data)
         {
-            PhotoProxy.LastPhoto = data;
+            
             Task.Run(async () =>
             {
                 try
@@ -369,6 +382,8 @@ namespace LiveCam.Droid
                             bitmap = Bitmap.CreateScaledBitmap(bitmap, 240, 320, false);
                              _img.SetImageBitmap(bitmap);
 
+
+                            PhotoProxy.LastPhoto = bitmap;
 
                             //Task<string> task = PostRecognition(bitmap);
 
