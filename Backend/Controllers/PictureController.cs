@@ -42,8 +42,8 @@ namespace Backend.Controllers
 			    var buffer = await file.ReadAsByteArrayAsync();
 
                 if(
-                    ( (((int)buffer[0] << 16) + (int)buffer[1]) != BMP_SIGNATURE) &&
-                    ( (((int)buffer[0] << 32) + ((int)buffer[1] << 16) + (int)buffer[2]) != JPEG_SIGNATURE)
+                    ( (((int)buffer[0] << 8) + (int)buffer[1]) != BMP_SIGNATURE) &&
+                    ( (((int)buffer[0] << 16) + ((int)buffer[1] << 8) + (int)buffer[2]) != JPEG_SIGNATURE)
                 )
                 {
                     throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
