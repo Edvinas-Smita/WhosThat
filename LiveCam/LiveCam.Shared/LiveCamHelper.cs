@@ -149,20 +149,22 @@ namespace LiveCam.Shared
 
 	    public static byte[] BitmapToGrayscaleBytes(Bitmap bitmap)
 	    {
-		    var ints = new int[bitmap.ByteCount / 4];
-		    var bytes = new byte[bitmap.ByteCount / 4];
-		    bitmap.GetPixels(ints, 0, 0, 0, 0, bitmap.Width, bitmap.Height);
-
-		    byte red, green, blue;
-		    for (int i = 0; i < bitmap.ByteCount / 4; ++i)
-		    {
-			    red = (byte)(ints[i] & 0xFF);
-			    green = (byte)((ints[i] >> 8) & 0xFF);
-			    blue = (byte)((ints[i] >> 16) & 0xFF);
-			    bytes[i] = (byte)((red + green + blue) / 3);
-		    }
-
-		    return bytes;
+           
+                var ints = new int[bitmap.ByteCount / 4];
+                var bytes = new byte[bitmap.ByteCount / 4];
+                bitmap.GetPixels(ints, 0, bitmap.Width, 0, 0, bitmap.Width, bitmap.Height);
+                byte red, green, blue;
+                for (int i = 0; i < bitmap.ByteCount / 4; ++i)
+                { 
+                    red = (byte)(ints[i] & 0xFF);
+                    green = (byte)((ints[i] >> 8) & 0xFF);
+                    blue = (byte)((ints[i] >> 16) & 0xFF);
+                    bytes[i] = (byte)((red + green + blue) / 3);
+                }
+              
+                return bytes;
+           
+            
 	    }
 	}
 }

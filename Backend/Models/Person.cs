@@ -7,7 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WhosThat.Recognition;
+using Backend.Logic;
 
 namespace Backend.Models
 {

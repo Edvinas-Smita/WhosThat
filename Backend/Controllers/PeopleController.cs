@@ -3,8 +3,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Linq;
 using Backend.Models;
-using WhosThat.Recognition;
 using System.Diagnostics;
+using Backend.Logic.Recognition;
 
 namespace bigbackend
 {
