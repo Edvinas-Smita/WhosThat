@@ -11,10 +11,13 @@ namespace Backend.Controllers
 {
     public class PictureController : ApiController
     {
+        const int BMP_SIGNATURE = 0x424D;
+        const int JPEG_SIGNATURE = 0xFFD8FF;
+
 	    [HttpPost, Route("api/pictures/{personID}")]
 	    public async Task<IHttpActionResult> PostPersonPicture(int personID)
 		{
-			Debug.WriteLine("Incoming POST for api/pictures/" + personID);
+			Debug.WriteLine("Incoming POST for api/pictures/id");
 			if (!Request.Content.IsMimeMultipartContent())
 		    {
 			    throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
@@ -29,18 +32,24 @@ namespace Backend.Controllers
 			var provider = new MultipartMemoryStreamProvider();
 		    await Request.Content.ReadAsMultipartAsync(provider);
 			string[] allowedImageExts = new string[]{ ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
-			Debug.WriteLine("Content count: " + provider.Contents.Count);
 		    foreach (var file in provider.Contents)
 		    {
-				Debug.WriteLine("File name: " + file.Headers.ContentDisposition.FileName);
 			    var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
 			    if (!allowedImageExts.Any(ext => filename.EndsWith(ext)))
 			    {
 				    throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
 			    }
 			    var buffer = await file.ReadAsByteArrayAsync();
-				Debug.WriteLine("Buffer size: " + buffer.Length);
-				currentPerson.Images.Add(buffer);
+
+                if(
+                    ( (((int)buffer[0] << 16) + (int)buffer[1]) != BMP_SIGNATURE) &&
+                    ( (((int)buffer[0] << 32) + ((int)buffer[1] << 16) + (int)buffer[2]) != JPEG_SIGNATURE)
+                )
+                {
+                    throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+                }
+
+                currentPerson.Images.Add(buffer);
 		    }
 
 		    return Ok();
