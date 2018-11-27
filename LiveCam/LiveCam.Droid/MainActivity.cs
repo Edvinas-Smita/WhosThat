@@ -329,21 +329,15 @@ namespace LiveCam.Droid
                                 //convert to base64
                                 var client = new HttpClient();    //Iskelt kad ne ant kiekvieno siuntimo kurtu
                                 client.BaseAddress = new Uri("http://88.119.27.98:55555");
-                                Console.WriteLine("Baseaddress++++++++++++");
                                 //var stream = new MemoryStream();
                                 byte[] byteArray=LiveCamHelper.BitmapToGrayscaleBytes(bitmap);
-                                Console.WriteLine("bytearrayyy++++++++++++");
                                 //stream.Write(byteArray, 0, byteArray.Length);
                                 //bitmap.Compress(Bitmap.CompressFormat.Jpeg, 100, stream);
                                 var content = new ByteArrayContent(byteArray);
-                                Console.WriteLine("contentttttt++++++++++++");
                                 //content.Add(new StreamContent(stream));
                                 var response = await client.PostAsync("api/recognize", content);
-                                Console.WriteLine("responseeeeeeee++++++++++++");
                                 Console.WriteLine("Response from /api/recognize is " + response.StatusCode);
-                                Console.WriteLine("CWAPIRECOGNISE++++++++++++");
                                 Console.WriteLine(await response.Content.ReadAsStringAsync());
-                                Console.WriteLine("CONTENTREADASSTRING++++++++++++");
                                 //if (stream.Equals(null)) Console.WriteLine("The stream is null");
                                 //else Console.WriteLine("the stream is not null");
                                 //stream.Dispose();
