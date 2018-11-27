@@ -7,7 +7,7 @@ using Emgu.CV.CvEnum;
 
 namespace WhosThat.Recognition.Util
 {
-	static class Statics
+	public static class Statics
 	{
 		//@param every face image should already contain only one face
 		public static void TrainSinglePersonFaces(IList faceImages, int id)
