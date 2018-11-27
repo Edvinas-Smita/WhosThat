@@ -22,6 +22,10 @@ namespace Backend.Models
         private string bio;
         private string likes;
         private VeryDependentActions actions;
+        private Lazy<LazyClass> lazy = new Lazy<LazyClass>(() =>
+        {
+            return new LazyClass(1337);
+        });
 
         public string Name
         {
