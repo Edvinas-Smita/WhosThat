@@ -8,7 +8,7 @@ namespace WhosThat.Recognition
 {
     public static class Storage
     {
-		public static BindingList<Person> People = new BindingList<Person> { new Person("admin", "yep", "", "") };
+		public static BindingList<Person> People = new BindingList<Person> { new Person("admin", "yep", "", "", new VeryDependentActions()) };
 
 	    public static Person FindPersonByID(int id)
 	    {

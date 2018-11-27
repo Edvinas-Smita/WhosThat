@@ -121,9 +121,11 @@
     <Compile Include="Logic\Recognition\Util\Statics.cs" />
     <Compile Include="Logic\UserManagement\Test\TestUser.cs" />
     <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\VeryDependentActions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\LazyClass.cs" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
