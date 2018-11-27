@@ -3,8 +3,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Linq;
 using Backend.Models;
-using WhosThat.Recognition;
 using System.Diagnostics;
+using Backend.Logic.Recognition;
 
 namespace bigbackend
 {
@@ -110,6 +110,7 @@ namespace bigbackend
 		{
 			Debug.WriteLine("Incoming DELETE for api/people/id");
 			var currentPerson = Storage.FindPersonByID(id);
+            currentPerson.lazy.Value.Lazy(); // dummy lazy init
 			if (currentPerson == null)
 			{
 				return Request.CreateResponse(HttpStatusCode.NotFound);

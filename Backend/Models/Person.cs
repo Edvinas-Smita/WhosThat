@@ -7,7 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WhosThat.Recognition;
+using Backend.Logic;
 
 namespace Backend.Models
 {
@@ -21,12 +21,18 @@ namespace Backend.Models
         private string password;
         private string bio;
         private string likes;
+        private VeryDependentActions actions;
+        private Lazy<LazyClass> lazy = new Lazy<LazyClass>(() =>
+        {
+            return new LazyClass(1337);
+        });
 
         public string Name
         {
             get { return name; }
             set
             {
+                actions.Stuff();
                 name = value;
                 PropertyChanged(this, new PropertyChangedEventArgs("Name"));
             }
@@ -60,19 +66,20 @@ namespace Backend.Models
         }
         public ObservableCollection<byte[]> Images = new ObservableCollection<byte[]>();
 
-        public Person(string name, string password, string bio, string likes)
+        public Person(string name, string password, string bio, string likes, VeryDependentActions act)
         {
             Name = name;
             Password = password;
             Bio = bio;
             Likes = likes;
+            actions = act;
 
             Id = IdFactory.GetNextId();
         }
 
 	    public static Person PersonWithValidID(Person person)
 	    {
-			return new Person(person.Name, person.Password, person.Bio, person.likes);
+			return new Person(person.Name, person.Password, person.Bio, person.likes, person.actions);
 	    }
     }
 }

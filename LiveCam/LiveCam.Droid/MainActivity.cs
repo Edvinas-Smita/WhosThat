@@ -27,10 +27,12 @@ using Newtonsoft.Json;
 using System.IO;
 //using Java.IO;
 using System.Drawing;
+using Android.Views;
+using Newtonsoft.Json.Linq;
 
 namespace LiveCam.Droid
 {
-    [Activity(Label = "LiveCam.Droid", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/Theme.AppCompat.NoActionBar", ScreenOrientation = ScreenOrientation.FullSensor)]
+    [Activity(Label = "LiveCam.Droid", MainLauncher = false, Icon = "@drawable/icon", Theme = "@style/Theme.AppCompat.NoActionBar", ScreenOrientation = ScreenOrientation.FullSensor)]
     public class MainActivity : AppCompatActivity, IFactory
     {
         private static readonly string TAG = "FaceTracker";
@@ -39,7 +41,8 @@ namespace LiveCam.Droid
 
         private CameraSourcePreview _mPreview;
         private GraphicOverlay _mGraphicOverlay;
-        private ImageButton _imgBtn;
+        private ImageButton _switchCamBtn;
+        private JObject jsonOfLoggedInPerson;
 
         public static string GreetingsText{ get; set; }
 
@@ -49,6 +52,8 @@ namespace LiveCam.Droid
 
         protected override async void OnCreate(Bundle bundle)
         {
+            RequestWindowFeature(WindowFeatures.NoTitle);
+
             base.OnCreate(bundle);
 
             // Set our view from the "main" layout resource
@@ -56,8 +61,17 @@ namespace LiveCam.Droid
 
             _mPreview = FindViewById<CameraSourcePreview>(Resource.Id.preview);
             _mGraphicOverlay = FindViewById<GraphicOverlay>(Resource.Id.faceOverlay);
-            _imgBtn = FindViewById<ImageButton>(Resource.Id.imageButton1);
+            _switchCamBtn = FindViewById<ImageButton>(Resource.Id.imageButton1);
             //greetingsText = FindViewById<TextView>(Resource.Id.greetingsTextView);
+
+
+            var personLoggedIn = this.Intent.Extras.GetString("Person");
+            Console.WriteLine(personLoggedIn+"--------");
+            jsonOfLoggedInPerson = JObject.Parse(personLoggedIn);
+
+            Toast.MakeText(this, "Welcome back " + jsonOfLoggedInPerson.GetValue("Name") + "!",ToastLength.Long).Show();
+            _switchCamBtn.Click += SwichCamBtnClick;
+
 
 
             if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
@@ -69,6 +83,32 @@ namespace LiveCam.Droid
             }
             else { RequestCameraPermission(); }
             
+        }
+
+
+        private void SwichCamBtnClick(object sender, EventArgs e)
+        {
+
+            if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
+            {
+                if (_mCameraSource != null && _mCameraSource.CameraFacing == CameraFacing.Front)
+                {
+                    _mCameraSource.Release();
+                    CreateCameraSource(CameraFacing.Back);
+                    StartCameraSource();
+                }
+                else if (_mCameraSource != null)
+                {
+                    _mCameraSource.Release();
+                    CreateCameraSource(CameraFacing.Front);
+                    StartCameraSource();
+                }
+
+            }
+            else
+            {
+                RequestCameraPermission();
+            }
         }
 
         protected override void OnResume()
@@ -143,7 +183,7 @@ namespace LiveCam.Droid
 
             _mCameraSource = new CameraSource.Builder(context, detector)
                     .SetRequestedPreviewSize(640, 480)
-                                            .SetFacing(CameraFacing.Front)
+                                            .SetFacing(direction)
                     .SetRequestedFps(30.0f)
                     .Build();
 
@@ -184,7 +224,7 @@ namespace LiveCam.Droid
         }
         public Tracker Create(Java.Lang.Object item)
         {
-            return new GraphicFaceTracker(_mGraphicOverlay, _imgBtn, _mCameraSource);
+            return new GraphicFaceTracker(_mGraphicOverlay, _switchCamBtn, _mCameraSource);
         }
 
 
@@ -280,44 +320,7 @@ namespace LiveCam.Droid
 
         }
 
-        private async Task<string> PostRecognition(Bitmap bitmap)
-        {
-            //convert to base64
-            var client = new HttpClient();    //Iskelt kad ne ant kiekvieno siuntimo kurtu
-            client.BaseAddress = new Uri("http://88.119.27.98:55555");
-
-            var stream = new MemoryStream();
-            bitmap.Compress(Bitmap.CompressFormat.Jpeg, 100, stream);
-            var content = new MultipartContent("application/octet-stream");
-            content.Add(new StreamContent(stream));
-
-            var response = await client.PostAsync("/api/recognize", content);
-
-            Console.WriteLine("Response from /api/recognize is " + response.StatusCode);
-            Console.WriteLine(await response.Content.ReadAsStringAsync());
-            if (stream.Equals(null)) Console.WriteLine("The stream is null");
-            else Console.WriteLine("the stream is not null");
-            stream.Dispose();
-            
-            return response.StatusCode.ToString();
-
-
-
-
-
-
-
-
-
-            //String encodedImage = Base64.EncodeToString()
-
-
-            //var client = new HttpClient();
-            //var content = new StringContent(
-            //    JsonConvert.SerializeObject(new { username = "myusername", usage = "recognise" }));
-            //var result = await client.PostAsync("localhost:8080", content).ConfigureAwait(false);
-            //return result.ToString();
-        }
+    
 
         public void OnPictureTaken(byte[] data)
         {
