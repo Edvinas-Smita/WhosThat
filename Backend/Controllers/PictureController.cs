@@ -14,7 +14,7 @@ namespace Backend.Controllers
 	    [HttpPost, Route("api/pictures/{personID}")]
 	    public async Task<IHttpActionResult> PostPersonPicture(int personID)
 		{
-			Debug.WriteLine("Incoming POST for api/pictures/id");
+			Debug.WriteLine("Incoming POST for api/pictures/" + personID);
 			if (!Request.Content.IsMimeMultipartContent())
 		    {
 			    throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
@@ -29,15 +29,17 @@ namespace Backend.Controllers
 			var provider = new MultipartMemoryStreamProvider();
 		    await Request.Content.ReadAsMultipartAsync(provider);
 			string[] allowedImageExts = new string[]{ ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
+			Debug.WriteLine("Content count: " + provider.Contents.Count);
 		    foreach (var file in provider.Contents)
 		    {
+				Debug.WriteLine("File name: " + file.Headers.ContentDisposition.FileName);
 			    var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
 			    if (!allowedImageExts.Any(ext => filename.EndsWith(ext)))
 			    {
 				    throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
 			    }
 			    var buffer = await file.ReadAsByteArrayAsync();
-			    
+				Debug.WriteLine("Buffer size: " + buffer.Length);
 				currentPerson.Images.Add(buffer);
 		    }
 

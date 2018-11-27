@@ -38,7 +38,7 @@ namespace Backend.Controllers
 
 			var buffer = await Request.Content.ReadAsByteArrayAsync();
 			Debug.WriteLine(buffer.Length);
-			File.WriteAllBytes("D:/SomeDump/uploaded.bmp", buffer);
+			File.WriteAllBytes("E:/SomeDump/uploaded.bmp", buffer);
 			if (buffer.Length != IMAGE_BYTE_COUNT)
 			{
 				//throw new HttpResponseException(HttpStatusCode.BadRequest);
