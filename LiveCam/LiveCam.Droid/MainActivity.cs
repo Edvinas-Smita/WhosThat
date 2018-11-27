@@ -213,7 +213,7 @@ namespace LiveCam.Droid
         }
         public Tracker Create(Java.Lang.Object item)
         {
-            return new GraphicFaceTracker(_mGraphicOverlay, _imgBtn, _mCameraSource);
+            return new GraphicFaceTracker(_mGraphicOverlay, _switchCamBtn, _mCameraSource);
         }
 
 
