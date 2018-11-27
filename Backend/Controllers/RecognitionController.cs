@@ -55,7 +55,7 @@ namespace Backend.Controllers
 			var recognizedUserID = Statics.RecognizeUser(Statics.ByteArrayToImage(buffer, 240, 320));
             Person recognized = Storage.FindPersonByID(recognizedUserID);
             if (recognized != null)
-                return Ok(recognizedUserID);
+                return Ok(recognized);
             else
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError));
 		}
