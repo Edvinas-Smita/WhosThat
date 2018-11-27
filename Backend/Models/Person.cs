@@ -18,6 +18,7 @@ namespace Backend.Models
         public int Id;
 
         private string name;
+        private string password;
         private string bio;
         private string likes;
 
@@ -28,6 +29,15 @@ namespace Backend.Models
             {
                 name = value;
                 PropertyChanged(this, new PropertyChangedEventArgs("Name"));
+            }
+        }
+        public string Password
+        {
+            get { return password; }
+            set
+            {
+                password = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("Password"));
             }
         }
         public string Bio
@@ -50,9 +60,10 @@ namespace Backend.Models
         }
         public ObservableCollection<byte[]> Images = new ObservableCollection<byte[]>();
 
-        public Person(string name, string bio, string likes)
+        public Person(string name, string password, string bio, string likes)
         {
             Name = name;
+            Password = password;
             Bio = bio;
             Likes = likes;
 
@@ -61,7 +72,7 @@ namespace Backend.Models
 
 	    public static Person PersonWithValidID(Person person)
 	    {
-			return new Person(person.Name, person.Bio, person.likes);
+			return new Person(person.Name, person.Password, person.Bio, person.likes);
 	    }
     }
 }

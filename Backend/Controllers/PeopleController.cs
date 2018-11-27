@@ -10,6 +10,22 @@ namespace bigbackend
 {
     public class ValuesController : ApiController
 	{
+        [Route("api/login")]
+        [HttpGet]
+        public HttpResponseMessage GetPersonByLogin(string name, string password)
+        {
+            Person person = Storage.FindPersonByCredentials(name, password);
+            if (person != null)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, person);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound, new HttpError("Person with these credentials was not found."));
+            }
+
+        }
+
 		[Route("api/people")]
 		[HttpPost]
 		public HttpResponseMessage PostPerson(Person newPerson)
