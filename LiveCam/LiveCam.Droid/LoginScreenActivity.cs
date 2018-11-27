@@ -49,8 +49,8 @@ namespace LiveCam.Droid
 
 
                 //UZKOMENTUOTI, KAI BUS PADARYTA, KAD BACKENDAS ATSIUNCIA ATGAL ATSAKYMA
-                if (_txtUser.Text == "admin" && _txtPass.Text == "admin")
-                    LoginSuccesful();
+                //if (_txtUser.Text == "admin" && _txtPass.Text == "admin")
+                    //LoginSuccesful();
 
 
 
@@ -63,14 +63,21 @@ namespace LiveCam.Droid
                     var client = new HttpClient();
                     client.BaseAddress = new Uri("http://88.119.27.98:55555");
                     var data = new { identifier = _txtUser.Text, password = pass };
-                    var result = await client.PostAsync("api/login", data.AsJson());
+                    var result = await client.PostAsync("api/login", data.AsJson()).Result.Content.ReadAsStringAsync();
+                    Console.WriteLine(result);
+                    if(result==null) Toast.MakeText(this, "Password or username is incorrect", ToastLength.Long).Show();
+                    else
+                    {
+                        LoginSuccesful(result);
+                    }
                 });
             }
         }
 
-        private void LoginSuccesful()
+        private void LoginSuccesful(string result)
         {
             Intent nextActivity = new Intent(this, typeof(MainActivity));
+            nextActivity.PutExtra("Person", result);
             StartActivity(nextActivity);
         }
 

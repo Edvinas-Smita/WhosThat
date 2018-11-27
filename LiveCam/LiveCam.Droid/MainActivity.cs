@@ -22,12 +22,12 @@ using Android.Graphics;
 using ServiceHelpers;
 using Exception = Java.Lang.Exception;
 using Android.Graphics;
-using Android.Views;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.IO;
 //using Java.IO;
 using System.Drawing;
+using Android.Views;
 
 namespace LiveCam.Droid
 {
@@ -40,7 +40,7 @@ namespace LiveCam.Droid
 
         private CameraSourcePreview _mPreview;
         private GraphicOverlay _mGraphicOverlay;
-        private ImageButton _imgBtn;
+        private ImageButton _switchCamBtn;
         
 
         public static string GreetingsText{ get; set; }
@@ -52,6 +52,7 @@ namespace LiveCam.Droid
         protected override async void OnCreate(Bundle bundle)
         {
             RequestWindowFeature(WindowFeatures.NoTitle);
+
             base.OnCreate(bundle);
 
             // Set our view from the "main" layout resource
@@ -59,11 +60,16 @@ namespace LiveCam.Droid
 
             _mPreview = FindViewById<CameraSourcePreview>(Resource.Id.preview);
             _mGraphicOverlay = FindViewById<GraphicOverlay>(Resource.Id.faceOverlay);
-            _imgBtn = FindViewById<ImageButton>(Resource.Id.imageButton1);
+            _switchCamBtn = FindViewById<ImageButton>(Resource.Id.imageButton1);
             //greetingsText = FindViewById<TextView>(Resource.Id.greetingsTextView);
 
-            _imgBtn.Click += _imgBtn_Click;
-            _imgBtn.LongClick += _imgBtn_LongClick;
+
+            var person = this.Intent.Extras.GetString("Person");
+            Console.WriteLine(person+"--------");
+
+            _switchCamBtn.Click += SwichCamBtnClick;
+
+
 
             if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
             {
@@ -76,15 +82,10 @@ namespace LiveCam.Droid
             
         }
 
-        private void _imgBtn_LongClick(object sender, View.LongClickEventArgs e)
-        {
-            //todo: implement algorythm training hrere
-            throw new NotImplementedException();
-        }
 
-        private void _imgBtn_Click(object sender, EventArgs e)
+        private void SwichCamBtnClick(object sender, EventArgs e)
         {
-            
+
             if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
             {
                 if (_mCameraSource != null && _mCameraSource.CameraFacing == CameraFacing.Front)
@@ -99,7 +100,7 @@ namespace LiveCam.Droid
                     CreateCameraSource(CameraFacing.Front);
                     StartCameraSource();
                 }
-                    
+
             }
             else
             {
@@ -220,7 +221,7 @@ namespace LiveCam.Droid
         }
         public Tracker Create(Java.Lang.Object item)
         {
-            return new GraphicFaceTracker(_mGraphicOverlay, _imgBtn, _mCameraSource);
+            return new GraphicFaceTracker(_mGraphicOverlay, _switchCamBtn, _mCameraSource);
         }
 
 

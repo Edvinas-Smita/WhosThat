@@ -99,6 +99,9 @@ namespace LiveCam.Droid
             //canvas.DrawText("right eye: " + Math.Round(face.IsRightEyeOpenProbability, 2).ToString(), x + ID_X_OFFSET * 2, y + ID_Y_OFFSET * 2, mIdPaint);
             //canvas.DrawText("left eye: " + Math.Round(face.IsLeftEyeOpenProbability, 2).ToString(), x - ID_X_OFFSET * 2, y - ID_Y_OFFSET * 2, mIdPaint);
 
+           
+
+            // Draws a bounding box around the face.
             float xOffset = ScaleX(face.Width / 2.0f);
             float yOffset = ScaleY(face.Height / 2.0f);
             float left = x - xOffset;
@@ -106,7 +109,7 @@ namespace LiveCam.Droid
             float right = x + xOffset;
             float bottom = y + yOffset;
 
-            canvas.DrawText(Math.Round(face.IsSmilingProbability, 2) > 0.6? "The person is happy!" : "Lighten up the mood!", x - xOffset, y - yOffset -10, mIdPaint);
+            canvas.DrawText(Math.Round(face.IsSmilingProbability, 2) > 0.6 ? "The person is happy!" : "Lighten up the mood!", x - xOffset, y - yOffset - 10, mIdPaint);
 
             // Draws a bounding box around the face.
 
