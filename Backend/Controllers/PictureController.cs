@@ -11,6 +11,9 @@ namespace Backend.Controllers
 {
     public class PictureController : ApiController
     {
+        const int BMP_SIGNATURE = 0x424D;
+        const int JPEG_SIGNATURE = 0xFFD8FF;
+
 	    [HttpPost, Route("api/pictures/{personID}")]
 	    public async Task<IHttpActionResult> PostPersonPicture(int personID)
 		{
@@ -37,8 +40,16 @@ namespace Backend.Controllers
 				    throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
 			    }
 			    var buffer = await file.ReadAsByteArrayAsync();
-			    
-				currentPerson.Images.Add(buffer);
+
+                if(
+                    ( (((int)buffer[0] << 16) + (int)buffer[1]) != BMP_SIGNATURE) &&
+                    ( (((int)buffer[0] << 32) + ((int)buffer[1] << 16) + (int)buffer[2]) != JPEG_SIGNATURE)
+                )
+                {
+                    throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+                }
+
+                currentPerson.Images.Add(buffer);
 		    }
 
 		    return Ok();
