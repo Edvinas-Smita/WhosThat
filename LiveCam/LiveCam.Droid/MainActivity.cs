@@ -30,7 +30,7 @@ using System.Drawing;
 
 namespace LiveCam.Droid
 {
-    [Activity(Label = "LiveCam.Droid", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/Theme.AppCompat.NoActionBar", ScreenOrientation = ScreenOrientation.FullSensor)]
+    [Activity(Label = "LiveCam.Droid", MainLauncher = false, Icon = "@drawable/icon", Theme = "@style/Theme.AppCompat.NoActionBar", ScreenOrientation = ScreenOrientation.FullSensor)]
     public class MainActivity : AppCompatActivity, IFactory
     {
         private static readonly string TAG = "FaceTracker";
@@ -40,6 +40,7 @@ namespace LiveCam.Droid
         private CameraSourcePreview _mPreview;
         private GraphicOverlay _mGraphicOverlay;
         private ImageButton _imgBtn;
+        
 
         public static string GreetingsText{ get; set; }
 
@@ -58,6 +59,7 @@ namespace LiveCam.Droid
             _mGraphicOverlay = FindViewById<GraphicOverlay>(Resource.Id.faceOverlay);
             _imgBtn = FindViewById<ImageButton>(Resource.Id.imageButton1);
             //greetingsText = FindViewById<TextView>(Resource.Id.greetingsTextView);
+
 
 
             if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
@@ -280,44 +282,7 @@ namespace LiveCam.Droid
 
         }
 
-        private async Task<string> PostRecognition(Bitmap bitmap)
-        {
-            //convert to base64
-            var client = new HttpClient();    //Iskelt kad ne ant kiekvieno siuntimo kurtu
-            client.BaseAddress = new Uri("http://88.119.27.98:55555");
-
-            var stream = new MemoryStream();
-            bitmap.Compress(Bitmap.CompressFormat.Jpeg, 100, stream);
-            var content = new MultipartContent("application/octet-stream");
-            content.Add(new StreamContent(stream));
-
-            var response = await client.PostAsync("/api/recognize", content);
-
-            Console.WriteLine("Response from /api/recognize is " + response.StatusCode);
-            Console.WriteLine(await response.Content.ReadAsStringAsync());
-            if (stream.Equals(null)) Console.WriteLine("The stream is null");
-            else Console.WriteLine("the stream is not null");
-            stream.Dispose();
-            
-            return response.StatusCode.ToString();
-
-
-
-
-
-
-
-
-
-            //String encodedImage = Base64.EncodeToString()
-
-
-            //var client = new HttpClient();
-            //var content = new StringContent(
-            //    JsonConvert.SerializeObject(new { username = "myusername", usage = "recognise" }));
-            //var result = await client.PostAsync("localhost:8080", content).ConfigureAwait(false);
-            //return result.ToString();
-        }
+    
 
         public void OnPictureTaken(byte[] data)
         {
