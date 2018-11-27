@@ -39,7 +39,7 @@ namespace LiveCam.Droid
 
         private CameraSourcePreview _mPreview;
         private GraphicOverlay _mGraphicOverlay;
-        private ImageButton _imgBtn;
+        private ImageButton _switchCamBtn;
         
 
         public static string GreetingsText{ get; set; }
@@ -57,9 +57,10 @@ namespace LiveCam.Droid
 
             _mPreview = FindViewById<CameraSourcePreview>(Resource.Id.preview);
             _mGraphicOverlay = FindViewById<GraphicOverlay>(Resource.Id.faceOverlay);
-            _imgBtn = FindViewById<ImageButton>(Resource.Id.imageButton1);
+            _switchCamBtn = FindViewById<ImageButton>(Resource.Id.imageButton1);
             //greetingsText = FindViewById<TextView>(Resource.Id.greetingsTextView);
 
+            _switchCamBtn.Click += SwichCamBtnClick;
 
 
             if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
@@ -71,6 +72,32 @@ namespace LiveCam.Droid
             }
             else { RequestCameraPermission(); }
             
+        }
+
+
+        private void SwichCamBtnClick(object sender, EventArgs e)
+        {
+
+            if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
+            {
+                if (_mCameraSource != null && _mCameraSource.CameraFacing == CameraFacing.Front)
+                {
+                    _mCameraSource.Release();
+                    CreateCameraSource(CameraFacing.Back);
+                    StartCameraSource();
+                }
+                else if (_mCameraSource != null)
+                {
+                    _mCameraSource.Release();
+                    CreateCameraSource(CameraFacing.Front);
+                    StartCameraSource();
+                }
+
+            }
+            else
+            {
+                RequestCameraPermission();
+            }
         }
 
         protected override void OnResume()
