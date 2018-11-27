@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Backend.Models;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using WhosThat.Recognition;
@@ -38,7 +39,7 @@ namespace Backend.Controllers
 
 			var buffer = await Request.Content.ReadAsByteArrayAsync();
 			Debug.WriteLine(buffer.Length);
-			File.WriteAllBytes("E:/SomeDump/uploaded.bmp", buffer);
+			File.WriteAllBytes("D:/SomeDump/uploaded.bmp", buffer);
 			if (buffer.Length != IMAGE_BYTE_COUNT)
 			{
 				//throw new HttpResponseException(HttpStatusCode.BadRequest);
@@ -52,8 +53,11 @@ namespace Backend.Controllers
 			}
 
 			var recognizedUserID = Statics.RecognizeUser(Statics.ByteArrayToImage(buffer, 240, 320));
-
-			return Ok(recognizedUserID);
+            Person recognized = Storage.FindPersonByID(recognizedUserID);
+            if (recognized != null)
+                return Ok(recognizedUserID);
+            else
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError));
 		}
 
 	    [HttpPost, Route("api/train/{userID}/{imgCount}")]
@@ -87,7 +91,7 @@ namespace Backend.Controllers
 	    }
 
 		[HttpDelete, Route("api/train/{userID}")]
-	    public async Task<IHttpActionResult> DeleteUserRecognitionData(int userID)	//all of it
+	    public IHttpActionResult DeleteUserRecognitionData(int userID)	//all of it
 		{
 			return ResponseMessage(Request.CreateResponse(HttpStatusCode.NotImplemented));
 			//write recognizer training data to file (or memory stream),
