@@ -21,12 +21,14 @@ namespace Backend.Models
         private string password;
         private string bio;
         private string likes;
+        private VeryDependentActions actions;
 
         public string Name
         {
             get { return name; }
             set
             {
+                actions.Stuff();
                 name = value;
                 PropertyChanged(this, new PropertyChangedEventArgs("Name"));
             }
@@ -60,19 +62,20 @@ namespace Backend.Models
         }
         public ObservableCollection<byte[]> Images = new ObservableCollection<byte[]>();
 
-        public Person(string name, string password, string bio, string likes)
+        public Person(string name, string password, string bio, string likes, VeryDependentActions act)
         {
             Name = name;
             Password = password;
             Bio = bio;
             Likes = likes;
+            actions = act;
 
             Id = IdFactory.GetNextId();
         }
 
 	    public static Person PersonWithValidID(Person person)
 	    {
-			return new Person(person.Name, person.Password, person.Bio, person.likes);
+			return new Person(person.Name, person.Password, person.Bio, person.likes, person.actions);
 	    }
     }
 }
