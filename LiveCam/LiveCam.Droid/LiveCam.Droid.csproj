@@ -188,6 +188,7 @@
   <ItemGroup>
     <AndroidResource Include="Resources\values\style.xml" />
   </ItemGroup>
+  <ItemGroup>
     <AndroidResource Include="Resources\layout\LoginScreen.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
