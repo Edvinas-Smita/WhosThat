@@ -36,7 +36,9 @@ namespace LiveCam.Droid
 
         private CameraSourcePreview _mPreview;
         private GraphicOverlay _mGraphicOverlay;
-        private ImageButton _imgBtn;
+        private ImageButton _swichCamBtn;
+        private ImageButton _settingsBtn;
+
 
         public static string GreetingsText{ get; set; }
 
@@ -54,11 +56,12 @@ namespace LiveCam.Droid
 
             _mPreview = FindViewById<CameraSourcePreview>(Resource.Id.preview);
             _mGraphicOverlay = FindViewById<GraphicOverlay>(Resource.Id.faceOverlay);
-            _imgBtn = FindViewById<ImageButton>(Resource.Id.imageButton1);
+            _swichCamBtn = FindViewById<ImageButton>(Resource.Id.imageButton1);
+            //_settingsBtn = FindViewById<ImageButton>(Resource.Id.sett)
             //greetingsText = FindViewById<TextView>(Resource.Id.greetingsTextView);
 
-            _imgBtn.Click += _imgBtn_Click;
-            _imgBtn.LongClick += _imgBtn_LongClick;
+            _swichCamBtn.Click += SwichCamBtnClick;
+            _swichCamBtn.LongClick += SwichCamBtnLongClick;
             if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
             {
                 CreateCameraSource(CameraFacing.Front);
@@ -71,13 +74,13 @@ namespace LiveCam.Droid
 
         }
 
-        private void _imgBtn_LongClick(object sender, View.LongClickEventArgs e)
+        private void SwichCamBtnLongClick(object sender, View.LongClickEventArgs e)
         {
             //todo: implement algorythm training hrere
             throw new NotImplementedException();
         }
 
-        private void _imgBtn_Click(object sender, EventArgs e)
+        private void SwichCamBtnClick(object sender, EventArgs e)
         {
             
             if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
@@ -215,7 +218,7 @@ namespace LiveCam.Droid
         }
         public Tracker Create(Java.Lang.Object item)
         {
-            return new GraphicFaceTracker(_mGraphicOverlay, _imgBtn, _mCameraSource);
+            return new GraphicFaceTracker(_mGraphicOverlay, _swichCamBtn, _mCameraSource);
         }
 
 
