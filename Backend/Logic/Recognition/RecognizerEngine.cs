@@ -7,7 +7,7 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Face;
 using Emgu.CV.Structure;
 
-namespace WhosThat.Recognition
+namespace Backend.Logic.Recognition
 {
     class RecognizerEngine
     {

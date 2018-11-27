@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Http;
-using WhosThat.Recognition;
+using Backend.Logic.Recognition;
 
 namespace Backend.Controllers
 {

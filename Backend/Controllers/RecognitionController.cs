@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Emgu.CV;
 using Emgu.CV.Structure;
-using WhosThat.Recognition;
-using WhosThat.Recognition.Util;
+using Backend.Logic.Recognition;
+using Backend.Logic.Recognition.Util;
 
 namespace Backend.Controllers
 {
