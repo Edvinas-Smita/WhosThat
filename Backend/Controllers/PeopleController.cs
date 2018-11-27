@@ -11,7 +11,7 @@ namespace bigbackend
     public class ValuesController : ApiController
 	{
         [Route("api/login")]
-        [HttpGet]
+        [HttpPost]
         public HttpResponseMessage GetPersonByLogin(string name, string password)
         {
             Person person = Storage.FindPersonByCredentials(name, password);
