@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 
-namespace WhosThat.Recognition.Util
+namespace Backend.Logic.Recognition.Util
 {
 	public class ConcurrentHashSet<T> : IDisposable
 	{

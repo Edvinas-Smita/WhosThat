@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace WhosThat.Recognition
+namespace Backend.Logic.Recognition
 {
     public static class Storage
     {

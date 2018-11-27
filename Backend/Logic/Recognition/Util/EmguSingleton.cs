@@ -9,7 +9,7 @@ using Emgu.CV.Face;
 using System.Drawing;
 using Emgu.CV.Structure;
 
-namespace WhosThat.Recognition.Util
+namespace Backend.Logic.Recognition.Util
 {
 	class EmguSingleton
 	{

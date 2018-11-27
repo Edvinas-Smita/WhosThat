@@ -2,12 +2,14 @@
 using Emgu.CV.Structure;
 using System;
 using System.Collections;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using Emgu.CV.CvEnum;
 
-namespace WhosThat.Recognition.Util
+namespace Backend.Logic.Recognition.Util
 {
-	class Statics
+	public static class Statics
 	{
 		//@param every face image should already contain only one face
 		public static void TrainSinglePersonFaces(IList faceImages, int id)
@@ -52,7 +54,12 @@ namespace WhosThat.Recognition.Util
 
 		public static Image<Gray, byte> ByteArrayToImage(byte[] array, int width, int height)
 		{
-			var image = new Image<Gray,byte>(new Size(width, height));
+			if (width % 4 != 0 || array.Length != width * height)
+			{
+				return null;
+			}
+			var image = new Image<Gray,Byte>(new Size(width, height));
+			image.SerializationCompressionRatio = 0;
 			image.Bytes = array;
 			return image;
 		}
