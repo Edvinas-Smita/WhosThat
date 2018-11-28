@@ -66,7 +66,17 @@ namespace LiveCam.Droid
                     var client = new HttpClient();
                     client.BaseAddress = new Uri("http://88.119.27.98:55555");
                     var data = new { identifier = _txtUser.Text, password = pass };
-                    var result = await client.PostAsync("api/login", data.AsJson());
+	                HttpResponseMessage result;
+	                try
+	                {
+		                result = await client.PostAsync("api/login", data.AsJson());
+	                }
+	                catch (HttpRequestException exception)
+	                {
+		                Console.WriteLine(exception);
+		                _txtPasswordWarning.Text = "There was an unexpected error with the server";
+		                return;
+	                }
                     var status = result.StatusCode.ToString();
                     var resultString = await result.Content.ReadAsStringAsync();
                     Console.WriteLine("'"+status+"' NICENICENICNEICNEICE");
