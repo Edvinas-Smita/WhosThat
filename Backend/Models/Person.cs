@@ -67,12 +67,12 @@ namespace Backend.Models
         public ObservableCollection<byte[]> Images = new ObservableCollection<byte[]>();
 
         public Person(string name, string password, string bio, string likes, VeryDependentActions act)
-        {
-            Name = name;
+		{
+			actions = act;
+			Name = name;
             Password = password;
             Bio = bio;
             Likes = likes;
-            actions = act;
 
             Id = IdFactory.GetNextId();
         }
