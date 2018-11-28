@@ -1,31 +1,59 @@
 ﻿using Backend.Models;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Security.Cryptography;
 using System.Text;
+using System.Linq;
 
 namespace Backend.Logic.Recognition
 {
     public static class Storage
     {
+		private delegate bool CheckFirstBySecondAndThird<T1, T2, T3>(T1 person, T2 loginName, T3 passwordHash);
 		public static BindingList<Person> People = new BindingList<Person> { new Person("admin", "yep", "", "", new VeryDependentActions()) };
 
 	    public static Person FindPersonByID(int id)
 	    {
-		    foreach (var person in People)
+			return People.FirstOrDefault(person => person.Id == id);
+
+		    /*foreach (var person in People)
 		    {
 			    if (person.Id == id)
 			    {
 				    return person;
 			    }
 		    }
-		    return null;
+		    return null;*/
 	    }
         public static Person FindPersonByCredentials(string name, string password)
         {
-            foreach(var person in People)
+			if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(password))
+			{
+				return null;
+			}
+
+			CheckFirstBySecondAndThird<Person, string, string> CorrectPersonCredentials = delegate (Person person, string loginName, string passwordHash)
+			{
+				if (loginName.Equals(person.Name))
+				{
+					using (SHA256 sha256Hash = SHA256.Create())
+					{
+						byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(person.Password));
+						string hashedStoredPass = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
+						if (password.Equals(hashedStoredPass))
+						{
+							return true;
+						}
+					}
+
+				}
+				return false;
+			};
+
+			return People.FirstOrDefault(person => CorrectPersonCredentials(person, name, password));
+
+            /*foreach (var person in People)
             {
-                if(name == person.Name)
+                if (name == person.Name)
                 {
                     using (SHA256 sha256Hash = SHA256.Create())
                     {
@@ -43,7 +71,7 @@ namespace Backend.Logic.Recognition
 
                 }
             }
-            return null;
+            return null;*/
         }
     }
 }
