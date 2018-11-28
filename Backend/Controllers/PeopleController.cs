@@ -14,6 +14,7 @@ namespace bigbackend
         [HttpPost]
         public HttpResponseMessage GetPersonByLogin([FromBody] LoginData login)
         {
+			Debug.WriteLine(login.identifier + " " + login.password);
             Person person = Storage.FindPersonByCredentials(login.identifier, login.password);
             if (person != null)
             {

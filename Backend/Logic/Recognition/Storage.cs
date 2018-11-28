@@ -9,9 +9,9 @@ namespace Backend.Logic.Recognition
     public static class Storage
     {
 		private delegate bool CheckFirstBySecondAndThird<T1, T2, T3>(T1 person, T2 loginName, T3 passwordHash);
-		public static BindingList<Person> People = new BindingList<Person> { new Person("admin", "yep", "", "", new VeryDependentActions()) };
+		public static BindingList<Person> People = new BindingList<Person> { new Person("admin", "yep", "", "", new VeryDependentActions()) };  //c06fc555902938b41cdc7018de6a9250a8658064c34d8fb05dbe9087be3b5cd4
 
-	    public static Person FindPersonByID(int id)
+		public static Person FindPersonByID(int id)
 	    {
 			return People.FirstOrDefault(person => person.Id == id);
 
@@ -24,6 +24,7 @@ namespace Backend.Logic.Recognition
 		    }
 		    return null;*/
 	    }
+
         public static Person FindPersonByCredentials(string name, string password)
         {
 			if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(password))
@@ -38,7 +39,12 @@ namespace Backend.Logic.Recognition
 					using (SHA256 sha256Hash = SHA256.Create())
 					{
 						byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(person.Password));
-						string hashedStoredPass = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
+						StringBuilder builder = new StringBuilder();
+						for (int i = 0; i < bytes.Length; i++)
+						{
+							builder.Append(bytes[i].ToString("x2"));
+						}
+						string hashedStoredPass = builder.ToString();
 						if (password.Equals(hashedStoredPass))
 						{
 							return true;
