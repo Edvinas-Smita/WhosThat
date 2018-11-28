@@ -2266,26 +2266,26 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f020053
 			public const int avd_hide_password = 2130837587;
 			
-			// aapt resource value: 0x7f020083
-			public const int avd_hide_password_1 = 2130837635;
-			
-			// aapt resource value: 0x7f020084
-			public const int avd_hide_password_2 = 2130837636;
-			
 			// aapt resource value: 0x7f020085
-			public const int avd_hide_password_3 = 2130837637;
+			public const int avd_hide_password_1 = 2130837637;
+			
+			// aapt resource value: 0x7f020086
+			public const int avd_hide_password_2 = 2130837638;
+			
+			// aapt resource value: 0x7f020087
+			public const int avd_hide_password_3 = 2130837639;
 			
 			// aapt resource value: 0x7f020054
 			public const int avd_show_password = 2130837588;
 			
-			// aapt resource value: 0x7f020086
-			public const int avd_show_password_1 = 2130837638;
-			
-			// aapt resource value: 0x7f020087
-			public const int avd_show_password_2 = 2130837639;
-			
 			// aapt resource value: 0x7f020088
-			public const int avd_show_password_3 = 2130837640;
+			public const int avd_show_password_1 = 2130837640;
+			
+			// aapt resource value: 0x7f020089
+			public const int avd_show_password_2 = 2130837641;
+			
+			// aapt resource value: 0x7f02008a
+			public const int avd_show_password_3 = 2130837642;
 			
 			// aapt resource value: 0x7f020055
 			public const int camera = 2130837589;
@@ -2407,11 +2407,11 @@ namespace LiveCam.Droid
 			// aapt resource value: 0x7f02007c
 			public const int notification_icon_background = 2130837628;
 			
-			// aapt resource value: 0x7f020081
-			public const int notification_template_icon_bg = 2130837633;
+			// aapt resource value: 0x7f020083
+			public const int notification_template_icon_bg = 2130837635;
 			
-			// aapt resource value: 0x7f020082
-			public const int notification_template_icon_low_bg = 2130837634;
+			// aapt resource value: 0x7f020084
+			public const int notification_template_icon_low_bg = 2130837636;
 			
 			// aapt resource value: 0x7f02007d
 			public const int notification_tile_bg = 2130837629;
@@ -2420,10 +2420,16 @@ namespace LiveCam.Droid
 			public const int notify_panel_notification_icon_bg = 2130837630;
 			
 			// aapt resource value: 0x7f02007f
-			public const int tooltip_frame_dark = 2130837631;
+			public const int splash = 2130837631;
 			
 			// aapt resource value: 0x7f020080
-			public const int tooltip_frame_light = 2130837632;
+			public const int splash_screen = 2130837632;
+			
+			// aapt resource value: 0x7f020081
+			public const int tooltip_frame_dark = 2130837633;
+			
+			// aapt resource value: 0x7f020082
+			public const int tooltip_frame_light = 2130837634;
 			
 			static Drawable()
 			{
@@ -3980,6 +3986,15 @@ namespace LiveCam.Droid
 			
 			// aapt resource value: 0x7f0b0161
 			public const int Base_Widget_Design_TabLayout = 2131427681;
+			
+			// aapt resource value: 0x7f0b0181
+			public const int MyTheme = 2131427713;
+			
+			// aapt resource value: 0x7f0b0180
+			public const int MyTheme_Base = 2131427712;
+			
+			// aapt resource value: 0x7f0b0182
+			public const int MyTheme_Splash = 2131427714;
 			
 			// aapt resource value: 0x7f0b001e
 			public const int Platform_AppCompat = 2131427358;
