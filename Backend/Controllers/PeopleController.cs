@@ -5,6 +5,7 @@ using System.Linq;
 using Backend.Models;
 using System.Diagnostics;
 using Backend.Logic.Recognition;
+using Newtonsoft.Json.Linq;
 
 namespace bigbackend
 {
@@ -12,9 +13,19 @@ namespace bigbackend
 	{
         [Route("api/login")]
         [HttpPost]
-        public HttpResponseMessage GetPersonByLogin([FromBody] LoginData login)
+        public HttpResponseMessage GetPersonByLogin()
         {
-            Person person = Storage.FindPersonByCredentials(login.identifier, login.password);
+	        var serializedString = Request.Content.ReadAsStringAsync().Result;
+			JObject obj = JObject.Parse(serializedString);
+	        if (!obj.HasValues || !obj.ContainsKey("identifier") || !obj.ContainsKey("password"))
+	        {
+		        return Request.CreateResponse(HttpStatusCode.BadRequest);
+	        }
+
+	        string identifier = obj.GetValue("identifier").ToObject<string>();
+	        string password = obj.GetValue("password").ToObject<string>();
+
+			Person person = Storage.FindPersonByCredentials(identifier, password);
             if (person != null)
             {
                 return Request.CreateResponse(HttpStatusCode.OK, person);
