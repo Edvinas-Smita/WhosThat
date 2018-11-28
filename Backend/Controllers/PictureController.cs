@@ -4,16 +4,21 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Http;
-using WhosThat.Recognition;
+using System.Diagnostics;
+using Backend.Logic.Recognition;
 
 namespace Backend.Controllers
 {
     public class PictureController : ApiController
     {
+        const int BMP_SIGNATURE = 0x424D;
+        const int JPEG_SIGNATURE = 0xFFD8FF;
+
 	    [HttpPost, Route("api/pictures/{personID}")]
 	    public async Task<IHttpActionResult> PostPersonPicture(int personID)
-	    {
-		    if (!Request.Content.IsMimeMultipartContent())
+		{
+			Debug.WriteLine("Incoming POST for api/pictures/id");
+			if (!Request.Content.IsMimeMultipartContent())
 		    {
 			    throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
 		    }
@@ -35,8 +40,16 @@ namespace Backend.Controllers
 				    throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
 			    }
 			    var buffer = await file.ReadAsByteArrayAsync();
-			    
-				currentPerson.Images.Add(buffer);
+
+                if(
+                    ( (((int)buffer[0] << 8) + (int)buffer[1]) != BMP_SIGNATURE) &&
+                    ( (((int)buffer[0] << 16) + ((int)buffer[1] << 8) + (int)buffer[2]) != JPEG_SIGNATURE)
+                )
+                {
+                    throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+                }
+
+                currentPerson.Images.Add(buffer);
 		    }
 
 		    return Ok();
@@ -44,8 +57,9 @@ namespace Backend.Controllers
 
 	    [HttpGet, Route("api/pictures/{personID}/{pictureNr}")]
         public HttpResponseMessage GetPersonPicture(int personID, int pictureNr)
-	    {
-		    if (pictureNr < 0)
+		{
+			Debug.WriteLine("Incoming GET for api/pictures/id/nr");
+			if (pictureNr < 0)
 		    {
 			    throw new HttpResponseException(HttpStatusCode.BadRequest);
 		    }
@@ -100,6 +114,7 @@ namespace Backend.Controllers
 		[HttpDelete, Route("api/pictures/{personID}/{pictureNr}")]
 		public HttpResponseMessage DeletePersonPicture(int personID, int pictureNr)
 		{
+			Debug.WriteLine("Incoming DELETE for api/pictures/id/nr");
 			if (pictureNr < 0)
 			{
 				throw new HttpResponseException(HttpStatusCode.BadRequest);
