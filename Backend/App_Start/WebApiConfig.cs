@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+﻿using System.Web.Http;
 
 namespace Backend
 {
@@ -9,9 +6,7 @@ namespace Backend
     {
         public static void Register(HttpConfiguration config)
         {
-            // Web API configuration and services
-
-            // Web API routes
+            config.Filters.Add(new AuthorizeAttribute());
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
