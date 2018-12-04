@@ -7,6 +7,7 @@ namespace Backend.Controllers
     public class TokenController : ApiController
     {
         // TODO: channge to POST later
+        [Route("api/token")]
         [AllowAnonymous]
         public string Get(string username, string password)
         {
