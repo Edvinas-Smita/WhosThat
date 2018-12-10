@@ -12,7 +12,7 @@ using Android.Widget;
 
 namespace LiveCam.Droid.Views
 {
-    interface IRegisterView
+    public interface IRegisterView
     {
         string UserNameText { get; set; }
         string PasswordText { get; set; }
