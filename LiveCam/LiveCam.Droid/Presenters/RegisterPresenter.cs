@@ -27,7 +27,7 @@ namespace LiveCam.Droid.Presenters
 
         public async void Register()
         {
-            var result = await _registerModel.TryToLogin(
+            var result = await _registerModel.TryToRegister(
                 "http://88.119.27.98:55555",
                 _registerView.UserNameText,
                 _registerView.PasswordText,

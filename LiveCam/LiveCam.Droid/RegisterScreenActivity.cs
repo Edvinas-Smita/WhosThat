@@ -9,11 +9,14 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using LiveCam.Droid.Models;
+using LiveCam.Droid.Presenters;
+using LiveCam.Droid.Views;
 
 namespace LiveCam.Droid
 {
     [Activity(Label = "RegisterScreenActivity")]
-    public class RegisterScreenActivity : Activity
+    public class RegisterScreenActivity : Activity, IRegisterView
     {
         private Button _btnRegister;
         private TextView _txtUser;
@@ -45,8 +48,43 @@ namespace LiveCam.Droid
 
             else
             {
-
+                RegisterPresenter presenter = new RegisterPresenter(this, new RegisterModel());
+                presenter.Register();
             }
+        }
+
+
+        public string UserNameText
+        {
+            get => _txtUser.Text;
+            set => _txtUser.Text = value;
+        }
+
+        public string PasswordText
+        {
+            get => _txtPass.Text;
+            set => _txtPass.Text = value;
+        }
+        public string NameText
+        {
+            get => _txtName.Text;
+            set => _txtName.Text = value;
+        }
+
+        public string LastNameText
+        {
+            get => _txtLastName.Text;
+            set => _txtLastName.Text = value;
+        }
+
+        public void RegisterSuccesful(string result)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RegisterUnsuccessful()
+        {
+            throw new NotImplementedException();
         }
     }
 }
