@@ -138,6 +138,7 @@
     <Compile Include="LoginScreenActivity.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Models\ILoginModel.cs" />
+    <Compile Include="Models\IRegisterModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Presenters\LoginPresenter.cs" />
     <Compile Include="Presenters\MainPresenter.cs" />

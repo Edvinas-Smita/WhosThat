@@ -2,21 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using LiveCam.Droid.Models;
-using LiveCam.Droid.Views;
 
-namespace LiveCam.Droid.Presenters
+namespace LiveCam.Droid.Models
 {
-    public class RegisterPresenter
+    public interface IRegisterModel
     {
-        private ILoginView _loginView;
-        private ILoginModel _loginModel;
+        Task<string> TryToRegister(string address, string username, string passwd, string name, string lastname);
     }
 }
