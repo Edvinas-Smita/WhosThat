@@ -14,6 +14,6 @@ namespace LiveCam.Droid.Models
 {
     public interface IRegisterModel
     {
-        Task<string> TryToRegister(string address, string username, string passwd, string name, string lastname);
+        Task<String> TryToRegister(string address, string username, string passwd, string name, string lastname);
     }
 }
