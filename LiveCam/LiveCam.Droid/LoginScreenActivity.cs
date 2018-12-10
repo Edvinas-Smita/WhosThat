@@ -13,22 +13,21 @@ using Android.Widget;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
+using LiveCam.Droid.Models;
+using LiveCam.Droid.Presenters;
+using LiveCam.Droid.Views;
+
 namespace LiveCam.Droid
 {
-    public static class Extensions
-    {
-        public static StringContent AsJson(this object o)
-         => new StringContent(JsonConvert.SerializeObject(o), Encoding.UTF8, "application/json");
-    }
-
     [Activity(Label = "LoginScreenActivity", MainLauncher = true)]
-    public class LoginScreenActivity : Activity
+    public class LoginScreenActivity : Activity, ILoginView
     {
         private Button _btnLogin;
         private TextView _txtUser;
         private TextView _txtPass;
         private TextView _txtPasswordWarning;
         private bool loggedOn = false;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -55,12 +54,12 @@ namespace LiveCam.Droid
                 //if (_txtUser.Text == "admin" && _txtPass.Text == "admin")
                     //LoginSuccesful();
 
+                LoginPresenter presenter = new LoginPresenter(this, new LoginModel());
+                presenter.Login();
 
 
 
-
-
-                Task.Run(async () =>
+                /*Task.Run(async () =>
                 {
                     string pass = Sha256(_txtPass.Text);
                     var client = new HttpClient();
@@ -89,27 +88,33 @@ namespace LiveCam.Droid
                     {
                         LoginSuccesful(resultString);
                     }
-                });
+                });*/
             }
         }
 
-        private void LoginSuccesful(string result)
+        public void LoginSuccesful(string result)
         {
             Intent nextActivity = new Intent(this, typeof(MainActivity));
             nextActivity.PutExtra("Person", result);
             StartActivity(nextActivity);
         }
 
-        static string Sha256(string randomString)
+        public void LoginUnsuccessful()
         {
-            var crypt = new System.Security.Cryptography.SHA256Managed();
-            var hash = new StringBuilder();
-            byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(randomString));
-            foreach (byte theByte in crypto)
-            {
-                hash.Append(theByte.ToString("x2"));
-            }
-            return hash.ToString();
+            Toast.MakeText(this, "Password or username is incorrect", ToastLength.Long).Show();
+        }
+
+        public string LoginText
+        {
+            get => _txtUser.Text;
+            set => _txtUser.Text = value;
+        }
+
+        public string PasswordText
+        {
+            get => _txtPass.Text;
+            set => _txtPass.Text = value;
+
         }
     }
 }
