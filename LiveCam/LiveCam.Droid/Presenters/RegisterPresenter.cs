@@ -12,7 +12,7 @@ using Android.Widget;
 
 namespace LiveCam.Droid.Presenters
 {
-    class RegisterPresenter
+    public class RegisterPresenter
     {
     }
 }

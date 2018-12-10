@@ -149,6 +149,7 @@
     <Compile Include="SplashActivity.cs" />
     <Compile Include="Views\ILoginView.cs" />
     <Compile Include="Views\IMainView.cs" />
+    <Compile Include="Views\IRegisterView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
