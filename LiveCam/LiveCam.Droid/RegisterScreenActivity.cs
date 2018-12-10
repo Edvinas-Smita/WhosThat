@@ -79,12 +79,14 @@ namespace LiveCam.Droid
 
         public void RegisterSuccesful(string result)
         {
-            throw new NotImplementedException();
+            Toast.MakeText(this, "Registration successful", ToastLength.Long);
+            Intent nextActivity = new Intent(this, typeof(LoginScreenActivity));
+            StartActivity(nextActivity);
         }
 
         public void RegisterUnsuccessful()
         {
-            throw new NotImplementedException();
+            Toast.MakeText(this, "Inputs are wrong or the username is taken", ToastLength.Long).Show();
         }
     }
 }
