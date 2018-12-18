@@ -11,6 +11,8 @@ using Backend.Logic.Recognition.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using Backend;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace UnitTests4Backend
 {
@@ -77,6 +79,44 @@ namespace UnitTests4Backend
 			}
 			Assert.AreEqual(bytes[0], bitmap.GetPixel(0, 0).B);
 			bitmap.Save(@"D:\FromTest.bmp");
+		}
+
+		[TestMethod]
+		public void DataTableAndAdapter()
+		{
+			using (SqlConnection connection = new SqlConnection(@"source=GAMEZ\sqlexpress;initial catalog=TOP_BIG_BROTHER;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework&quot;"))
+			{
+				var adapter = new SqlDataAdapter("SELECT UserID, Bio, Likes FROM dbo.Users", connection);
+				var users = new DataTable();
+
+				var column = new DataColumn("id", typeof(long));
+				column.ReadOnly = true;
+				column.Unique = true;
+				users.Columns.Add(column);
+
+				column = new DataColumn("bio", typeof(string));
+				column.ReadOnly = false;
+				column.Unique = false;
+				users.Columns.Add(column);
+
+				column = new DataColumn("likes", typeof(string));
+				column.ReadOnly = false;
+				column.Unique = false;
+				users.Columns.Add(column);
+
+				adapter.Fill(users);
+				using (var client = new HttpClient())
+				{
+					client.BaseAddress = new Uri("http://88.119.27.98:55555");
+					var serializedResult = client.GetAsync("api/people").Result.Content.ReadAsStringAsync().Result;
+					var existingPeople = Newtonsoft.Json.JsonConvert.DeserializeObject<List<User>>(serializedResult);
+
+					foreach (DataRow row in users.Rows)
+					{
+						Assert.IsTrue(existingPeople.Exists(user => (long)row["id"] == user.UserID && (string)row["bio"] == user.Bio && (string)row["likes"] == user.Likes));
+					}
+				}
+			}
 		}
 	}
 }
