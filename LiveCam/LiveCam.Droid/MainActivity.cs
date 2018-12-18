@@ -311,8 +311,13 @@ namespace LiveCam.Droid
             mFaceGraphic.SetId(id);
             try
             {
-                if (mCameraSource != null && !isProcessing)
-                    mCameraSource.TakePicture(null, this);
+                Task.Run(async () =>
+                {
+                    await Task.Delay(500);
+                    if (mCameraSource != null && !isProcessing)
+                        mCameraSource.TakePicture(null, this);
+                });
+
 
                 _face = item as Face;
                 Console.WriteLine($"position x: {_face.Position.X} position y: {_face.Position.Y} width: {_face.Width} height: {_face.Height}");
