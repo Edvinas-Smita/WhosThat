@@ -69,11 +69,11 @@ namespace LiveCam.Droid
             //greetingsText = FindViewById<TextView>(Resource.Id.greetingsTextView);
 
 
-            //var personLoggedIn = this.Intent.Extras.GetString("Person");
-            //Console.WriteLine(personLoggedIn+"--------");
-            //jsonOfLoggedInPerson = JObject.Parse(personLoggedIn);
+            var personLoggedIn = this.Intent.Extras.GetString("Person");
+            Console.WriteLine(personLoggedIn+"--------");
+            jsonOfLoggedInPerson = JObject.Parse(personLoggedIn);
 
-            //Toast.MakeText(this, "Welcome back " + jsonOfLoggedInPerson.GetValue("Name") + "!",ToastLength.Long).Show();
+            Toast.MakeText(this, "Welcome back " + jsonOfLoggedInPerson.GetValue("Name") + "!",ToastLength.Long).Show();
 
 
             _switchCamBtn.Click += SwichCamBtnClick;
