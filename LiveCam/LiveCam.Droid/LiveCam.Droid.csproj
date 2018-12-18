@@ -138,15 +138,20 @@
     <Compile Include="LoginScreenActivity.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Models\ILoginModel.cs" />
+    <Compile Include="Models\IRegisterModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Presenters\LoginPresenter.cs" />
     <Compile Include="Presenters\MainPresenter.cs" />
+    <Compile Include="Presenters\RegisterPresenter.cs" />
     <Compile Include="Proxies\PhotoProxy.cs" />
+    <Compile Include="RegisterScreenActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SplashActivity.cs" />
     <Compile Include="Views\ILoginView.cs" />
     <Compile Include="Views\IMainView.cs" />
+    <Compile Include="Views\IRegisterView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -212,6 +217,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\trainNewFaceIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\RegisterScreen.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="..\LiveCam.Shared\LiveCam.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
