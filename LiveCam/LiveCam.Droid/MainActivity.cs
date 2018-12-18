@@ -417,7 +417,7 @@ namespace LiveCam.Droid
                                 //else Console.WriteLine("the stream is not null");
                                 //stream.Dispose();
                                 responseObject = JObject.Parse(await response.Content.ReadAsStringAsync());
-
+                                newestResponse = responseObject.GetValue("Name") + ", " + responseObject.GetValue("Bio") + ", " + responseObject.GetValue("Likes");
                             });
 
 
