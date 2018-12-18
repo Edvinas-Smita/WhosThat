@@ -405,7 +405,7 @@ namespace LiveCam.Droid
                                 var client = new HttpClient();    //Iskelt kad ne ant kiekvieno siuntimo kurtu
                                 client.BaseAddress = new Uri("http://88.119.27.98:55555");
                                 //var stream = new MemoryStream();
-                                byte[] byteArray=LiveCamHelper.BitmapToGrayscaleBytes(bitmap);
+                                byte[] byteArray = LiveCamHelper.BitmapToGrayscaleBytes(bitmap);
                                 //stream.Write(byteArray, 0, byteArray.Length);
                                 //bitmap.Compress(Bitmap.CompressFormat.Jpeg, 100, stream);
                                 var content = new ByteArrayContent(byteArray);
@@ -417,7 +417,10 @@ namespace LiveCam.Droid
                                 //else Console.WriteLine("the stream is not null");
                                 //stream.Dispose();
                                 responseObject = JObject.Parse(await response.Content.ReadAsStringAsync());
-                                newestResponse = responseObject.GetValue("Name") + ", " + responseObject.GetValue("Bio") + ", " + responseObject.GetValue("Likes");
+                                if (!string.IsNullOrWhiteSpace((string)responseObject.GetValue("Name")))
+                                {
+                                    newestResponse = responseObject.GetValue("Name") + ", " + responseObject.GetValue("Bio") + ", " + responseObject.GetValue("Likes");
+                                }
                             });
 
 
