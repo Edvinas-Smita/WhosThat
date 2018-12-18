@@ -22,6 +22,7 @@ namespace Backend.Controllers
         public bool CheckUser(string username, string password)
         {
             // should check in the database
+            // rip database
             return true;
         }
     }
