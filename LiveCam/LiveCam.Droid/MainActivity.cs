@@ -294,7 +294,7 @@ namespace LiveCam.Droid
         private bool isProcessing = false;
         private ImageButton _img;
         private Face _face;
-
+        private JObject responseObject;
         public static string newestResponse = "noone";
 
 
@@ -416,7 +416,8 @@ namespace LiveCam.Droid
                                 //if (stream.Equals(null)) Console.WriteLine("The stream is null");
                                 //else Console.WriteLine("the stream is not null");
                                 //stream.Dispose();
-                                newestResponse = await response.Content.ReadAsStringAsync();
+                                responseObject = JObject.Parse(await response.Content.ReadAsStringAsync());
+
                             });
 
 
