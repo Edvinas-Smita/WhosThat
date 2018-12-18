@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Diagnostics;
 using Backend.Logic.Recognition;
+using Backend.Models;
 
 namespace Backend.Controllers
 {
@@ -15,11 +16,16 @@ namespace Backend.Controllers
         const int JPEG_SIGNATURE = 0xFFD8FF;
 
 	    [HttpPost, Route("api/pictures/{personID}")]
-	    public HttpResponseMessage PostPersonPicture([FromUri] int personID, [FromBody] string link)
+	    public HttpResponseMessage PostPersonPicture([FromUri] int personID, [FromBody] AdvancedString link)
 		{
-			Debug.WriteLine("Incoming POST for api/pictures/id");
+			Debug.WriteLine("Incoming POST for api/pictures/{0} : {1}", personID, link.Value);
 
-			Storage.AddPictureLink(personID, link);
+			if (Storage.FindUserByID(personID) == null || string.IsNullOrWhiteSpace(link.Value))
+			{
+				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Bad ID or link");
+			}
+
+			Storage.AddPictureLink(personID, link.Value);
 
 			/*if (!Request.Content.IsMimeMultipartContent())
 		    {
@@ -58,10 +64,24 @@ namespace Backend.Controllers
 			return Request.CreateResponse(HttpStatusCode.OK);
 		}
 
-	    [HttpGet, Route("api/pictures/{personID}/{pictureNr}")]
+		[HttpGet, Route("api/pictures")]
+		public HttpResponseMessage GetAllPics()
+		{
+			Debug.WriteLine("Incoming GET for api/pictures");
+			return Request.CreateResponse(HttpStatusCode.OK, Storage.GetALLPics());
+		}
+
+		[HttpGet, Route("api/pictures/{personID}")]
+		public HttpResponseMessage GetAllUserPics([FromUri] long personID)
+		{
+			Debug.WriteLine("Incoming GET for api/pictures/{0}", personID);
+			return Request.CreateResponse(HttpStatusCode.OK, Storage.GetAllUserPictures(personID));
+		}
+
+		[HttpGet, Route("api/pictures/{personID}/{pictureNr}")]
         public HttpResponseMessage GetPersonPictureLink([FromUri] long personID, [FromUri] int pictureNr)
 		{
-			Debug.WriteLine("Incoming GET for api/pictures/id/nr");
+			Debug.WriteLine("Incoming GET for api/pictures/{0}/{1}", personID, pictureNr);
 			if (pictureNr < 0)
 		    {
 			    throw new HttpResponseException(HttpStatusCode.BadRequest);
@@ -123,7 +143,7 @@ namespace Backend.Controllers
 		[HttpDelete, Route("api/pictures/{personID}/{pictureNr}")]
 		public HttpResponseMessage DeletePersonPicture(int personID, int pictureNr)
 		{
-			Debug.WriteLine("Incoming DELETE for api/pictures/id/nr");
+			Debug.WriteLine("Incoming DELETE for api/pictures/{0}/{1}", personID, pictureNr);
 			if (pictureNr < 0)
 			{
 				throw new HttpResponseException(HttpStatusCode.BadRequest);

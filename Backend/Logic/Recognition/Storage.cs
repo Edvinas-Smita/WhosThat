@@ -11,7 +11,7 @@ namespace Backend.Logic.Recognition
     {
 		private delegate bool CheckFirstBySecondAndThird<T1, T2, T3>(T1 person, T2 loginName, T3 passwordHash);
 		//public static BindingList<Person> People = new BindingList<Person> { new Person("admin", "yep", "", "", new VeryDependentActions()) };
-		public static BB_Entities entities = new BB_Entities();
+		private static BB_Entities entities = new BB_Entities();
 
 		#region user/person CRUD
 		public static List<Person> GetAllPeople()
@@ -101,6 +101,11 @@ namespace Backend.Logic.Recognition
 				PhotoLink = link
 			});
 			entities.SaveChanges();
+		}
+
+		public static List<Photo> GetALLPics()
+		{
+			return entities.Photos.ToList();
 		}
 
 		public static Photo GetPictureByID(long pictureID)

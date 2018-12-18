@@ -34,6 +34,12 @@ namespace bigbackend
 			Debug.WriteLine("Incoming POST for api/people");
 			if (ModelState.IsValid && newUser != null)
 			{
+				if (string.IsNullOrWhiteSpace(newUser.Email)
+					|| string.IsNullOrWhiteSpace(newUser.Password)
+					|| string.IsNullOrWhiteSpace(newUser.Name))	//pre-validating NOT NULL values
+				{
+					return Request.CreateResponse(HttpStatusCode.BadRequest);
+				}
 				Storage.AddUser(newUser);
 				//var actualPerson = Person.PersonWithValidID(newPerson);
 				//Storage.People.Add(actualPerson);

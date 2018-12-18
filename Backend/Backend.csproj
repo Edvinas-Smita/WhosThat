@@ -168,6 +168,7 @@
     <Compile Include="Logic\Recognition\Util\EmguSingleton.cs" />
     <Compile Include="Logic\Recognition\Util\Statics.cs" />
     <Compile Include="Logic\UserManagement\Test\TestUser.cs" />
+    <Compile Include="Models\AdvancedString.cs" />
     <Compile Include="Models\LoginData.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\VeryDependentActions.cs" />
