@@ -67,9 +67,8 @@ namespace Backend.Controllers
 			{
 				return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, Request.Content));
 			}
-
-		    var currentPerson = Storage.FindPersonByID(userID);
-		    if (currentPerson == null)
+			
+		    if (Storage.FindPersonByID(userID) == null)	//check if that user e x i s t s
 			{
 				return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, Request.Content));
 			}

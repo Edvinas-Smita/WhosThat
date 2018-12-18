@@ -15,10 +15,13 @@ namespace Backend.Controllers
         const int JPEG_SIGNATURE = 0xFFD8FF;
 
 	    [HttpPost, Route("api/pictures/{personID}")]
-	    public async Task<IHttpActionResult> PostPersonPicture(int personID)
+	    public HttpResponseMessage PostPersonPicture([FromUri] int personID, [FromBody] string link)
 		{
 			Debug.WriteLine("Incoming POST for api/pictures/id");
-			if (!Request.Content.IsMimeMultipartContent())
+
+			Storage.AddPictureLink(personID, link);
+
+			/*if (!Request.Content.IsMimeMultipartContent())
 		    {
 			    throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
 		    }
@@ -50,13 +53,13 @@ namespace Backend.Controllers
                 }
 
                 currentPerson.Images.Add(buffer);
-		    }
+		    }*/
 
-		    return Ok();
+			return Request.CreateResponse(HttpStatusCode.OK);
 		}
 
 	    [HttpGet, Route("api/pictures/{personID}/{pictureNr}")]
-        public HttpResponseMessage GetPersonPicture(int personID, int pictureNr)
+        public HttpResponseMessage GetPersonPictureLink([FromUri] long personID, [FromUri] int pictureNr)
 		{
 			Debug.WriteLine("Incoming GET for api/pictures/id/nr");
 			if (pictureNr < 0)
@@ -64,7 +67,7 @@ namespace Backend.Controllers
 			    throw new HttpResponseException(HttpStatusCode.BadRequest);
 		    }
 
-		    var currentPerson = Storage.FindPersonByID(personID);
+			/*var currentPerson = Storage.FindPersonByID(personID);
 		    if (currentPerson == null || currentPerson.Images.Count <= pictureNr)
 		    {
 			    throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -82,7 +85,13 @@ namespace Backend.Controllers
 		    result.Content.Headers.ContentType =
 			    new MediaTypeHeaderValue("application/octet-stream");
 
-		    return result;
+		    return result;*/
+
+			var pic = Storage.GetNthPictureOfUser(personID, pictureNr);
+
+			return pic == null
+				? Request.CreateResponse(HttpStatusCode.NotFound)
+				: Request.CreateResponse(HttpStatusCode.OK, pic);
 	    }
 
 		/*[HttpGet, Route("api/pictures/{personID}")]
@@ -120,13 +129,15 @@ namespace Backend.Controllers
 				throw new HttpResponseException(HttpStatusCode.BadRequest);
 			}
 
-			var currentPerson = Storage.FindPersonByID(personID);
+			/*var currentPerson = Storage.FindPersonByID(personID);
 			if (currentPerson == null || currentPerson.Images.Count <= pictureNr)
 			{
 				throw new HttpResponseException(HttpStatusCode.NotFound);
 			}
 			
-			currentPerson.Images.RemoveAt(pictureNr);
+			currentPerson.Images.RemoveAt(pictureNr);*/
+
+			Storage.DeletePicture(Storage.GetNthPictureOfUser(personID, pictureNr));
 
 			return Request.CreateResponse(HttpStatusCode.OK);
 		}

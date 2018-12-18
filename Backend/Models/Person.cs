@@ -15,10 +15,10 @@ namespace Backend.Models
     {
         public event PropertyChangedEventHandler PropertyChanged = delegate (object sender, PropertyChangedEventArgs args) { };
 
-        public int Id;
-
-        private string name;
-        private string password;
+		private string firstName;
+		private string lastName;
+        private string email;
+        private string passHash;
         private string bio;
         private string likes;
         private VeryDependentActions actions;
@@ -26,24 +26,42 @@ namespace Backend.Models
         {
             return new LazyClass(1337);
         });
+		public string FirstName
+		{
+			get { return firstName; }
+			set
+			{
+				firstName = value;
+				PropertyChanged(this, new PropertyChangedEventArgs("FirstName"));
+			}
+		}
+		public string LastName
+		{
+			get { return lastName; }
+			set
+			{
+				lastName = value;
+				PropertyChanged(this, new PropertyChangedEventArgs("LastName"));
+			}
+		}
 
-        public string Name
+		public string Email
         {
-            get { return name; }
+            get { return email; }
             set
             {
                 actions.Stuff();
-                name = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("Name"));
+                email = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("Email"));
             }
         }
-        public string Password
+        public string PasswordHash
         {
-            get { return password; }
+            get { return passHash; }
             set
             {
-                password = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("Password"));
+                passHash = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("PasswordHash"));
             }
         }
         public string Bio
@@ -64,22 +82,36 @@ namespace Backend.Models
                 PropertyChanged(this, new PropertyChangedEventArgs("Likes"));
             }
         }
-        public ObservableCollection<byte[]> Images = new ObservableCollection<byte[]>();
+        //public ObservableCollection<byte[]> Images = new ObservableCollection<byte[]>();
 
-        public Person(string name, string password, string bio, string likes, VeryDependentActions act)
+        public Person(string firstName, string lastName, string email, string passHash, string bio, string likes)
 		{
-			actions = act;
-			Name = name;
-            Password = password;
-            Bio = bio;
-            Likes = likes;
+			this.actions = new VeryDependentActions();
 
-            Id = IdFactory.GetNextId();
+			this.firstName = firstName;
+			this.lastName = lastName;
+			this.email = email;
+            this.passHash = passHash;
+            this.bio = bio;
+            this.likes = likes;
         }
 
-	    public static Person PersonWithValidID(Person person)
-	    {
-			return new Person(person.Name, person.Password, person.Bio, person.likes, person.actions);
-	    }
+		public static Person PersonFromUser(User user)
+		{
+			return new Person(user.Name, user.Surname, user.Email, user.Password, user.Bio, user.Likes);
+		}
+
+		public User ToUser()
+		{
+			return new User()
+			{
+				Name = this.FirstName,
+				Surname = this.LastName,
+				Email = this.Email,
+				Password = this.PasswordHash,
+				Bio = this.Bio,
+				Likes = this.Likes
+			};
+		}
     }
 }
