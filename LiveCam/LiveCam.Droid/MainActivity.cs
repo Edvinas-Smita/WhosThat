@@ -39,7 +39,6 @@ namespace LiveCam.Droid
 
         private CameraSource _mCameraSource = null;
 
-        
 
         private CameraSourcePreview _mPreview;
         private GraphicOverlay _mGraphicOverlay;
@@ -296,6 +295,9 @@ namespace LiveCam.Droid
         private ImageButton _img;
         private Face _face;
 
+        public static string newestResponse = "noone";
+
+
         public GraphicFaceTracker(GraphicOverlay overlay, ImageButton img, CameraSource cameraSource =null)
         {
             mOverlay = overlay;
@@ -409,7 +411,7 @@ namespace LiveCam.Droid
                                 //if (stream.Equals(null)) Console.WriteLine("The stream is null");
                                 //else Console.WriteLine("the stream is not null");
                                 //stream.Dispose();
-
+                                newestResponse = await response.Content.ReadAsStringAsync();
                             });
 
 
