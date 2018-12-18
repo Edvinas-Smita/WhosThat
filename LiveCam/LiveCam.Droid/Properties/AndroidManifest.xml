@@ -4,7 +4,11 @@
 	<uses-feature android:name="android.hardware.camera" />
 	<uses-permission android:name="android.permission.CAMERA" />
 	<uses-permission android:name="android.permission.INTERNET" />
-  <application android:label="Who's that?" android:allowBackup="true" android:hardwareAccelerated="true" android:theme="@style/Theme.AppCompat" android:icon="@drawable/logo">
-    <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="face" />
+	<uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+	<uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+	<application android:label="Who's that?" android:allowBackup="true" android:hardwareAccelerated="true" android:theme="@style/Theme.AppCompat" android:icon="@drawable/logo">
+		<meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="face" />
 	</application>
 </manifest>

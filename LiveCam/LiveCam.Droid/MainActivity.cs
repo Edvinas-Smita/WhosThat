@@ -60,6 +60,11 @@ namespace LiveCam.Droid
 
             base.OnCreate(bundle);
 
+           // if (CheckSelfPermission(Manifest.Permission.AccessCoarseLocation) != (int)Permission.Granted)
+           // {
+           //     RequestPermissions(new string[] { Manifest.Permission.AccessCoarseLocation, Manifest.Permission.AccessFineLocation }, 0);
+           // }
+
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
@@ -69,13 +74,13 @@ namespace LiveCam.Droid
             _trainNewFaceButton = FindViewById<ImageButton>(Resource.Id.trainNewFaceButton);
             //greetingsText = FindViewById<TextView>(Resource.Id.greetingsTextView);
 
-
+            /* REMOVE AFTER TEST
             var personLoggedIn = this.Intent.Extras.GetString("Person");
             Console.WriteLine(personLoggedIn+"--------");
             jsonOfLoggedInPerson = JObject.Parse(personLoggedIn);
 
             Toast.MakeText(this, "Welcome back " + jsonOfLoggedInPerson.GetValue("Name") + "!",ToastLength.Long).Show();
-
+            */
 
             _switchCamBtn.Click += SwichCamBtnClick;
             _trainNewFaceButton.Click += _trainNewFaceButton_Click;
