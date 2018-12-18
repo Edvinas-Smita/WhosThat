@@ -10,6 +10,7 @@ using Backend.Models;
 using Backend.Logic.Recognition.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
+using Backend;
 
 namespace UnitTests4Backend
 {
@@ -23,7 +24,7 @@ namespace UnitTests4Backend
 		{
 			var client = new HttpClient();
 			client.BaseAddress = new Uri("http://88.119.27.98:55555");
-			var testUser = new { name = "Test", bio = "TestBio", likes = "TestLikes" };
+			var testUser = new { Name = "adminadmin", Email = "admin", Password = "8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918" };
 			var content = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(testUser));
 			content.Headers.ContentType =
 				new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json");
@@ -42,24 +43,18 @@ namespace UnitTests4Backend
 			{
 				client.BaseAddress = new Uri("http://88.119.27.98:55555");
 				var serializedResult = client.GetAsync("api/people").Result.Content.ReadAsStringAsync().Result;
-				var existingPeople = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Person>>(serializedResult);
+				var existingPeople = Newtonsoft.Json.JsonConvert.DeserializeObject<List<User>>(serializedResult);
 				if (existingPeople.Count == 0)
 				{
 					TestCreatePerson();
 					return;
 				}
 
-				var originalCount = existingPeople[0].Images.Count;
-				using (var webClient = new WebClient())
-				{
-					webClient.BaseAddress = "http://88.119.27.98:55555";
-					webClient.UploadFile("api/pictures/2", @"D:\BC1.jpg");
-				}
+				var zeeFotozUno = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Photo>>(client.GetAsync("api/pictures/0").Result.Content.ReadAsStringAsync().Result);
+				client.PostAsync("api/pictures/0", new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(new { Value = "U N I T" })));
+				var zeeFotozDos = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Photo>>(client.GetAsync("api/pictures/0").Result.Content.ReadAsStringAsync().Result);
 
-				var serializedResult2 = client.GetAsync("api/people/0").Result.Content.ReadAsStringAsync().Result;
-				var existingPerson = Newtonsoft.Json.JsonConvert.DeserializeObject<Person>(serializedResult2);
-				var currentCount = existingPerson.Images.Count;
-				Assert.AreEqual(originalCount + 1, currentCount);
+				Assert.AreEqual(zeeFotozUno.Count + 1, zeeFotozDos);
 			}
 		}
 

@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Linq;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Backend.Logic.Recognition
 {
@@ -51,6 +52,16 @@ namespace Backend.Logic.Recognition
 
 		public static void AddUser(User user)
 		{
+			using (SHA256 sha256Hash = SHA256.Create())
+			{
+				byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(user.Password));
+				StringBuilder builder = new StringBuilder();
+				for (int i = 0; i < bytes.Length; i++)
+				{
+					builder.Append(bytes[i].ToString("x2"));
+				}
+				user.Password = builder.ToString();	//hashing (w/o salt) user password before storing it
+			}
 			entities.Users.Add(user);
 			entities.SaveChanges();
 		}
@@ -149,14 +160,20 @@ namespace Backend.Logic.Recognition
 				return null;
 			}
 
-			CheckFirstBySecondAndThird<User, string, string> CorrectUserCredentials = delegate (User user, string Email, string PasswordHash)
+			/*CheckFirstBySecondAndThird<User, string, string> CorrectUserCredentials = delegate (User user, string Email, string PasswordHash)
 			{
 				if (Email.Equals(user.Email))
 				{
 					using (SHA256 sha256Hash = SHA256.Create())
 					{
 						byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(user.Password));
-						string hashedStoredPass = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
+						StringBuilder builder = new StringBuilder();
+						for (int i = 0; i < bytes.Length; i++)
+						{
+							builder.Append(bytes[i].ToString("x2"));
+						}
+						var hashedStoredPass = builder.ToString();
+						Debug.WriteLine("stored: {0}\nTest: {1}", hashedStoredPass, PasswordHash);
 						if (PasswordHash.Equals(hashedStoredPass))
 						{
 							return true;
@@ -165,9 +182,9 @@ namespace Backend.Logic.Recognition
 
 				}
 				return false;
-			};
+			};*/
 
-			return entities.Users.FirstOrDefault(user => CorrectUserCredentials(user, email, passwordHash));
+			return entities.Users.ToList().FirstOrDefault(user => user.Email.Equals(email) && user.Password.Equals(passwordHash));
 
             /*foreach (var person in People)
             {

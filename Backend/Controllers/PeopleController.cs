@@ -14,8 +14,9 @@ namespace bigbackend
         [Route("api/login")]
         [HttpPost]
         public HttpResponseMessage GetPersonByLogin([FromBody] LoginData login)
-        {
-            var user = Storage.FindPersonByCredentials(login.identifier, login.password);
+		{
+			Debug.WriteLine("Incoming POST for api/people : {0} | {1}", login.identifier, login.password);
+			var user = Storage.FindPersonByCredentials(login.identifier, login.password);
             if (user != null)
             {
                 return Request.CreateResponse(HttpStatusCode.OK, user);
