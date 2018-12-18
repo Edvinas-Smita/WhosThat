@@ -153,6 +153,29 @@ namespace Backend.Logic.Recognition
 		#endregion
 
 
+		#region requirements
+		public static List<Photo> PhotosByUserEmail(string email)
+		{
+			return entities.Photos.Join(entities.Users, photo => photo.UserID, user => user.UserID, (photo, user) => new { photo, user.Email })
+				.Where(monster => monster.Email.Equals(email))
+				.Select(monster => monster.photo)
+				.ToList();
+		}
+
+		public static List<string> LinksByUserID(long id)
+		{
+			return entities.Photos.GroupBy(photo => photo.UserID, photo => photo.PhotoLink, (key, group) => new { key, links = group.ToList() })
+				.Where(monster => monster.key == id)
+				.Select(monster => monster.links)
+				.FirstOrDefault();
+		}
+
+		public static string SingleStringOfAllUserLikesWhy()
+		{
+			return entities.Users.Aggregate("", (result, user) => result + " | " + user.Likes, a => a);
+		}
+		#endregion
+
 		public static User FindPersonByCredentials(string email, string passwordHash)
         {
 			if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(passwordHash))
