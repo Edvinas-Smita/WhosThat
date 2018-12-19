@@ -14,6 +14,11 @@ namespace Backend.Logic.Recognition.Util
 		//@param every face image should already contain only one face
 		public static void TrainSinglePersonFaces(IList faceImages, int id)
 		{
+			if (!EmguSingleton.Instance.IsInitialised)
+			{
+				EmguSingleton.Initialize();
+			}
+
 			var grayScaleFaces = new Image<Gray, byte>[faceImages.Count];
 			var arrayFromId = new int[faceImages.Count];
 			int failsOrSkips = 0;
@@ -45,6 +50,7 @@ namespace Backend.Logic.Recognition.Util
 			}
 
 			EmguSingleton.Instance.RecognizerIsTrained = true;
+			EmguSingleton.SaveData();
 		}
 
 		public static int RecognizeUser(Image<Gray, byte> userFaceImage)

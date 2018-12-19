@@ -162,7 +162,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Logic\IdFactory.cs" />
-    <Compile Include="Logic\Recognition\RecognizerEngine.cs" />
     <Compile Include="Logic\Recognition\Storage.cs" />
     <Compile Include="Logic\Recognition\Util\ConcurrentHashSet.cs" />
     <Compile Include="Logic\Recognition\Util\EmguSingleton.cs" />

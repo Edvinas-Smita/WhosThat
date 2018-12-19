@@ -21,6 +21,9 @@ namespace Backend.Logic.Recognition.Util
 		public LBPHFaceRecognizer Recognizer { get; } = new LBPHFaceRecognizer();
 		public bool RecognizerIsTrained = false;
 
+		public bool IsInitialised = false;
+		private const string DefaultFace = @"C:\TOP_BB\lbpcascade_frontalface_improved.xml", DefaultEye = @"C:\TOP_BB\haarcascade_eye.xml", DefaultData = @"C:\TOP_BB\data.xml";
+
 		public bool SetUp(string faceHaarCascadePath, string eyeHaarCascadePath, string recognizerDataPath)
 		{
 			if (File.Exists(faceHaarCascadePath) && File.Exists(eyeHaarCascadePath))
@@ -33,10 +36,21 @@ namespace Backend.Logic.Recognition.Util
 					RecognizerIsTrained = true;
 				}
 
+				IsInitialised = true;
 				return true;
 			}
 
 			return false;
+		}
+
+		public static void Initialize(string faceCascadePath = DefaultFace, string eyeCascadePath = DefaultEye, string recognizerDataPath = DefaultData)
+		{
+			Instance.SetUp(faceCascadePath, eyeCascadePath, recognizerDataPath);
+		}
+
+		public static void SaveData(string path = DefaultData)
+		{
+			Instance.Recognizer.Write(path);
 		}
 
 		public static Rectangle[] DetectFacesFromBitmap(Bitmap bitmap)

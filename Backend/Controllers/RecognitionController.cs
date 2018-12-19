@@ -39,7 +39,7 @@ namespace Backend.Controllers
 
 			var buffer = await Request.Content.ReadAsByteArrayAsync();
 			Debug.WriteLine(buffer.Length);
-			File.WriteAllBytes("D:/SomeDump/uploaded.bmp", buffer);
+			File.WriteAllBytes("E:/SomeDump/uploaded.bmp", buffer);
 			if (buffer.Length != IMAGE_BYTE_COUNT)
 			{
 				//throw new HttpResponseException(HttpStatusCode.BadRequest);
@@ -62,31 +62,40 @@ namespace Backend.Controllers
 
 	    [HttpPost, Route("api/train/{userID}/{imgCount}")]
 	    public async Task<IHttpActionResult> TrainRecognizer(int userID, int imgCount)
-	    {
-		    if (imgCount < 1 || imgCount > 50)
+		{
+			Debug.WriteLine("Incoming POST for api/train/{0}/{1}", userID, imgCount);
+			if (imgCount < 1 || imgCount > 50)
 			{
-				return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, Request.Content));
-			}
-			
-		    if (Storage.FindPersonByID(userID) == null)	//check if that user e x i s t s
-			{
-				return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, Request.Content));
+				Debug.WriteLine("Image count must be between 1 and 50 - Yours was " + imgCount);
+				return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new StringContent("Image count must be between 1 and 50 - Yours was " + imgCount)));
 			}
 
+			Debug.WriteLine("Counts are gud");
+			if (Storage.FindUserByID(userID) == null)   //check if that user e x i s t s
+			{
+				Debug.WriteLine("No user with given id (" + userID + ") was found");
+				return ResponseMessage(Request.CreateResponse(HttpStatusCode.NotFound, new StringContent("No user with given id (" + userID + ") was found")));
+			}
+
+			Debug.WriteLine("User e x i s t s");
 			var buffer = await Request.Content.ReadAsByteArrayAsync();
 			if (buffer.Length != IMAGE_BYTE_COUNT * imgCount)
 			{
-				return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, Request.Content));
+				Debug.WriteLine("Buffer size (" + buffer.Length + ") did not match expected size - " + (IMAGE_BYTE_COUNT * imgCount));
+				return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new StringContent("Buffer size (" + buffer.Length + ") did not match expected size - " + (IMAGE_BYTE_COUNT * imgCount))));
 			}
 
+			Debug.WriteLine("buffer size matches image count");
 			var imagesToTrain = new List<Image<Gray, byte>>(imgCount);
 		    for (int i = 0; i < imgCount; ++i)
 		    {
 				imagesToTrain.Add(Statics.ByteArrayToImage(Statics.SubArray(buffer, i * IMAGE_BYTE_COUNT, IMAGE_BYTE_COUNT), 240, 320));
 			}
 
+			Debug.WriteLine("Training...");
 			Statics.TrainSinglePersonFaces(imagesToTrain, userID);
-		    return Ok();
+			Debug.WriteLine("Trained");
+			return Ok();
 	    }
 
 		[HttpDelete, Route("api/train/{userID}")]
