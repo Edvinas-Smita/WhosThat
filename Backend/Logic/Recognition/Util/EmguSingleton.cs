@@ -13,7 +13,17 @@ namespace Backend.Logic.Recognition.Util
 {
 	class EmguSingleton
 	{
-		public static EmguSingleton Instance = new EmguSingleton();
+		private static EmguSingleton instance = new EmguSingleton();
+		public static EmguSingleton Instance {
+			get
+			{
+				if (!instance.IsInitialised)
+				{
+					Initialize();
+				}
+				return instance;
+			}
+		}
 
 		public CascadeClassifier FaceDetector { get; set; }
 		public CascadeClassifier EyeDetector { get; set; }
@@ -45,12 +55,12 @@ namespace Backend.Logic.Recognition.Util
 
 		public static void Initialize(string faceCascadePath = DefaultFace, string eyeCascadePath = DefaultEye, string recognizerDataPath = DefaultData)
 		{
-			Instance.SetUp(faceCascadePath, eyeCascadePath, recognizerDataPath);
+			instance.SetUp(faceCascadePath, eyeCascadePath, recognizerDataPath);
 		}
 
 		public static void SaveData(string path = DefaultData)
 		{
-			Instance.Recognizer.Write(path);
+			instance.Recognizer.Write(path);
 		}
 
 		public static Rectangle[] DetectFacesFromBitmap(Bitmap bitmap)

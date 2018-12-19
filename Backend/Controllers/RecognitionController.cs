@@ -20,6 +20,7 @@ namespace Backend.Controllers
 		[HttpPost, Route("api/recognize")]
 		public async Task<IHttpActionResult> RecognizeUser()
 		{
+			Debug.WriteLine("Incoming POST for api/recognize");
 			/*if (!Request.Content.IsMimeMultipartContent() || !Request.Content.Headers.ContentType.Equals("application/octet-stream"))
 			{
 				//throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
@@ -38,14 +39,16 @@ namespace Backend.Controllers
 			var buffer = await file.ReadAsByteArrayAsync();*/
 
 			var buffer = await Request.Content.ReadAsByteArrayAsync();
-			Debug.WriteLine(buffer.Length);
-			File.WriteAllBytes("E:/SomeDump/uploaded.bmp", buffer);
+			Debug.WriteLine("Buffer size: " + buffer.Length);
 			if (buffer.Length != IMAGE_BYTE_COUNT)
 			{
 				//throw new HttpResponseException(HttpStatusCode.BadRequest);
 				return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, Request.Content));
 			}
 
+			var justCallingTheGetterToHandleInit = EmguSingleton.Instance;
+			justCallingTheGetterToHandleInit = null;
+			Debug.WriteLine("Recognizer is " + (EmguSingleton.Instance.RecognizerIsTrained ? "" : "NOT ") + "trained");
 			if (!EmguSingleton.Instance.RecognizerIsTrained)
 			{
 				return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError,
@@ -53,11 +56,30 @@ namespace Backend.Controllers
 			}
 
 			var recognizedUserID = Statics.RecognizeUser(Statics.ByteArrayToImage(buffer, 240, 320));
-            Person recognized = Storage.FindPersonByID(recognizedUserID);
-            if (recognized != null)
-                return Ok(recognized);
-            else
-                return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError));
+			Debug.WriteLine("Recognized label: " + recognizedUserID);
+			if (recognizedUserID == -1)
+			{
+				return ResponseMessage(Request.CreateResponse(HttpStatusCode.NoContent));
+			}
+
+			#region save for spying use
+			var dInfo = new DirectoryInfo(@"C:\TOP_BB\dump");
+			var fInfos = dInfo.GetFiles("user" + recognizedUserID + "_*");
+			var currentPicCount = fInfos.Length;
+			File.WriteAllBytes(@"C:\TOP_BB\dump\user" + recognizedUserID + "_" + currentPicCount, buffer);
+			#endregion
+
+			var recognized = Storage.FindUserByID(recognizedUserID);
+			Debug.WriteLine("Recognized user: {0}", recognized);
+			if (recognized != null)
+			{
+				return Ok(recognized);
+			}
+			else
+			{
+				return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError,
+					new StringContent("Recognition algorythm ")));
+			}
 		}
 
 	    [HttpPost, Route("api/train/{userID}/{imgCount}")]
