@@ -110,7 +110,7 @@ namespace LiveCam.Droid
             float bottom = y + yOffset;
 
             canvas.DrawText(Math.Round(face.IsSmilingProbability, 2) > 0.6 ? "The person is happy!" : "Lighten up the mood!", x - xOffset, y - yOffset - 10, mIdPaint);
-
+            canvas.DrawText(GraphicFaceTracker.newestResponse, x - xOffset, y - yOffset - 55, mIdPaint);
             // Draws a bounding box around the face.
 
             canvas.DrawRect(left, top, right, bottom, mBoxPaint);

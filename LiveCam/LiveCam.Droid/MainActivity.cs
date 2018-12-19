@@ -39,7 +39,6 @@ namespace LiveCam.Droid
 
         private CameraSource _mCameraSource = null;
 
-        
 
         private CameraSourcePreview _mPreview;
         private GraphicOverlay _mGraphicOverlay;
@@ -295,6 +294,9 @@ namespace LiveCam.Droid
         private bool isProcessing = false;
         private ImageButton _img;
         private Face _face;
+        private JObject responseObject;
+        public static string newestResponse = "noone";
+
 
         public GraphicFaceTracker(GraphicOverlay overlay, ImageButton img, CameraSource cameraSource =null)
         {
@@ -309,8 +311,13 @@ namespace LiveCam.Droid
             mFaceGraphic.SetId(id);
             try
             {
-                if (mCameraSource != null && !isProcessing)
-                    mCameraSource.TakePicture(null, this);
+                Task.Run(async () =>
+                {
+                    await Task.Delay(200);
+                    if (mCameraSource != null && !isProcessing)
+                        mCameraSource.TakePicture(null, this);
+                });
+
 
                 _face = item as Face;
                 Console.WriteLine($"position x: {_face.Position.X} position y: {_face.Position.Y} width: {_face.Width} height: {_face.Height}");
@@ -398,7 +405,7 @@ namespace LiveCam.Droid
                                 var client = new HttpClient();    //Iskelt kad ne ant kiekvieno siuntimo kurtu
                                 client.BaseAddress = new Uri("http://88.119.27.98:55555");
                                 //var stream = new MemoryStream();
-                                byte[] byteArray=LiveCamHelper.BitmapToGrayscaleBytes(bitmap);
+                                byte[] byteArray = LiveCamHelper.BitmapToGrayscaleBytes(bitmap);
                                 //stream.Write(byteArray, 0, byteArray.Length);
                                 //bitmap.Compress(Bitmap.CompressFormat.Jpeg, 100, stream);
                                 var content = new ByteArrayContent(byteArray);
@@ -409,7 +416,11 @@ namespace LiveCam.Droid
                                 //if (stream.Equals(null)) Console.WriteLine("The stream is null");
                                 //else Console.WriteLine("the stream is not null");
                                 //stream.Dispose();
-
+                                responseObject = JObject.Parse(await response.Content.ReadAsStringAsync());
+                                if (!string.IsNullOrWhiteSpace((string)responseObject.GetValue("Name")))
+                                {
+                                    newestResponse = responseObject.GetValue("Name") + ", " + responseObject.GetValue("Bio") + ", " + responseObject.GetValue("Likes");
+                                }
                             });
 
 
