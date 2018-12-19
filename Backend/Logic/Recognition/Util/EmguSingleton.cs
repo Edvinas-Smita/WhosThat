@@ -28,7 +28,7 @@ namespace Backend.Logic.Recognition.Util
 		public CascadeClassifier FaceDetector { get; set; }
 		public CascadeClassifier EyeDetector { get; set; }
 
-		public LBPHFaceRecognizer Recognizer { get; } = new LBPHFaceRecognizer();
+		public LBPHFaceRecognizer Recognizer { get; } = new LBPHFaceRecognizer(1, 8, 8, 50);
 		public bool RecognizerIsTrained = false;
 
 		public bool IsInitialised = false;

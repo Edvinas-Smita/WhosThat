@@ -50,6 +50,8 @@ namespace Backend.Logic.Recognition.Util
 
 		public static int RecognizeUser(Image<Gray, byte> userFaceImage)
 		{
+			//var prediction = EmguSingleton.Instance.Recognizer.Predict(userFaceImage);
+			//return prediction.Distance > 75 ? prediction.Label : -1;
 			return EmguSingleton.Instance.Recognizer.Predict(userFaceImage).Label;
 		}
 
