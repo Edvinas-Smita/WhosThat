@@ -13,6 +13,11 @@ using Android.Widget;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
+using Android;
+using Android.Content.PM;
+using Android.Support.Design.Widget;
+using Android.Support.V4.App;
+using Android.Util;
 using LiveCam.Droid.Models;
 using LiveCam.Droid.Presenters;
 using LiveCam.Droid.Views;
@@ -22,11 +27,16 @@ namespace LiveCam.Droid
     [Activity(Label = "LoginScreenActivity", MainLauncher = true)]
     public class LoginScreenActivity : Activity, ILoginView
     {
+        private static readonly string TAG = "FaceTracker";
+
         private Button _btnLogin;
         private TextView _txtUser;
         private TextView _txtPass;
         private TextView _txtPasswordWarning;
         private bool loggedOn = false;
+        private GraphicOverlay _mGraphicOverlay;
+
+        private const int RC_HANDLE_LOCATION_PERM = 3;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -40,64 +50,101 @@ namespace LiveCam.Droid
             _txtUser = FindViewById<TextView>(Resource.Id.txtUser);
             _txtPasswordWarning = FindViewById<TextView>(Resource.Id.txtPasswordWarning);
             _btnLogin.Click += _btnLogin_Click;
+
+
+            
+        }
+
+        private void RequestGpsPermission()
+        {
+            Log.Warn(TAG, "GPS permission is not granted. Requesting permission");
+
+            var permissions = new string[] { Manifest.Permission.AccessCoarseLocation };
+
+            if (!ActivityCompat.ShouldShowRequestPermissionRationale(this,
+                Manifest.Permission.AccessCoarseLocation))
+            {
+                ActivityCompat.RequestPermissions(this, permissions, RC_HANDLE_LOCATION_PERM);
+                return;
+            }
+
+             ActivityCompat.RequestPermissions(this, permissions, RC_HANDLE_LOCATION_PERM); 
+
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions,
+            [GeneratedEnum] Permission[] grantResults)
+        {
+            Log.Debug(TAG, $"OnRequestPermissionsResult invoked, requestCode: {requestCode}");
+            Android.Support.V7.App.AlertDialog.Builder builder;
+            switch (requestCode)
+            {
+                case RC_HANDLE_LOCATION_PERM:
+                    if (grantResults.Length != 0 && grantResults[0] == Permission.Granted)
+                    {
+                        Log.Debug(TAG, "Location permission granted");
+                        return;
+                    }
+
+                    Log.Error(TAG, "Location permission not granted: results len = " + grantResults.Length +
+                                   " Result code = " +
+                                   (grantResults.Length > 0 ? grantResults[0].ToString() : "(empty)"));
+
+
+                    builder = new Android.Support.V7.App.AlertDialog.Builder(this);
+                    builder.SetTitle("LiveCam")
+                        .SetMessage("You have not granted location permission. ")
+                        .SetPositiveButton(Resource.String.ok, (o, e) => Finish())
+                        .Show();
+                    break;
+
+
+                default:
+                    Log.Debug(TAG, "Got unexpected permission result: " + requestCode);
+                    base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+                    return;
+                    break;
+            }
+
+
+
         }
 
         private void _btnLogin_Click(object sender, EventArgs e)
         {
-            //testing
-            LoginSuccesful("test");
-
-
-
-            if (String.IsNullOrEmpty(_txtUser.Text) || String.IsNullOrEmpty(_txtPass.Text)) Toast.MakeText(this, "The fields can not be empty", ToastLength.Long).Show();
-            else
+            if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.AccessCoarseLocation) ==
+                Permission.Granted)
             {
 
-
-                //UZKOMENTUOTI, KAI BUS PADARYTA, KAD BACKENDAS ATSIUNCIA ATGAL ATSAKYMA
-                //if (_txtUser.Text == "admin" && _txtPass.Text == "admin")
-                    //LoginSuccesful();
-
-                LoginPresenter presenter = new LoginPresenter(this, new LoginModel());
-                presenter.Login();
-
-
-
-                /*Task.Run(async () =>
+                Log.Debug(TAG, "Location permission is granted");
+                Toast.MakeText(this, "Location permission granted", ToastLength.Long);
+                if (String.IsNullOrEmpty(_txtUser.Text) || String.IsNullOrEmpty(_txtPass.Text))
                 {
-                    string pass = Sha256(_txtPass.Text);
-                    var client = new HttpClient();
-                    client.BaseAddress = new Uri("http://88.119.27.98:55555");
-                    var data = new { identifier = _txtUser.Text, password = pass };
-	                HttpResponseMessage result;
-	                try
-	                {
-		                result = await client.PostAsync("api/login", data.AsJson());
-	                }
-	                catch (HttpRequestException exception)
-	                {
-		                Console.WriteLine(exception);
-		                _txtPasswordWarning.Text = "There was an unexpected error with the server";
-		                return;
-	                }
-                    var status = result.StatusCode.ToString();
-                    var resultString = await result.Content.ReadAsStringAsync();
-                    Console.WriteLine("'"+status+"' NICENICENICNEICNEICE");
-                    Console.WriteLine("'"+result+"'-+-+-+-+");
-                    if (status.Equals("NotFound"))
-                    {
-                        _txtPasswordWarning.Text = "Password or username is incorrect";
-                    }
-                    else
-                    {
-                        LoginSuccesful(resultString);
-                    }
-                });*/
+                    Toast.MakeText(this, "The fields can not be empty", ToastLength.Long).Show();
+                }
+                else
+                {
+                    //UZKOMENTUOTI, KAI BUS PADARYTA, KAD BACKENDAS ATSIUNCIA ATGAL ATSAKYMA
+                    //if (_txtUser.Text == "admin" && _txtPass.Text == "admin")
+                    //LoginSuccesful("test");
+
+                    LoginPresenter presenter = new LoginPresenter(this, new LoginModel());
+                    presenter.Login();
+                }
             }
+            else
+            {
+                Log.Debug(TAG, "Requesting location perm");
+                RequestGpsPermission();
+            }
+
         }
 
         public void LoginSuccesful(string result)
         {
+            
+
             Intent nextActivity = new Intent(this, typeof(MainActivity));
             nextActivity.PutExtra("Person", result);
             StartActivity(nextActivity);

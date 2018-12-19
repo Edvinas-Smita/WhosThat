@@ -30,6 +30,8 @@ using System.Drawing;
 using Android.Views;
 using Newtonsoft.Json.Linq;
 using LiveCam.Droid.Proxies;
+using AlertDialog = Android.App.AlertDialog;
+
 namespace LiveCam.Droid
 {
     [Activity(Label = "LiveCam.Droid", MainLauncher = false, Icon = "@drawable/icon", Theme = "@style/Theme.AppCompat.NoActionBar", ScreenOrientation = ScreenOrientation.FullSensor)]
@@ -52,7 +54,8 @@ namespace LiveCam.Droid
 
         private static readonly int RC_HANDLE_GMS = 9001;
         // permission request codes need to be < 256
-        private static readonly int RC_HANDLE_CAMERA_PERM = 2;
+        private const int RC_HANDLE_CAMERA_PERM = 2;
+
 
         protected override async void OnCreate(Bundle bundle)
         {
@@ -89,11 +92,14 @@ namespace LiveCam.Droid
             if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
             {
                 CreateCameraSource(CameraFacing.Front);
-                //LiveCamHelper.Init();
-                //LiveCamHelper.GreetingsCallback = (s) => { RunOnUiThread(()=> GreetingsText = s ); };
-                //await LiveCamHelper.RegisterFaces();
             }
-            else { RequestCameraPermission(); }
+            else
+            {
+                RequestCameraPermission();
+            }
+            
+
+
             
         }
 
@@ -162,6 +168,8 @@ namespace LiveCam.Droid
                 _mCameraSource.Release();
             }
         }
+
+        
 
         private void RequestCameraPermission()
         {
@@ -259,33 +267,43 @@ namespace LiveCam.Droid
         }
 
 
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions,
+            [GeneratedEnum] Permission[] grantResults)
         {
-            if (requestCode != RC_HANDLE_CAMERA_PERM)
+            Log.Debug(TAG, $"OnRequestPermissionsResult invoked, requestCode: {requestCode}");
+            Android.Support.V7.App.AlertDialog.Builder builder;
+            switch (requestCode)
             {
-                Log.Debug(TAG, "Got unexpected permission result: " + requestCode);
-                base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+                case RC_HANDLE_CAMERA_PERM:
+                    if (grantResults.Length != 0 && grantResults[0] == Permission.Granted)
+                    {
+                        Log.Debug(TAG, "Camera permission granted - initialize the camera source");
+                        // we have permission, so create the camerasource
+                        CreateCameraSource(CameraFacing.Front);
+                        return;
+                    }
 
-                return;
+                    Log.Error(TAG, "Permission not granted: results len = " + grantResults.Length +
+                                   " Result code = " +
+                                   (grantResults.Length > 0 ? grantResults[0].ToString() : "(empty)"));
+
+
+                    builder = new Android.Support.V7.App.AlertDialog.Builder(this);
+                    builder.SetTitle("LiveCam")
+                        .SetMessage(Resource.String.no_camera_permission)
+                        .SetPositiveButton(Resource.String.ok, (o, e) => Finish())
+                        .Show();
+                    break;
+
+                default:
+                    Log.Debug(TAG, "Got unexpected permission result: " + requestCode);
+                    base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+                    return;
+                    break;
             }
 
-            if (grantResults.Length != 0 && grantResults[0] == Permission.Granted)
-            {
-                Log.Debug(TAG, "Camera permission granted - initialize the camera source");
-                // we have permission, so create the camerasource
-                CreateCameraSource(CameraFacing.Front);
-                return;
-            }
 
-            Log.Error(TAG, "Permission not granted: results len = " + grantResults.Length +
-                    " Result code = " + (grantResults.Length > 0 ? grantResults[0].ToString() : "(empty)"));
-
-
-            var builder = new Android.Support.V7.App.AlertDialog.Builder(this);
-            builder.SetTitle("LiveCam")
-                    .SetMessage(Resource.String.no_camera_permission)
-                    .SetPositiveButton(Resource.String.ok, (o, e) => Finish())
-                    .Show();
 
         }
     }
